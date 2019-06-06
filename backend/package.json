@@ -1,0 +1,23 @@
+{
+  "name": "teamplanner-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "out/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucaschimweg/dhbw-teamplanner.git"
+  },
+  "author": "Team Teamplanner",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/lucaschimweg/dhbw-teamplanner/issues"
+  },
+  "homepage": "https://github.com/lucaschimweg/dhbw-teamplanner#readme",
+  "devDependencies": {
+    "typescript": "^3.5.1"
+  }
+}
