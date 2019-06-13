@@ -1,2 +1,7 @@
+import {Config} from "./config"
 
-console.log("Hello, world!")
+console.log("Starting Teamplanner-Server!");
+
+Config.loadConfigFrom("config.json");
+
+
