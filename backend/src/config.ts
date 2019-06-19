@@ -31,7 +31,7 @@ export class Config {
     };
 
     public static loadConfigFrom(fileName: string) {
-        console.log("Loading config");
+        console.log("Loading config...");
 
         let data: any;
 
