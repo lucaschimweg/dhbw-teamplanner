@@ -79,7 +79,7 @@ export class Database {
 
     // region User Management
 
-    private createUserFromObject(obj: any): User {
+    private static createUserFromObject(obj: any): User {
         return new User(
             obj.id,
             obj.email,
@@ -94,6 +94,11 @@ export class Database {
         return new User(id, email, firstName, lastName, team);
     }
 
+    public async getUserByLoginData(email: string, passwordHash: string): Promise<User|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USER_BY_LOGIN, [email, passwordHash]);
+        if (obj.length == 0) return null;
+        return Database.createUserFromObject(obj[0]);
+    }
     // endregion
 
 }

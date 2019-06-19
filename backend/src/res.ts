@@ -14,5 +14,7 @@ export class DbRes {
 
     public static INSERT_TEAMPLANNER_USER: string = "INSERT INTO teamplanner_users (`email`, `password_hash`, `first_name`, `last_name`, `team`) VALUES (?, ?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID()";
+
+    public static SELECT_TEAMPLANNER_USER_BY_LOGIN: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team` from teamplanner_users WHERE `email`=? and `password_hash`=?"
 }
 
