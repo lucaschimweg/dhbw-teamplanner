@@ -1,10 +1,12 @@
 import {DbConnectionProperties} from "./config";
 import * as mysql from 'mysql';
-import {Pool} from "mysql";
-import {MysqlError} from "mysql";
+import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
+import {User} from "./dbObjects";
 
 export class Database {
+
+    // region Static Part
 
     private static _instance: Database;
 
@@ -17,8 +19,11 @@ export class Database {
         return Database._instance;
     }
 
+    // endregion
 
     private pool: Pool;
+
+    // region Connection
 
     private constructor(properties: DbConnectionProperties) {
         this.pool = mysql.createPool({
@@ -26,7 +31,8 @@ export class Database {
             host: properties.host,
             user: properties.user,
             password: properties.password,
-            database: properties.dbName
+            database: properties.dbName,
+            multipleStatements: true
         });
     }
 
@@ -69,5 +75,25 @@ export class Database {
         }
     }
 
+    // endregion
+
+    // region User Management
+
+    private createUserFromObject(obj: any): User {
+        return new User(
+            obj.id,
+            obj.email,
+            obj.first_name,
+            obj.last_name,
+            obj.team
+        );
+    }
+
+    public async createUser(email: string, firstName: string, lastName: string, team: number, passwordHash: string): Promise<User> {
+        let id = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, passwordHash, firstName, lastName, team]))[0];
+        return new User(id, email, firstName, lastName, team);
+    }
+
+    // endregion
 
 }

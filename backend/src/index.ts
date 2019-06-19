@@ -12,7 +12,7 @@ import {Database} from "./database";
     }
     console.log("Connected DB!");
 
-
+    // let user = await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, "12091u823");
 
     console.log("Closing server!");
     await Database.getInstance().disconnect();
