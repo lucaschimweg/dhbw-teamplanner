@@ -1,5 +1,6 @@
 import {Config} from "./config"
 import {Database} from "./database";
+import {SessionManager} from "./sessionManagement";
 
 (async () => {
     console.log("Starting Teamplanner-Server!");
@@ -12,15 +13,19 @@ import {Database} from "./database";
     }
     console.log("Connected DB!");
 
+    SessionManager.initializeSessionManager();
+
     // let user = await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, "12091u823");
-    let usr = await Database.getInstance().getUserByLoginData("l.schimweg@gmail.com", "12091u823");
+    let usr = await SessionManager.getInstance().loginUser("l.schimweg@gmail.com", "12091u823");
     if (usr == null) {
         console.log("Could not log in user!");
     } else {
-        console.log(usr.id);
+        console.log(usr[1].firstName);
     }
 
-    console.log("Closing server!");
-    await Database.getInstance().disconnect();
+
+
+    /*console.log("Closing server!");
+    await Database.getInstance().disconnect();*/
 
 })();
