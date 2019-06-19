@@ -32,14 +32,14 @@ export class SessionManager {
 
     // endregion
 
-    private sessions: Map<string, Session>;
+    private readonly sessions: Map<string, Session>;
 
     private constructor() {
         this.sessions = new Map<string, Session>();
         this.sessionTick();
     }
 
-    private static hashPassword(password: string): string {
+    public static hashPassword(password: string): string {
         return crypto.createHash('sha256').update('SaltiSalti&a!' + password + "09!kld").digest('hex');
     }
 
@@ -53,7 +53,6 @@ export class SessionManager {
 
     private sessionTick() {
         setTimeout(() => this.sessionTick(), 60000); // once per minute
-        console.log(this.sessions);
         this.sessions.forEach((value, key) => {
             if (value.timeTick()) {
                 this.sessions.delete(key);

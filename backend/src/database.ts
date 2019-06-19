@@ -99,6 +99,27 @@ export class Database {
         if (obj.length == 0) return null;
         return Database.createUserFromObject(obj[0]);
     }
+
+    public async getUserById(id: number): Promise<User|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USER_BY_ID, [id]);
+        if (obj.length == 0) return null;
+        return Database.createUserFromObject(obj[0]);
+    }
+
+    public async updateUserPassword(id: number, passwordHash: string) {
+        return this.query(DbRes.UPDATE_TEAMPLANNER_USER_PW, [passwordHash, id]);
+    }
+
+    public async deleteUser(id: number) {
+        return this.query(DbRes.DELETE_TEAMPLANNER_USER, [id]);
+    }
+
+    public async getUsersByTeam(teamId: number): Promise<User[]|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USER_BY_TEAM, [teamId]);
+        if (obj.length == 0) return null;
+        return obj.map(Database.createUserFromObject);
+    }
+
     // endregion
 
 }

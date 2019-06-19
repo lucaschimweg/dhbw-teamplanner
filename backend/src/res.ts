@@ -15,6 +15,16 @@ export class DbRes {
     public static INSERT_TEAMPLANNER_USER: string = "INSERT INTO teamplanner_users (`email`, `password_hash`, `first_name`, `last_name`, `team`) VALUES (?, ?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID()";
 
-    public static SELECT_TEAMPLANNER_USER_BY_LOGIN: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team` from teamplanner_users WHERE `email`=? and `password_hash`=?"
+    public static SELECT_TEAMPLANNER_USER_BY_LOGIN: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team` from teamplanner_users WHERE `email`=? and `password_hash`=?";
+
+    public static SELECT_TEAMPLANNER_USER_BY_ID: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team` from teamplanner_users WHERE `id`=?";
+
+    public static SELECT_TEAMPLANNER_USER_BY_TEAM: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team` from teamplanner_users WHERE `team`=?";
+
+    public static UPDATE_TEAMPLANNER_USER_PW: string = "UPDATE teamplanner_users SET `password_hash` = ? WHERE `id` = ?";
+
+    public static DELETE_TEAMPLANNER_USER: string = "DELETE FROM teamplanner_users WHERE `id` = ?";
+
+
 }
 

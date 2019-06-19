@@ -15,13 +15,18 @@ import {SessionManager} from "./sessionManagement";
 
     SessionManager.initializeSessionManager();
 
-    // let user = await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, "12091u823");
-    let usr = await SessionManager.getInstance().loginUser("l.schimweg@gmail.com", "12091u823");
+    // await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, SessionManager.hashPassword("12091u823"));
+
+    // await Database.getInstance().updateUserPassword(1, SessionManager.hashPassword("1234"));
+
+    let usr = await SessionManager.getInstance().loginUser("l.schimweg@gmail.com", "1234");
     if (usr == null) {
         console.log("Could not log in user!");
     } else {
         console.log(usr[1].firstName);
     }
+
+    console.log(await Database.getInstance().getUsersByTeam(1));
 
 
 
