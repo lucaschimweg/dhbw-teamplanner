@@ -66,6 +66,7 @@ export class Database {
 
     private async bootstrap(): Promise<boolean> {
         try {
+            await this.query(DbRes.CREATE_TEAMPLANNER_LOGIN);
             await this.query(DbRes.CREATE_TEAMPLANNER_USERS);
 
             return true;
@@ -90,14 +91,21 @@ export class Database {
     }
 
     public async createUser(email: string, firstName: string, lastName: string, team: number, passwordHash: string): Promise<User> {
-        let id = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, passwordHash, firstName, lastName, team]))[0];
+        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, firstName, lastName, team]))[1][0].id;
+        await this.query(DbRes.INSERT_TEAMPLANNER_USER_LOGIN, [email, passwordHash, id]);
         return new User(id, email, firstName, lastName, team);
     }
 
-    public async getUserByLoginData(email: string, passwordHash: string): Promise<User|null> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USER_BY_LOGIN, [email, passwordHash]);
+    public async getUserIdByLoginData(email: string, passwordHash: string): Promise<number|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USERID_BY_LOGIN, [email, passwordHash]);
         if (obj.length == 0) return null;
-        return Database.createUserFromObject(obj[0]);
+        return obj[0].id as number;
+    }
+
+    public async getUserByLoginData(email: string, passwordHash: string): Promise<User|null> {
+        let id = await this.getUserIdByLoginData(email, passwordHash);
+        if (id == null) return null;
+        return await this.getUserById(id);
     }
 
     public async getUserById(id: number): Promise<User|null> {
