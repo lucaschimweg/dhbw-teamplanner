@@ -17,3 +17,19 @@ export class User {
         this.endTime = endTime;
     }
 }
+
+export class Team {
+    public readonly id: number;
+    public readonly name: string;
+    public readonly description: string;
+    public readonly start: Date;
+    public readonly leader: User;
+
+    constructor(id: number, name: string, description: string, start: Date, leader: User) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.start = start;
+        this.leader = leader;
+    }
+}

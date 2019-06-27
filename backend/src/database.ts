@@ -2,7 +2,7 @@ import {DbConnectionProperties} from "./config";
 import * as mysql from 'mysql';
 import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
-import {User} from "./dbObjects";
+import {Team, User} from "./dbObjects";
 
 export class Database {
 
@@ -68,6 +68,7 @@ export class Database {
         try {
             await this.query(DbRes.CREATE_TEAMPLANNER_LOGIN);
             await this.query(DbRes.CREATE_TEAMPLANNER_USERS);
+            await this.query(DbRes.CREATE_TEAMPLANNER_TEAMS);
 
             return true;
         } catch (e) {
@@ -82,7 +83,7 @@ export class Database {
 
     private static createUserFromObject(obj: any): User {
         return new User(
-            obj.id,
+            obj.user_id,
             obj.email,
             obj.first_name,
             obj.last_name,
@@ -101,7 +102,7 @@ export class Database {
     public async getUserIdByLoginData(email: string, passwordHash: string): Promise<number|null> {
         let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USERID_BY_LOGIN, [email, passwordHash]);
         if (obj.length == 0) return null;
-        return obj[0].id as number;
+        return obj[0].user_id as number;
     }
 
     public async getUserByLoginData(email: string, passwordHash: string): Promise<User|null> {
@@ -129,6 +130,29 @@ export class Database {
         if (obj.length == 0) return null;
         return obj.map(Database.createUserFromObject);
     }
+
+    // endregion
+
+    // region Team Management
+
+    private static async createTeamFromObject(obj: any, usr: User): Promise<Team> {
+        return new Team(
+            obj.team_id,
+            obj.name,
+            obj.description,
+            obj.start,
+            Database.createUserFromObject(obj)
+        );
+    }
+
+    public async getTeamById(id: number): Promise<Team|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_TEAM_BY_ID, [id]);
+        if (obj.length == 0) return null;
+        let usr = await this.getUserById(obj[0].leader);
+        if (usr == null) return null;
+        return Database.createTeamFromObject(obj[0], usr);
+    }
+
 
     // endregion
 

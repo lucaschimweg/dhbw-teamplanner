@@ -16,7 +16,7 @@ import {TeamplannerWebServer} from "./webserver";
 
     SessionManager.initializeSessionManager();
 
-    let myusr = await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, SessionManager.hashPassword("5678"));
+    //let myusr = await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, SessionManager.hashPassword("5678"));
 
     //await Database.getInstance().updateUserPassword(myusr.id, SessionManager.hashPassword("5678"));
 
