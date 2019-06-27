@@ -16,16 +16,29 @@ import {TeamplannerWebServer} from "./webserver";
 
     SessionManager.initializeSessionManager();
 
-    //let myusr = await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, SessionManager.hashPassword("1234"));
+    //let myusr = await Database.getInstance().createUser("l.schimweg@gmail.com", "Luca", "Schimweg", 1, SessionManager.hashPassword("5678"));
 
     //await Database.getInstance().updateUserPassword(myusr.id, SessionManager.hashPassword("5678"));
 
     let usr = await SessionManager.getInstance().loginUser("l.schimweg@gmail.com", "5678");
     if (usr == null) {
         console.log("Could not log in user!");
-    } else {
-        console.log(usr[1].firstName);
+        return;
     }
+    console.log("logged in as " + usr[1].firstName);
+
+    let team = await Database.getInstance().createTeam("Hammerteam!", "Das hier ist das beste Team überhaupt!", usr[1].id);
+    if ( team == null ) {
+        console.log("could not create team!");
+        return;
+    }
+
+    let jb = await Database.getInstance().createJob(team.id, "Implementation", "Implementiere halt", 180);
+
+    console.log(await Database.getInstance().getJobById(jb.id));
+
+    console.log("created team " + team.name);
+
 
     //console.log(await Database.getInstance().getUsersByTeam(1));
 

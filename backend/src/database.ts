@@ -2,7 +2,7 @@ import {DbConnectionProperties} from "./config";
 import * as mysql from 'mysql';
 import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
-import {User} from "./dbObjects";
+import {Job, Team, User} from "./dbObjects";
 
 export class Database {
 
@@ -68,6 +68,8 @@ export class Database {
         try {
             await this.query(DbRes.CREATE_TEAMPLANNER_LOGIN);
             await this.query(DbRes.CREATE_TEAMPLANNER_USERS);
+            await this.query(DbRes.CREATE_TEAMPLANNER_TEAMS);
+            await this.query(DbRes.CREATE_TEAMPLANNER_JOBS);
 
             return true;
         } catch (e) {
@@ -82,24 +84,26 @@ export class Database {
 
     private static createUserFromObject(obj: any): User {
         return new User(
-            obj.id,
+            obj.user_id,
             obj.email,
             obj.first_name,
             obj.last_name,
-            obj.team
+            obj.team,
+            obj.start_time,
+            obj.end_time
         );
     }
 
     public async createUser(email: string, firstName: string, lastName: string, team: number, passwordHash: string): Promise<User> {
-        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, firstName, lastName, team]))[1][0].id;
+        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, firstName, lastName, team, 460, 1190]))[1][0].id;
         await this.query(DbRes.INSERT_TEAMPLANNER_USER_LOGIN, [email, passwordHash, id]);
-        return new User(id, email, firstName, lastName, team);
+        return new User(id, email, firstName, lastName, team, 460, 1190);
     }
 
     public async getUserIdByLoginData(email: string, passwordHash: string): Promise<number|null> {
         let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USERID_BY_LOGIN, [email, passwordHash]);
         if (obj.length == 0) return null;
-        return obj[0].id as number;
+        return obj[0].user_id as number;
     }
 
     public async getUserByLoginData(email: string, passwordHash: string): Promise<User|null> {
@@ -126,6 +130,58 @@ export class Database {
         let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USER_BY_TEAM, [teamId]);
         if (obj.length == 0) return null;
         return obj.map(Database.createUserFromObject);
+    }
+
+    // endregion
+
+    // region Team Management
+
+    private static async createTeamFromObject(obj: any, usr: User): Promise<Team> {
+        return new Team(
+            obj.team_id,
+            obj.name,
+            obj.description,
+            obj.start,
+            Database.createUserFromObject(obj)
+        );
+    }
+
+    public async getTeamById(id: number): Promise<Team|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_TEAM_BY_ID, [id]);
+        if (obj.length == 0) return null;
+        let usr = await this.getUserById(obj[0].leader);
+        if (usr == null) return null;
+        return Database.createTeamFromObject(obj[0], usr);
+    }
+
+    public async createTeam(name: string, description: string, leaderId: number): Promise<Team|null> {
+        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_TEAM, [name, description, leaderId]))[1][0].id;
+        return await this.getTeamById(id);
+    }
+
+    // endregion
+
+    // region Job Management
+
+    private static async createJobFromObject(obj: any): Promise<Job> {
+        return new Job(
+            obj.job_id,
+            obj.team_id,
+            obj.name,
+            obj.description,
+            obj.planned_duration
+        );
+    }
+
+    public async getJobById(id: number): Promise<Job|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_JOB_BY_ID, [id]);
+        if (obj.length == 0) return null;
+        return Database.createJobFromObject(obj[0]);
+    }
+
+    public async createJob(teamId: number, name: string, description: string, plannedDuration: number): Promise<Job> {
+        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_JOB, [teamId, name, description, plannedDuration]))[1][0].id;
+        return new Job(id, teamId, name, description, plannedDuration);
     }
 
     // endregion
