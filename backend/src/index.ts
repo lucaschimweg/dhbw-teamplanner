@@ -27,17 +27,18 @@ import {TeamplannerWebServer} from "./webserver";
     }
     console.log("logged in as " + usr[1].firstName);
 
-    let team = await Database.getInstance().createTeam("Hammerteam!", "Das hier ist das beste Team überhaupt!", usr[1].id);
-    if ( team == null ) {
+    //let team = await Database.getInstance().createTeam("Hammerteam!", "Das hier ist das beste Team überhaupt!", usr[1].id);
+    /*if ( team == null ) {
         console.log("could not create team!");
         return;
-    }
+    }*/
 
-    let jb = await Database.getInstance().createJob(team.id, "Implementation", "Implementiere halt", 180);
+    //let jb = await Database.getInstance().createJob(team.id, "Implementation", "Implementiere halt", 180);
 
-    console.log(await Database.getInstance().getJobById(jb.id));
+    console.log(await Database.getInstance().getJobById(1));
+    console.log(await Database.getInstance().getParticipantsForJob(1));
 
-    console.log("created team " + team.name);
+    //console.log("created team " + team.name);
 
 
     //console.log(await Database.getInstance().getUsersByTeam(1));

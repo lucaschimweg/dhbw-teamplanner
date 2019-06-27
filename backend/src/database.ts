@@ -2,7 +2,7 @@ import {DbConnectionProperties} from "./config";
 import * as mysql from 'mysql';
 import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
-import {Job, Team, User} from "./dbObjects";
+import {Job, JobParticipant, Team, User} from "./dbObjects";
 
 export class Database {
 
@@ -70,6 +70,7 @@ export class Database {
             await this.query(DbRes.CREATE_TEAMPLANNER_USERS);
             await this.query(DbRes.CREATE_TEAMPLANNER_TEAMS);
             await this.query(DbRes.CREATE_TEAMPLANNER_JOBS);
+            await this.query(DbRes.CREATE_TEAMPLANNER_JOB_PARTICIPANTS);
 
             return true;
         } catch (e) {
@@ -182,6 +183,18 @@ export class Database {
     public async createJob(teamId: number, name: string, description: string, plannedDuration: number): Promise<Job> {
         let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_JOB, [teamId, name, description, plannedDuration]))[1][0].id;
         return new Job(id, teamId, name, description, plannedDuration);
+    }
+
+    private static createJobParticipantFromObject(obj: any): JobParticipant {
+        return new JobParticipant(
+            Database.createUserFromObject(obj),
+            obj.duration
+        );
+    }
+
+    public async getParticipantsForJob(jobId: number): Promise<JobParticipant[]> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_JOB, [jobId]);
+        return obj.map(Database.createJobParticipantFromObject);
     }
 
     // endregion

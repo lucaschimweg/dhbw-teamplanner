@@ -29,6 +29,13 @@ export class DbRes {
         "  PRIMARY KEY (`team_id`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
+    public static CREATE_TEAMPLANNER_JOB_PARTICIPANTS: string = "CREATE TABLE IF NOT EXISTS `teamplanner_job_participants` (\n" +
+        "  `job_id` int(11) unsigned NOT NULL,\n" +
+        "  `user_id` int(11) unsigned NOT NULL,\n" +
+        "  `duration` int(11) unsigned DEFAULT NULL,\n" +
+        "  PRIMARY KEY (`job_id`,`user_id`)\n" +
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
     public static CREATE_TEAMPLANNER_JOBS: string = "CREATE TABLE IF NOT EXISTS `teamplanner_jobs` (\n" +
         "  `job_id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n" +
         "  `team_id` int(11) unsigned NOT NULL,\n" +
@@ -62,6 +69,10 @@ export class DbRes {
 
     public static INSERT_TEAMPLANNER_JOB: string = "INSERT INTO teamplanner_jobs (`team_id`, `name`, `description`, `planned_duration`) VALUES (?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
+
+    public static SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_JOB: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
+        "teamplanner_job_participants .`user_id` = teamplanner_users.`user_id` WHERE `job_id` = ?";
+
 
 }
 
