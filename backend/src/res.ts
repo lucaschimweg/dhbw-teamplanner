@@ -13,21 +13,23 @@ export class DbRes {
         "  `email` varchar(50) DEFAULT '',\n" +
         "  `first_name` tinytext,\n" +
         "  `last_name` tinytext,\n" +
-        "  `team` int(11) DEFAULT NULL,\n" +
+        "  `team` int(11) unsigned NOT NULL,\n" +
+        "  `start_time` int(11) unsigned NOT NULL,\n" +
+        "  `end_time` int(11) unsigned NOT NULL,\n" +
         "  PRIMARY KEY (`id`),\n" +
         "  KEY `team` (`team`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-    public static INSERT_TEAMPLANNER_USER: string = "INSERT INTO teamplanner_users (`email`, `first_name`, `last_name`, `team`) VALUES (?, ?, ?, ?);" +
+    public static INSERT_TEAMPLANNER_USER: string = "INSERT INTO teamplanner_users (`email`, `first_name`, `last_name`, `team`, `start_time`, `end_time`) VALUES (?, ?, ?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
     public static INSERT_TEAMPLANNER_USER_LOGIN: string = "INSERT INTO teamplanner_login (`email`, `password_hash`, `id`) VALUES (?, ?, ?)";
 
     public static SELECT_TEAMPLANNER_USERID_BY_LOGIN: string = "SELECT `id` from teamplanner_login WHERE `email`=? and `password_hash` = ?";
 
-    public static SELECT_TEAMPLANNER_USER_BY_ID: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team` from teamplanner_users WHERE `id`=?";
+    public static SELECT_TEAMPLANNER_USER_BY_ID: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team`, `start_time`, `end_time` from teamplanner_users WHERE `id`=?";
 
-    public static SELECT_TEAMPLANNER_USER_BY_TEAM: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team` from teamplanner_users WHERE `team`=?";
+    public static SELECT_TEAMPLANNER_USER_BY_TEAM: string = "SELECT `id`, `email`, `first_name`, `last_name`, `team`, `start_time`, `end_time` from teamplanner_users WHERE `team`=?";
 
     public static UPDATE_TEAMPLANNER_USER_PW: string = "UPDATE teamplanner_login SET `password_hash` = ? WHERE `id` = ?";
 

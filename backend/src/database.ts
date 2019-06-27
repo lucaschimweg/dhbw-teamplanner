@@ -86,14 +86,16 @@ export class Database {
             obj.email,
             obj.first_name,
             obj.last_name,
-            obj.team
+            obj.team,
+            obj.start_time,
+            obj.end_time
         );
     }
 
     public async createUser(email: string, firstName: string, lastName: string, team: number, passwordHash: string): Promise<User> {
-        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, firstName, lastName, team]))[1][0].id;
+        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, firstName, lastName, team, 460, 1190]))[1][0].id;
         await this.query(DbRes.INSERT_TEAMPLANNER_USER_LOGIN, [email, passwordHash, id]);
-        return new User(id, email, firstName, lastName, team);
+        return new User(id, email, firstName, lastName, team, 460, 1190);
     }
 
     public async getUserIdByLoginData(email: string, passwordHash: string): Promise<number|null> {
