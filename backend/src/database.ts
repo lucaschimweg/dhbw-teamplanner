@@ -2,7 +2,7 @@ import {DbConnectionProperties} from "./config";
 import * as mysql from 'mysql';
 import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
-import {Team, User} from "./dbObjects";
+import {Job, Team, User} from "./dbObjects";
 
 export class Database {
 
@@ -69,6 +69,7 @@ export class Database {
             await this.query(DbRes.CREATE_TEAMPLANNER_LOGIN);
             await this.query(DbRes.CREATE_TEAMPLANNER_USERS);
             await this.query(DbRes.CREATE_TEAMPLANNER_TEAMS);
+            await this.query(DbRes.CREATE_TEAMPLANNER_JOBS);
 
             return true;
         } catch (e) {
@@ -158,6 +159,30 @@ export class Database {
         return await this.getTeamById(id);
     }
 
+    // endregion
+
+    // region Job Management
+
+    private static async createJobFromObject(obj: any): Promise<Job> {
+        return new Job(
+            obj.job_id,
+            obj.team_id,
+            obj.name,
+            obj.description,
+            obj.planned_duration
+        );
+    }
+
+    public async getJobById(id: number): Promise<Job|null> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_JOB_BY_ID, [id]);
+        if (obj.length == 0) return null;
+        return Database.createJobFromObject(obj[0]);
+    }
+
+    public async createJob(teamId: number, name: string, description: string, plannedDuration: number): Promise<Job> {
+        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_JOB, [teamId, name, description, plannedDuration]))[1][0].id;
+        return new Job(id, teamId, name, description, plannedDuration);
+    }
 
     // endregion
 

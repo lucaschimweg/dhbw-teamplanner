@@ -33,6 +33,10 @@ import {TeamplannerWebServer} from "./webserver";
         return;
     }
 
+    let jb = await Database.getInstance().createJob(team.id, "Implementation", "Implementiere halt", 180);
+
+    console.log(await Database.getInstance().getJobById(jb.id));
+
     console.log("created team " + team.name);
 
 

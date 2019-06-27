@@ -29,6 +29,15 @@ export class DbRes {
         "  PRIMARY KEY (`team_id`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
+    public static CREATE_TEAMPLANNER_JOBS: string = "CREATE TABLE IF NOT EXISTS `teamplanner_jobs` (\n" +
+        "  `job_id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n" +
+        "  `team_id` int(11) unsigned NOT NULL,\n" +
+        "  `name` varchar(50) DEFAULT NULL,\n" +
+        "  `description` tinytext,\n" +
+        "  `planned_duration` int(11) unsigned DEFAULT NULL,\n" +
+        "  PRIMARY KEY (`job_id`)\n" +
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
     public static INSERT_TEAMPLANNER_USER: string = "INSERT INTO teamplanner_users (`email`, `first_name`, `last_name`, `team`, `start_time`, `end_time`) VALUES (?, ?, ?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
@@ -46,7 +55,12 @@ export class DbRes {
 
     public static SELECT_TEAMPLANNER_TEAM_BY_ID: string = "SELECT * FROM teamplanner_teams JOIN teamplanner_users ON `user_id` = `leader` WHERE `team_id` = ?";
 
-    public static INSERT_TEAMPLANNER_TEAM: string = "INSERT INTO teamplanner_teams(`name`, `description`, `leader`) VALUES (?, ?, ?);" +
+    public static INSERT_TEAMPLANNER_TEAM: string = "INSERT INTO teamplanner_teams (`name`, `description`, `leader`) VALUES (?, ?, ?);" +
+        "SELECT LAST_INSERT_ID() as id";
+
+    public static SELECT_TEAMPLANNER_JOB_BY_ID: string = "SELECT * FROM teamplanner_jobs WHERE `job_id` = ?";
+
+    public static INSERT_TEAMPLANNER_JOB: string = "INSERT INTO teamplanner_jobs (`team_id`, `name`, `description`, `planned_duration`) VALUES (?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
 }
