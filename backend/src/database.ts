@@ -153,6 +153,11 @@ export class Database {
         return Database.createTeamFromObject(obj[0], usr);
     }
 
+    public async createTeam(name: string, description: string, leaderId: number): Promise<Team|null> {
+        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_TEAM, [name, description, leaderId]))[1][0].id;
+        return await this.getTeamById(id);
+    }
+
 
     // endregion
 

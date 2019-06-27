@@ -44,7 +44,10 @@ export class DbRes {
 
     public static DELETE_TEAMPLANNER_USER: string = "DELETE FROM teamplanner_users WHERE `user_id` = ?; DELETE FROM teamplanner_login WHERE `user_id`= ?";
 
-    public static SELECT_TEAMPLANNER_TEAM_BY_ID: string = "SELECT * FROM teamplanner_teams JOIN teamplanner_users ON `user_id` = `team_id` WHERE `team_id` = ?";
+    public static SELECT_TEAMPLANNER_TEAM_BY_ID: string = "SELECT * FROM teamplanner_teams JOIN teamplanner_users ON `user_id` = `leader` WHERE `team_id` = ?";
+
+    public static INSERT_TEAMPLANNER_TEAM: string = "INSERT INTO teamplanner_teams(`name`, `description`, `leader`) VALUES (?, ?, ?);" +
+        "SELECT LAST_INSERT_ID() as id";
 
 }
 
