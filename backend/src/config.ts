@@ -14,6 +14,14 @@ export class DbConnectionProperties {
     }
 }
 
+export class WebServerConfig {
+    public readonly port: number;
+
+    constructor(port: number) {
+        this.port = port;
+    }
+}
+
 export class Config {
     private static _instance: Config;
 
@@ -27,6 +35,9 @@ export class Config {
             "user": "",
             "password": "",
             "dbname": ""
+        },
+        "webserver": {
+            "port": 80
         }
     };
 
@@ -61,6 +72,12 @@ export class Config {
             this.config.database.user,
             this.config.database.password,
             this.config.database.dbname
+        );
+    }
+
+    getWebServerConfig(): WebServerConfig {
+        return new WebServerConfig(
+            this.config.webserver.port
         );
     }
 }

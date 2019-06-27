@@ -1,6 +1,7 @@
 import {Config} from "./config"
 import {Database} from "./database";
 import {SessionManager} from "./sessionManagement";
+import {TeamplannerWebServer} from "./webserver";
 
 (async () => {
     console.log("Starting Teamplanner-Server!");
@@ -32,5 +33,10 @@ import {SessionManager} from "./sessionManagement";
 
     /*console.log("Closing server!");
     await Database.getInstance().disconnect();*/
+
+    const webserver = new TeamplannerWebServer();
+    webserver.start();
+
+    console.log("Server running!");
 
 })();
