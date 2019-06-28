@@ -73,6 +73,8 @@ export class DbRes {
 
     public static SELECT_JOB_BY_ID: string = "SELECT * FROM teamplanner_jobs WHERE `job_id` = ?";
 
+    public static SELECT_JOBS_BY_TEAM: string = "SELECT * FROM teamplanner_jobs WHERE `team_id` = ?";
+
     public static INSERT_JOB: string = "INSERT INTO teamplanner_jobs (`team_id`, `name`, `description`, `planned_duration`) VALUES (?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 

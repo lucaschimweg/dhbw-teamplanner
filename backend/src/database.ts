@@ -97,9 +97,9 @@ export class Database {
     }
 
     public async createUser(email: string, firstName: string, lastName: string, team: number, passwordHash: string): Promise<User> {
-        let id: number = (await this.query(DbRes.INSERT_USER, [email, firstName, lastName, team, 460, 1190]))[1][0].id;
+        let id: number = (await this.query(DbRes.INSERT_USER, [email, firstName, lastName, team, 480, 1190]))[1][0].id;
         await this.query(DbRes.INSERT_USER_LOGIN, [email, passwordHash, id]);
-        return new User(id, email, firstName, lastName, team, 460, 1190);
+        return new User(id, email, firstName, lastName, team, 480, 1190);
     }
 
     public async getUserIdByLoginData(email: string, passwordHash: string): Promise<number|null> {
@@ -179,6 +179,11 @@ export class Database {
         let obj = await this.query(DbRes.SELECT_JOB_BY_ID, [id]);
         if (obj.length == 0) return null;
         return Database.createJobFromObject(obj[0]);
+    }
+
+    public async getJobsByTeam(teamId: number): Promise<Job[]> {
+        let obj = await this.query(DbRes.SELECT_JOBS_BY_TEAM, [teamId]);
+        return obj.map(Database.createJobFromObject);
     }
 
     public async createJob(teamId: number, name: string, description: string, plannedDuration: number): Promise<Job> {
