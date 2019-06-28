@@ -45,42 +45,42 @@ export class DbRes {
         "  PRIMARY KEY (`job_id`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-    public static INSERT_TEAMPLANNER_USER: string = "INSERT INTO teamplanner_users (`email`, `first_name`, `last_name`, `team`, `start_time`, `end_time`) VALUES (?, ?, ?, ?, ?, ?);" +
+    public static INSERT_USER: string = "INSERT INTO teamplanner_users (`email`, `first_name`, `last_name`, `team`, `start_time`, `end_time`) VALUES (?, ?, ?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
-    public static INSERT_TEAMPLANNER_USER_LOGIN: string = "INSERT INTO teamplanner_login (`email`, `password_hash`, `user_id`) VALUES (?, ?, ?)";
+    public static INSERT_USER_LOGIN: string = "INSERT INTO teamplanner_login (`email`, `password_hash`, `user_id`) VALUES (?, ?, ?)";
 
-    public static SELECT_TEAMPLANNER_USERID_BY_LOGIN: string = "SELECT `user_id` from teamplanner_login WHERE `email`=? and `password_hash` = ?";
+    public static SELECT_USERID_BY_LOGIN: string = "SELECT `user_id` from teamplanner_login WHERE `email`=? and `password_hash` = ?";
 
-    public static SELECT_TEAMPLANNER_USER_BY_ID: string = "SELECT * from teamplanner_users WHERE `user_id`=?";
+    public static SELECT_USER_BY_ID: string = "SELECT * from teamplanner_users WHERE `user_id`=?";
 
-    public static SELECT_TEAMPLANNER_USER_BY_TEAM: string = "SELECT * from teamplanner_users WHERE `team`=?";
+    public static SELECT_USER_BY_TEAM: string = "SELECT * from teamplanner_users WHERE `team`=?";
 
-    public static UPDATE_TEAMPLANNER_USER_PW: string = "UPDATE teamplanner_login SET `password_hash` = ? WHERE `user_id` = ?";
+    public static UPDATE_USER_PW: string = "UPDATE teamplanner_login SET `password_hash` = ? WHERE `user_id` = ?";
 
-    public static DELETE_TEAMPLANNER_USER: string = "DELETE FROM teamplanner_users WHERE `user_id` = ?; DELETE FROM teamplanner_login WHERE `user_id`= ?";
+    public static DELETE_USER: string = "DELETE FROM teamplanner_users WHERE `user_id` = ?; DELETE FROM teamplanner_login WHERE `user_id`= ?";
 
-    public static SELECT_TEAMPLANNER_TEAM_BY_ID: string = "SELECT * FROM teamplanner_teams JOIN teamplanner_users ON `user_id` = `leader` WHERE `team_id` = ?";
+    public static SELECT_TEAM_BY_ID: string = "SELECT * FROM teamplanner_teams JOIN teamplanner_users ON `user_id` = `leader` WHERE `team_id` = ?";
 
-    public static INSERT_TEAMPLANNER_TEAM: string = "INSERT INTO teamplanner_teams (`name`, `description`, `leader`) VALUES (?, ?, ?);" +
+    public static INSERT_TEAM: string = "INSERT INTO teamplanner_teams (`name`, `description`, `leader`) VALUES (?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
-    public static SELECT_TEAMPLANNER_JOB_BY_ID: string = "SELECT * FROM teamplanner_jobs WHERE `job_id` = ?";
+    public static SELECT_JOB_BY_ID: string = "SELECT * FROM teamplanner_jobs WHERE `job_id` = ?";
 
-    public static INSERT_TEAMPLANNER_JOB: string = "INSERT INTO teamplanner_jobs (`team_id`, `name`, `description`, `planned_duration`) VALUES (?, ?, ?, ?);" +
+    public static INSERT_JOB: string = "INSERT INTO teamplanner_jobs (`team_id`, `name`, `description`, `planned_duration`) VALUES (?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
-    public static SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_JOB: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
+    public static SELECT_JOB_PARTICIPANTS_BY_JOB: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
         "teamplanner_job_participants .`user_id` = teamplanner_users.`user_id` WHERE `job_id` = ?";
 
-    public static SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_USER: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
+    public static SELECT_JOB_PARTICIPANTS_BY_USER: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
         "teamplanner_job_participants .`user_id` = teamplanner_users.`user_id` WHERE `user_id` = ?";
 
-    public static INSERT_TEAMPLANNER_JOB_PARTICIPANT: string = "INSERT INTO teamplanner_job_participants (`job_id`, `user_id`) VALUES (?, ?);";
+    public static INSERT_JOB_PARTICIPANT: string = "INSERT INTO teamplanner_job_participants (`job_id`, `user_id`) VALUES (?, ?);";
 
-    public static UPDATE_TEAMPLANNER_JOB_PARTICIPANT: string = "UPDATE teamplanner_job_participants SET `duration`=? WHERE `job_id`=? and `user_id` = ?;";
+    public static UPDATE_JOB_PARTICIPANT: string = "UPDATE teamplanner_job_participants SET `duration`=? WHERE `job_id`=? and `user_id` = ?;";
 
-    public static DELETE_TEAMPLANNER_JOB_PARTICIPANT: string = "DELETE FROM teamplanner_job_participants WHERE `job_id`=? and `user_id` = ?;";
+    public static DELETE_JOB_PARTICIPANT: string = "DELETE FROM teamplanner_job_participants WHERE `job_id`=? and `user_id` = ?;";
 
 }
 

@@ -96,13 +96,13 @@ export class Database {
     }
 
     public async createUser(email: string, firstName: string, lastName: string, team: number, passwordHash: string): Promise<User> {
-        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_USER, [email, firstName, lastName, team, 460, 1190]))[1][0].id;
-        await this.query(DbRes.INSERT_TEAMPLANNER_USER_LOGIN, [email, passwordHash, id]);
+        let id: number = (await this.query(DbRes.INSERT_USER, [email, firstName, lastName, team, 460, 1190]))[1][0].id;
+        await this.query(DbRes.INSERT_USER_LOGIN, [email, passwordHash, id]);
         return new User(id, email, firstName, lastName, team, 460, 1190);
     }
 
     public async getUserIdByLoginData(email: string, passwordHash: string): Promise<number|null> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USERID_BY_LOGIN, [email, passwordHash]);
+        let obj = await this.query(DbRes.SELECT_USERID_BY_LOGIN, [email, passwordHash]);
         if (obj.length == 0) return null;
         return obj[0].user_id as number;
     }
@@ -114,21 +114,21 @@ export class Database {
     }
 
     public async getUserById(id: number): Promise<User|null> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USER_BY_ID, [id]);
+        let obj = await this.query(DbRes.SELECT_USER_BY_ID, [id]);
         if (obj.length == 0) return null;
         return Database.createUserFromObject(obj[0]);
     }
 
     public async updateUserPassword(id: number, passwordHash: string) {
-        return this.query(DbRes.UPDATE_TEAMPLANNER_USER_PW, [passwordHash, id]);
+        return this.query(DbRes.UPDATE_USER_PW, [passwordHash, id]);
     }
 
     public async deleteUser(id: number) {
-        return this.query(DbRes.DELETE_TEAMPLANNER_USER, [id]);
+        return this.query(DbRes.DELETE_USER, [id]);
     }
 
     public async getUsersByTeam(teamId: number): Promise<User[]|null> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_USER_BY_TEAM, [teamId]);
+        let obj = await this.query(DbRes.SELECT_USER_BY_TEAM, [teamId]);
         if (obj.length == 0) return null;
         return obj.map(Database.createUserFromObject);
     }
@@ -148,7 +148,7 @@ export class Database {
     }
 
     public async getTeamById(id: number): Promise<Team|null> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_TEAM_BY_ID, [id]);
+        let obj = await this.query(DbRes.SELECT_TEAM_BY_ID, [id]);
         if (obj.length == 0) return null;
         let usr = await this.getUserById(obj[0].leader);
         if (usr == null) return null;
@@ -156,7 +156,7 @@ export class Database {
     }
 
     public async createTeam(name: string, description: string, leaderId: number): Promise<Team|null> {
-        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_TEAM, [name, description, leaderId]))[1][0].id;
+        let id: number = (await this.query(DbRes.INSERT_TEAM, [name, description, leaderId]))[1][0].id;
         return await this.getTeamById(id);
     }
 
@@ -175,13 +175,13 @@ export class Database {
     }
 
     public async getJobById(id: number): Promise<Job|null> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_JOB_BY_ID, [id]);
+        let obj = await this.query(DbRes.SELECT_JOB_BY_ID, [id]);
         if (obj.length == 0) return null;
         return Database.createJobFromObject(obj[0]);
     }
 
     public async createJob(teamId: number, name: string, description: string, plannedDuration: number): Promise<Job> {
-        let id: number = (await this.query(DbRes.INSERT_TEAMPLANNER_JOB, [teamId, name, description, plannedDuration]))[1][0].id;
+        let id: number = (await this.query(DbRes.INSERT_JOB, [teamId, name, description, plannedDuration]))[1][0].id;
         return new Job(id, teamId, name, description, plannedDuration);
     }
 
@@ -193,28 +193,26 @@ export class Database {
     }
 
     public async getParticipantsForJob(jobId: number): Promise<JobParticipant[]> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_JOB, [jobId]);
+        let obj = await this.query(DbRes.SELECT_JOB_PARTICIPANTS_BY_JOB, [jobId]);
         return obj.map(Database.createJobParticipantFromObject);
     }
 
     public async addParticipantToJob(jobId: number, userId: number) {
-        await this.query(DbRes.INSERT_TEAMPLANNER_JOB_PARTICIPANT, [jobId, userId])
+        await this.query(DbRes.INSERT_JOB_PARTICIPANT, [jobId, userId])
     }
 
     public async updateParticipantJobDuration(jobId: number, userId: number, duration: number) {
-        await this.query(DbRes.UPDATE_TEAMPLANNER_JOB_PARTICIPANT, [duration, jobId, userId])
+        await this.query(DbRes.UPDATE_JOB_PARTICIPANT, [duration, jobId, userId])
     }
 
     public async removeParticipantFromJob(jobId: number, userId: number) {
-        await this.query(DbRes.DELETE_TEAMPLANNER_JOB_PARTICIPANT, [jobId, userId])
+        await this.query(DbRes.DELETE_JOB_PARTICIPANT, [jobId, userId])
     }
 
     public async getJobsForUser(userId: number): Promise<JobParticipant[]> {
-        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_JOB, [userId]);
+        let obj = await this.query(DbRes.SELECT_JOB_PARTICIPANTS_BY_JOB, [userId]);
         return obj.map(Database.createJobParticipantFromObject);
     }
 
-
     // endregion
-
 }
