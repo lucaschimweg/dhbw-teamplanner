@@ -73,6 +73,14 @@ export class DbRes {
     public static SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_JOB: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
         "teamplanner_job_participants .`user_id` = teamplanner_users.`user_id` WHERE `job_id` = ?";
 
+    public static SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_USER: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
+        "teamplanner_job_participants .`user_id` = teamplanner_users.`user_id` WHERE `user_id` = ?";
+
+    public static INSERT_TEAMPLANNER_JOB_PARTICIPANT: string = "INSERT INTO teamplanner_job_participants (`job_id`, `user_id`) VALUES (?, ?);";
+
+    public static UPDATE_TEAMPLANNER_JOB_PARTICIPANT: string = "UPDATE teamplanner_job_participants SET `duration`=? WHERE `job_id`=? and `user_id` = ?;";
+
+    public static DELETE_TEAMPLANNER_JOB_PARTICIPANT: string = "DELETE FROM teamplanner_job_participants WHERE `job_id`=? and `user_id` = ?;";
 
 }
 

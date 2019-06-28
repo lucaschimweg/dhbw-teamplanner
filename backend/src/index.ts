@@ -27,6 +27,9 @@ import {TeamplannerWebServer} from "./webserver";
     }
     console.log("logged in as " + usr[1].firstName);
 
+    console.log("Jobs for user: ");
+    console.log(await Database.getInstance().getJobsForUser(usr[1].id));
+
     //let team = await Database.getInstance().createTeam("Hammerteam!", "Das hier ist das beste Team überhaupt!", usr[1].id);
     /*if ( team == null ) {
         console.log("could not create team!");
@@ -35,8 +38,12 @@ import {TeamplannerWebServer} from "./webserver";
 
     //let jb = await Database.getInstance().createJob(team.id, "Implementation", "Implementiere halt", 180);
 
-    console.log(await Database.getInstance().getJobById(1));
-    console.log(await Database.getInstance().getParticipantsForJob(1));
+    //let u = await Database.getInstance().createUser("hleier@gmail.com", "Hendrik", "Leier", usr[1].teamId, SessionManager.hashPassword("1234"));
+    //await Database.getInstance().addParticipantToJob(1, u.id);
+
+    //console.log(await Database.getInstance().getJobById(1));
+    //console.log(await Database.getInstance().getParticipantsForJob(1));
+
 
     //console.log("created team " + team.name);
 

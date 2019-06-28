@@ -197,6 +197,24 @@ export class Database {
         return obj.map(Database.createJobParticipantFromObject);
     }
 
+    public async addParticipantToJob(jobId: number, userId: number) {
+        await this.query(DbRes.INSERT_TEAMPLANNER_JOB_PARTICIPANT, [jobId, userId])
+    }
+
+    public async updateParticipantJobDuration(jobId: number, userId: number, duration: number) {
+        await this.query(DbRes.UPDATE_TEAMPLANNER_JOB_PARTICIPANT, [duration, jobId, userId])
+    }
+
+    public async removeParticipantFromJob(jobId: number, userId: number) {
+        await this.query(DbRes.DELETE_TEAMPLANNER_JOB_PARTICIPANT, [jobId, userId])
+    }
+
+    public async getJobsForUser(userId: number): Promise<JobParticipant[]> {
+        let obj = await this.query(DbRes.SELECT_TEAMPLANNER_JOB_PARTICIPANTS_BY_JOB, [userId]);
+        return obj.map(Database.createJobParticipantFromObject);
+    }
+
+
     // endregion
 
 }
