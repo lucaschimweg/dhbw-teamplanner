@@ -2,7 +2,7 @@ import {DbConnectionProperties} from "./config";
 import * as mysql from 'mysql';
 import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
-import {Job, JobParticipant, Team, User} from "./dbObjects";
+import {Job, JobParticipant, JobParticipation, Team, User} from "./dbObjects";
 
 export class Database {
 
@@ -165,7 +165,7 @@ export class Database {
 
     // region Job Management
 
-    private static async createJobFromObject(obj: any): Promise<Job> {
+    private static createJobFromObject(obj: any): Job {
         return new Job(
             obj.job_id,
             obj.team_id,
@@ -193,6 +193,13 @@ export class Database {
         );
     }
 
+    private static createJobParticipationFromObject(obj: any): JobParticipation {
+        return new JobParticipation(
+            Database.createJobFromObject(obj),
+            obj.duration
+        );
+    }
+
     public async getParticipantsForJob(jobId: number): Promise<JobParticipant[]> {
         let obj = await this.query(DbRes.SELECT_JOB_PARTICIPANTS_BY_JOB, [jobId]);
         return obj.map(Database.createJobParticipantFromObject);
@@ -210,9 +217,9 @@ export class Database {
         await this.query(DbRes.DELETE_JOB_PARTICIPANT, [jobId, userId])
     }
 
-    public async getJobsForUser(userId: number): Promise<JobParticipant[]> {
-        let obj = await this.query(DbRes.SELECT_JOB_PARTICIPANTS_BY_JOB, [userId]);
-        return obj.map(Database.createJobParticipantFromObject);
+    public async getJobsForUser(userId: number): Promise<JobParticipation[]> {
+        let obj = await this.query(DbRes.SELECT_JOB_PARTICIPANTS_BY_USER, [userId]);
+        return obj.map(Database.createJobParticipationFromObject);
     }
 
     public async getParentJobs(jobId: number): Promise<number[]> {

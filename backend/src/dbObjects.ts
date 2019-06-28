@@ -60,3 +60,13 @@ export class JobParticipant {
         this.duration = duration;
     }
 }
+
+export class JobParticipation {
+    public readonly job: Job;
+    public readonly duration: number|null;
+
+    constructor(job: Job, duration: number | null) {
+        this.job = job;
+        this.duration = duration;
+    }
+}

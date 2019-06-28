@@ -61,6 +61,8 @@ import {TeamplannerWebServer} from "./webserver";
     /*console.log("Closing server!");
     await Database.getInstance().disconnect();*/
 
+    console.log(await Database.getInstance().getJobsForUser(1));
+
     const webserver = new TeamplannerWebServer();
     webserver.start();
 
