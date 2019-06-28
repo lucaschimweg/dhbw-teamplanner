@@ -21,9 +21,9 @@ export class Database {
 
     // endregion
 
-    private pool: Pool;
-
     // region Connection
+
+    private pool: Pool;
 
     private constructor(properties: DbConnectionProperties) {
         this.pool = mysql.createPool({
@@ -71,6 +71,7 @@ export class Database {
             await this.query(DbRes.CREATE_TEAMPLANNER_TEAMS);
             await this.query(DbRes.CREATE_TEAMPLANNER_JOBS);
             await this.query(DbRes.CREATE_TEAMPLANNER_JOB_PARTICIPANTS);
+            await this.query(DbRes.CREATE_TEAMPLANNER_JOB_DEPENDENCIES);
 
             return true;
         } catch (e) {
@@ -213,6 +214,26 @@ export class Database {
         let obj = await this.query(DbRes.SELECT_JOB_PARTICIPANTS_BY_JOB, [userId]);
         return obj.map(Database.createJobParticipantFromObject);
     }
+
+    public async getParentJobs(jobId: number): Promise<number[]> {
+        return (await this.query(DbRes.SELECT_JOB_PARENTS, [jobId]))
+            .map((x: any) => x.job_parent);
+    }
+
+    public async getChildJobs(jobId: number): Promise<number[]> {
+        return (await this.query(DbRes.SELECT_JOB_CHILDREN, [jobId]))
+            .map((x: any) => x.job_child);
+    }
+
+    public async deleteJobDependency(parentJob: number, childJob: number) {
+        await this.query(DbRes.DELETE_JOB_DEPENDENCY, [parentJob, childJob])
+
+    }
+
+    public async addJobDependency(parentJob: number, childJob: number) {
+        return await this.query(DbRes.INSERT_JOB_DEPENDENCY, [parentJob, childJob]);
+    }
+
 
     // endregion
 }

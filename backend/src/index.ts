@@ -30,6 +30,12 @@ import {TeamplannerWebServer} from "./webserver";
     console.log("Jobs for user: ");
     console.log(await Database.getInstance().getJobsForUser(usr[1].id));
 
+    //await Database.getInstance().addJobDependency(1, 2);
+    //await Database.getInstance().addJobDependency(1, 3);
+
+    console.log(await Database.getInstance().getChildJobs(1));
+    console.log(await Database.getInstance().getParentJobs(2));
+    //await Database.getInstance().deleteJobDependency(1, 3);
     //let team = await Database.getInstance().createTeam("Hammerteam!", "Das hier ist das beste Team überhaupt!", usr[1].id);
     /*if ( team == null ) {
         console.log("could not create team!");

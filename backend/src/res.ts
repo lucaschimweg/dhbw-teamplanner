@@ -29,13 +29,6 @@ export class DbRes {
         "  PRIMARY KEY (`team_id`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
-    public static CREATE_TEAMPLANNER_JOB_PARTICIPANTS: string = "CREATE TABLE IF NOT EXISTS `teamplanner_job_participants` (\n" +
-        "  `job_id` int(11) unsigned NOT NULL,\n" +
-        "  `user_id` int(11) unsigned NOT NULL,\n" +
-        "  `duration` int(11) unsigned DEFAULT NULL,\n" +
-        "  PRIMARY KEY (`job_id`,`user_id`)\n" +
-        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-
     public static CREATE_TEAMPLANNER_JOBS: string = "CREATE TABLE IF NOT EXISTS `teamplanner_jobs` (\n" +
         "  `job_id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n" +
         "  `team_id` int(11) unsigned NOT NULL,\n" +
@@ -43,6 +36,19 @@ export class DbRes {
         "  `description` tinytext,\n" +
         "  `planned_duration` int(11) unsigned DEFAULT NULL,\n" +
         "  PRIMARY KEY (`job_id`)\n" +
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+    public static CREATE_TEAMPLANNER_JOB_PARTICIPANTS: string = "CREATE TABLE IF NOT EXISTS `teamplanner_job_participants` (\n" +
+        "  `job_id` int(11) unsigned NOT NULL,\n" +
+        "  `user_id` int(11) unsigned NOT NULL,\n" +
+        "  `duration` int(11) unsigned DEFAULT NULL,\n" +
+        "  PRIMARY KEY (`job_id`,`user_id`)\n" +
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+    public static CREATE_TEAMPLANNER_JOB_DEPENDENCIES: string = "CREATE TABLE IF NOT EXISTS `teamplanner_job_dependencies` (\n" +
+        "  `job_parent` int(11) unsigned NOT NULL,\n" +
+        "  `job_child` int(11) unsigned NOT NULL,\n" +
+        "  PRIMARY KEY (`job_parent`,`job_child`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
     public static INSERT_USER: string = "INSERT INTO teamplanner_users (`email`, `first_name`, `last_name`, `team`, `start_time`, `end_time`) VALUES (?, ?, ?, ?, ?, ?);" +
@@ -81,6 +87,14 @@ export class DbRes {
     public static UPDATE_JOB_PARTICIPANT: string = "UPDATE teamplanner_job_participants SET `duration`=? WHERE `job_id`=? and `user_id` = ?;";
 
     public static DELETE_JOB_PARTICIPANT: string = "DELETE FROM teamplanner_job_participants WHERE `job_id`=? and `user_id` = ?;";
+
+    public static INSERT_JOB_DEPENDENCY: string = "INSERT INTO teamplanner_job_dependencies (`job_parent`, `job_child`) VALUES (?, ?);"
+
+    public static DELETE_JOB_DEPENDENCY: string = "DELETE FROM teamplanner_job_dependencies WHERE `job_parent`=? and `job_child` = ?;";
+
+    public static SELECT_JOB_PARENTS: string = "SELECT job_parent FROM teamplanner_job_dependencies WHERE `job_child` = ?;";
+
+    public static SELECT_JOB_CHILDREN: string = "SELECT job_child FROM teamplanner_job_dependencies WHERE `job_parent` = ?;";
 
 }
 
