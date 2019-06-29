@@ -1,0 +1,45 @@
+<!ELEMENT week (team, day+)>
+
+<!ELEMENT team (description?, memberDefinition+)>
+<!ATTLIST team
+    name CDATA #REQUIRED >
+
+<!ELEMENT description (#PCDATA) >
+
+<!ELEMENT memberDefinition EMPTY>
+<!ATTLIST memberDefinition
+        id ID #REQUIRED
+        name CDATA >
+
+<!ELEMENT day (job*, jobContinuation*)>
+<!ATTLIST day
+        date CDATA #REQUIRED >
+
+<!ELEMENT job (description?, member+)>
+<!ATTLIST job
+        timeFrom CDATA #REQUIRED
+        timeTo CDATA #REQUIRED
+        name CDATA #REQUIRED
+        duration CDATA #REQUIRED
+        id ID #REQUIRED >
+
+<!ELEMENT jobContinuation EMPTY>
+<!ATTLIST jobContinuation
+        timeFrom CDATA #REQUIRED
+        timeTo CDATA #REQUIRED
+        job IDREF #REQUIRED >
+
+<!ELEMENT member EMPTY>
+<!ATTLIST member
+        id IDREF #REQUIRED >
+
+<!ELEMENT teamOverview (team, job*)
+
+<!ELEMENT jobDefinition (description?, dependsOn+)>
+<!ATTLIST jobDefinition
+        name CDATA #REQUIRED
+        duration CDATA #REQUIRED >
+
+<!ELEMENT dependsOn EMPTY>
+<!ATTLIST dependsOn
+        id IDREF #REQUIRED>

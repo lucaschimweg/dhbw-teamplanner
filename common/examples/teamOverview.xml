@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE teamOverview SYSTEM "https://teamplanner.schimweg.net/teamplanner.dtd" >
+
+<teamOverview xmlns="../teamplanner.dtd">
+    <team name="myTeam">
+        <memberDefinition id="25" name="Luca Schimweg"/>
+    </team>
+
+    <job timeFrom="" timeTo="" name="" duration="" id="">
+        <member id=""/>
+    </job>
+</teamOverview>

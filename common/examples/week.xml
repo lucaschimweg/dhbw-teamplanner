@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE week SYSTEM "https://teamplanner.schimweg.net/teamplanner.dtd" >
+
+<week xmlns="../teamplanner.dtd">
+    <team name="Supergeiles Team">
+        <description>Wir wollen etwas sehr cooles bauen!</description>
+        <memberDefinition id="25" name="Luca Schimweg" />
+        <memberDefinition id="26" name="Hendrik Leier" />
+        <memberDefinition id="27" name="Jonas Heinrich" />
+    </team>
+
+    <day date="2019-06-24">
+        <job timeFrom="08:00" timeTo="09:30" duration="90" name="Das hier ist der Name" id="2501">
+            <description>
+                Hallo das hier ist eine Supergeile description!
+            </description>
+            <member id="25" />
+            <member id="26" />
+            <member id="27" />
+        </job>
+        <job timeFrom="09:30" timeTo="10:00" duration="30" name="Job ohne description!" id="2391">
+            <member id="25" />
+        </job>
+        <job timeFrom="10:00" timeTo="18:00" duration="720" name="Job bis morgen" id="3210">
+            <member id="25" />
+            <member id="27" />
+        </job>
+    </day>
+
+    <day date="2019-06-25">
+        <jobContinuation timeFrom="08:00" timeTo="12:00" job="3210" />
+    </day>
+
+    <day date="2019-06-26">
+        <job timeFrom="08:00" timeTo="09:10" name="Frühstück" duration="60" id="84219">
+            <description>Brunch mit dem Team!</description>
+            <member id="25"/>
+            <member id="26"/>
+        </job>
+    </day>
+</week>
