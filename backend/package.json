@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/cookie-parser": "^1.4.1",
+    "@types/mysql": "^2.15.6",
     "@types/xmlbuilder": "^11.0.1",
     "typescript": "^3.5.1"
   },
