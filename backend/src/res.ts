@@ -51,6 +51,19 @@ export class DbRes {
         "  PRIMARY KEY (`job_parent`,`job_child`)\n" +
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
 
+    public static CREATE_TEAMPLANNER_JOB_CACHE: string = "CREATE TABLE IF NOT EXISTS `teamplanner_job_cache` (\n" +
+        "  `job_id` int(11) unsigned NOT NULL,\n" +
+        "  `team_id` int(11) unsigned NOT NULL,\n" +
+        "  `user_id` int(11) unsigned NOT NULL,\n" +
+        "  `day` date NOT NULL,\n" +
+        "  `start_time` int(11) unsigned,\n" +
+        "  `end_time` int(11) unsigned,\n" +
+        "  `duration` int(11) unsigned,\n" +
+        "  PRIMARY KEY (`job_id`,`user_id`,`day`),\n" +
+        "  KEY `team` (`team_id`),\n" +
+        "  KEY `day` (`user_id`,`day`)\n" +
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
     public static INSERT_USER: string = "INSERT INTO teamplanner_users (`email`, `first_name`, `last_name`, `team`, `start_time`, `end_time`) VALUES (?, ?, ?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
@@ -90,7 +103,7 @@ export class DbRes {
 
     public static DELETE_JOB_PARTICIPANT: string = "DELETE FROM teamplanner_job_participants WHERE `job_id`=? and `user_id` = ?;";
 
-    public static INSERT_JOB_DEPENDENCY: string = "INSERT INTO teamplanner_job_dependencies (`job_parent`, `job_child`) VALUES (?, ?);"
+    public static INSERT_JOB_DEPENDENCY: string = "INSERT INTO teamplanner_job_dependencies (`job_parent`, `job_child`) VALUES (?, ?);";
 
     public static DELETE_JOB_DEPENDENCY: string = "DELETE FROM teamplanner_job_dependencies WHERE `job_parent`=? and `job_child` = ?;";
 
@@ -98,5 +111,13 @@ export class DbRes {
 
     public static SELECT_JOB_CHILDREN: string = "SELECT job_child FROM teamplanner_job_dependencies WHERE `job_parent` = ?;";
 
+    public static DELETE_JOB_CACHE_BY_TEAM: string = "DELETE FROM teamplanner_job_cache WHERE `team_id` = ?;";
+
+    public static INSERT_JOB_CACHE: string = "INSERT INTO teamplanner_job_cache (`job_id`, `team_id`, `user_id`, `day`, `start_time`, `end_time`, `duration`) values (?, ?, ?, ?, ?, ?, ?);";
+
+    public static SELECT_JOB_CACHE_USER_DATES: string = "SELECT * FROM teamplanner_job_cache JOIN teamplanner_jobs " +
+        "ON teamplanner_job_cache.job_id = teamplanner_jobs.job_id WHERE `user_id` = ? AND `day` >= ? and `day` <= ?;";
+
+    public static SELECT_JOB_PARTICIPANT_IDS: string = "SELECT user_id FROM teamplanner_job_participants WHERE `job_id` = ?;";
 }
 

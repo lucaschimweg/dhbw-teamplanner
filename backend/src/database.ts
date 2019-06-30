@@ -2,7 +2,8 @@ import {DbConnectionProperties} from "./config";
 import * as mysql from 'mysql';
 import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
-import {Job, JobParticipant, JobParticipation, Team, User} from "./dbObjects";
+import {CachedJob, Job, JobParticipant, JobParticipation, Team, User} from "./dbObjects";
+import {JobWithTime} from "./jobScheduler";
 
 export class Database {
 
@@ -17,6 +18,12 @@ export class Database {
     public static createWithProperties(properties: DbConnectionProperties): Database {
         Database._instance = new Database(properties);
         return Database._instance;
+    }
+
+    public static formatDate(d: Date): string {
+        return d.getUTCFullYear()
+            + "-" + (d.getUTCMonth() + 1).toString().padStart(2, "0")
+            + "-" + d.getUTCDate().toString().padStart(2, "0")
     }
 
     // endregion
@@ -72,6 +79,7 @@ export class Database {
             await this.query(DbRes.CREATE_TEAMPLANNER_JOBS);
             await this.query(DbRes.CREATE_TEAMPLANNER_JOB_PARTICIPANTS);
             await this.query(DbRes.CREATE_TEAMPLANNER_JOB_DEPENDENCIES);
+            await this.query(DbRes.CREATE_TEAMPLANNER_JOB_CACHE);
 
             return true;
         } catch (e) {
@@ -97,9 +105,9 @@ export class Database {
     }
 
     public async createUser(email: string, firstName: string, lastName: string, team: number, passwordHash: string): Promise<User> {
-        let id: number = (await this.query(DbRes.INSERT_USER, [email, firstName, lastName, team, 480, 1190]))[1][0].id;
+        let id: number = (await this.query(DbRes.INSERT_USER, [email, firstName, lastName, team, 480, 1080]))[1][0].id;
         await this.query(DbRes.INSERT_USER_LOGIN, [email, passwordHash, id]);
-        return new User(id, email, firstName, lastName, team, 480, 1190);
+        return new User(id, email, firstName, lastName, team, 480, 1080);
     }
 
     public async getUserIdByLoginData(email: string, passwordHash: string): Promise<number|null> {
@@ -246,6 +254,51 @@ export class Database {
         return await this.query(DbRes.INSERT_JOB_DEPENDENCY, [parentJob, childJob]);
     }
 
+    // endregion
+
+    // region Job Cache
+
+    private static createCachedJobFromObject(obj: any): CachedJob {
+        return new CachedJob(
+            obj.job_id,
+            obj.team_id,
+            obj.user_id,
+            new Date(obj.day),
+            obj.start_time,
+            obj.end_time,
+            obj.duration,
+            Database.createJobFromObject(obj)
+        );
+    }
+
+    public async clearJobCache(teamId: number) {
+        await this.query(DbRes.DELETE_JOB_CACHE_BY_TEAM, [teamId]);
+    }
+
+    public async addToJobCache(jobId: number, userId: number, teamId: number, date: Date, startTime: number, endTime: number, duration: number) {
+        await this.query(DbRes.INSERT_JOB_CACHE,
+            [jobId, teamId, userId, Database.formatDate(date), startTime, endTime, duration]);
+    }
+
+    public async getCachedJobs(usrId: number, dayFrom: Date, dayTo: Date): Promise<CachedJob[]> {
+        let jobs = new  Map<number, number[]> ();
+
+        let cachedJobs =
+            (await this.query(DbRes.SELECT_JOB_CACHE_USER_DATES, [usrId, Database.formatDate(dayFrom), Database.formatDate(dayTo)]))
+                .map(Database.createCachedJobFromObject);
+
+        for (let cJob of cachedJobs) {
+            let part = jobs.get(cJob.jobId);
+            if (part == null) {
+                part = (await this.query(DbRes.SELECT_JOB_PARTICIPANT_IDS, [cJob.jobId])).map(x => x.user_id);
+                jobs.set(cJob.jobId, part);
+            }
+            cJob.participants = part;
+        }
+
+        return cachedJobs;
+    }
 
     // endregion
+
 }

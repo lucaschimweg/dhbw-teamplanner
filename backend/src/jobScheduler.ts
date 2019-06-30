@@ -1,4 +1,4 @@
-import {Job, JobParticipant, User} from "./dbObjects";
+import {CachedJob, Job, JobParticipant, User} from "./dbObjects";
 import {Database} from "./database";
 
 
@@ -24,7 +24,6 @@ export class JobScheduler {
                     this.users.push(u.user);
                 }
             }
-            console.log("added")
         }
 
         for (let obj of this.jobs) {
@@ -64,10 +63,17 @@ export class JobScheduler {
             let endTimeOnDay = startTimeOnDay + time;
 
             while (endTimeOnDay >= usr.user.endTime) {
+                job.cacheObjects.push(
+                    new _CachedJob(usr.user.id, daysUsr, (daysUsr == days) ? startTimeOnDay : usr.user.startTime, usr.user.endTime, time)
+                );
                 endTimeOnDay += dayOffset;
                 endTimeOnDay -= JobScheduler.DAY_LENGTH;
                 ++daysUsr;
             }
+
+            job.cacheObjects.push(
+                new _CachedJob(usr.user.id, daysUsr, (daysUsr == days) ? startTimeOnDay : usr.user.startTime, endTimeOnDay, time)
+            );
 
             times.set(usr.user.id, daysUsr * JobScheduler.DAY_LENGTH + endTimeOnDay);
         }
@@ -82,13 +88,27 @@ export class JobScheduler {
 
 
         return Array.from(this.jobs.values()).map(x => {
-            let dte = new Date(startDate.getTime());
+            let dte = new Date(startDate);
             dte.setUTCMinutes(x.startTime);
-            return new JobWithTime(x.job, dte);
+            return new JobWithTime(x.job, dte, x.cacheObjects.map( co => {
+                let dte = new Date(startDate);
+                dte.setUTCHours(24*co.day);
+                return new CachedJob(x.job.id, this.teamId, co.userId, dte, co.startTime, co.endTime, co.duration);
+            }));
         });
     }
 
-    public async scheduleJobs(): Promise<JobWithTime[]> {
+    private async writeToCache(jobsWithTime: JobWithTime[]) {
+        await Database.getInstance().clearJobCache(this.teamId);
+
+        for (let x of jobsWithTime) {
+            for (let co of x.cacheObjects) {
+                await Database.getInstance().addToJobCache(co.jobId, co.userId, co.teamId, co.day, co.startTime, co.endTime, co.duration);
+            }
+        }
+    }
+
+    public async scheduleJobs(writeToCache: boolean = true): Promise<JobWithTime[]> {
         await this.loadJobs();
 
         let times = new Map<number, number>();
@@ -99,9 +119,33 @@ export class JobScheduler {
 
         this.getEndJobs().forEach(job => this.scheduleUpwards(job, times));
 
-        return this.createJobsWithTime();
+        let jobs = this.createJobsWithTime();
+
+        if (writeToCache) {
+            await this.writeToCache(jobs);
+        }
+
+        return jobs;
     }
 
+    public static getEndForJob(job: JobWithTime, usr: JobParticipant): Date {
+        let time = usr.duration || job.job.plannedDuration;
+        let dayOffset = (usr.user.startTime + JobScheduler.DAY_LENGTH) - usr.user.endTime;
+
+        let daysUsr = 0;
+        let endTimeOnDay = job.date.getUTCMinutes() + job.date.getUTCHours()*60 + time;
+
+        while (endTimeOnDay >= usr.user.endTime) {
+            endTimeOnDay += dayOffset;
+            endTimeOnDay -= JobScheduler.DAY_LENGTH;
+            ++daysUsr;
+        }
+
+        let endDate = new Date(job.date);
+        endDate.setUTCHours(0);
+        endDate.setUTCMinutes(endTimeOnDay + daysUsr*this.DAY_LENGTH);
+        return endDate;
+    }
 }
 
 class JobHierarchyObject {
@@ -110,19 +154,38 @@ class JobHierarchyObject {
     public children: JobHierarchyObject[] = [];
     public users: JobParticipant[] = [];
     public startTime: number = -1;
+    public cacheObjects: _CachedJob[] = [];
 
     constructor(job: Job) {
         this.job = job;
     }
 }
 
+class _CachedJob {
+
+    public readonly userId: number;
+    public day: number;
+    public readonly startTime: number;
+    public readonly endTime: number;
+    public readonly duration: number;
+
+    constructor(userId: number, day: number, startTime: number, endTime: number, duration: number) {
+        this.userId = userId;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+    }
+}
+
 export class JobWithTime {
     public readonly job: Job;
     public readonly date: Date;
+    public cacheObjects: CachedJob[] = [];
 
-
-    constructor(job: Job, date: Date) {
+    constructor(job: Job, date: Date, cacheObjects: CachedJob[]) {
         this.job = job;
         this.date = date;
+        this.cacheObjects = cacheObjects;
     }
 }

@@ -70,3 +70,27 @@ export class JobParticipation {
         this.duration = duration;
     }
 }
+
+export class CachedJob {
+    public readonly jobId: number;
+    public readonly teamId: number;
+    public readonly userId: number;
+    public day: Date;
+    public readonly startTime: number;
+    public readonly endTime: number;
+    public readonly duration: number;
+    public readonly job: Job|null;
+    public participants: number[];
+
+    constructor(jobId: number, teamId: number, userId: number, day: Date, startTime: number, endTime: number, duration: number, job: Job|null = null, participants: number[] = []) {
+        this.jobId = jobId;
+        this.teamId = teamId;
+        this.userId = userId;
+        this.day = day;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.duration = duration;
+        this.job = job;
+        this.participants = participants
+    }
+}
