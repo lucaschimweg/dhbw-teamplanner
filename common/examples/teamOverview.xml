@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE teamOverview SYSTEM "https://teamplanner.schimweg.net/teamplanner.dtd" >
 
-<teamOverview xmlns="../teamplanner.dtd">
+<teamOverview xmlns="https://teamplanner.schimweg.net/teamplanner.dtd">
     <team name="myTeam">
         <memberDefinition id="25" name="Luca Schimweg"/>
     </team>

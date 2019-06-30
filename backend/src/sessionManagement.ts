@@ -4,7 +4,7 @@ import {Database} from "./database";
 
 class Session {
     private timeLeft: number; // in minutes
-    private readonly user: User;
+    public readonly user: User;
 
     constructor(user: User, timeLeft: number) {
         this.user = user;
@@ -66,6 +66,12 @@ export class SessionManager {
         let sessId = this.getSessionId();
         this.sessions.set(sessId, new Session(usr, 4*60));
         return [sessId, usr];
+    }
+
+    public getSession(sessId: string): User|null {
+        let usr = this.sessions.get(sessId);
+        if (usr == null) return null;
+        return usr.user;
     }
 
 }

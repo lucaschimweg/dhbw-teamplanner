@@ -27,13 +27,13 @@ export class WeekRoute {
 
     private async getWeek(req: express.Request, res: express.Response) {
         let jobs = await Database.getInstance().getCachedJobs(
-            1,
+            req.user.id,
             new Date(Database.formatDate(WeekRoute.getLastMonday())),
             new Date(Database.formatDate(WeekRoute.getNextSunday()))
         );
-        console.log("from " + Database.formatDate(WeekRoute.getLastMonday()) + " to " + Database.formatDate(WeekRoute.getNextSunday()));
-        let team = await Database.getInstance().getTeamById(1);
-        let users = await Database.getInstance().getUsersByTeam(1);
+
+        let team = await Database.getInstance().getTeamById(req.user.teamId);
+        let users = await Database.getInstance().getUsersByTeam(req.user.teamId);
 
         if (team == null || users == null) {
             res.status(500).end("Server Error!");
