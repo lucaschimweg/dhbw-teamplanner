@@ -79,8 +79,8 @@ export class JobScheduler {
         }
     }
 
-    public createJobsWithTime(): JobWithTime[] {
-        let startDate: Date = new Date();
+    public createJobsWithTime(start: Date): JobWithTime[] {
+        let startDate: Date = new Date(start);
         startDate.setUTCMinutes(0);
         startDate.setUTCHours(0);
         startDate.setUTCSeconds(0);
@@ -108,7 +108,7 @@ export class JobScheduler {
         }
     }
 
-    public async scheduleJobs(writeToCache: boolean = true): Promise<JobWithTime[]> {
+    public async scheduleJobs(startDate: Date, writeToCache: boolean = true): Promise<JobWithTime[]> {
         await this.loadJobs();
 
         let times = new Map<number, number>();
@@ -119,7 +119,7 @@ export class JobScheduler {
 
         this.getEndJobs().forEach(job => this.scheduleUpwards(job, times));
 
-        let jobs = this.createJobsWithTime();
+        let jobs = this.createJobsWithTime(startDate);
 
         if (writeToCache) {
             await this.writeToCache(jobs);

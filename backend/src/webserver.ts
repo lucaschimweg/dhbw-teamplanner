@@ -1,6 +1,7 @@
 import {Database} from "./database";
 import {Config} from "./config";
 import * as express from "express";
+import {WeekRoute} from "./routes/weekRoute";
 
 export class TeamplannerWebServer {
     private express: express.Application;
@@ -14,6 +15,8 @@ export class TeamplannerWebServer {
         this.express.get("/", [(req: express.Request, res: express.Response) => {
             res.end("Works!");
         }]);
+
+        this.express.use("/week", new WeekRoute().getRouter())
     }
 
     public start() {
