@@ -30,7 +30,7 @@ export class TeamRoute {
         } else {
             res.contentType("application/xml")
                 .status(200)
-                .end(XmlGenerator.getXmlTeamOverview(team, users, jobs));
+                .end(XmlGenerator.getXmlTeamOverview(team, users, jobs, req.user.id));
         }
     }
 

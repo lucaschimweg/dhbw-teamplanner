@@ -8,19 +8,24 @@ export class XmlGenerator {
         return Math.floor(minutes / 60).toString().padStart(2, "0") + ":" + (minutes % 60).toString().padStart(2, "0");
     }
 
-    private static getXmlForTeam(t: Team, users: User[]): xmlbuilder.XMLElement {
+    private static getXmlForTeam(t: Team, users: User[], curUserId: number): xmlbuilder.XMLElement {
         let obj = xmlbuilder.create("team");
 
         obj.att("name", t.name);
-        obj.att("leader", t.leader.id);
 
         if (t.description != null)
             obj.ele("description", t.description);
 
         for (let usr of users) {
-            obj.ele("memberDefinition")
+            let o = obj.ele("memberDefinition")
                 .att("id", usr.id)
                 .att("name", usr.firstName + " " + usr.lastName);
+            if (usr.id == t.leader.id) {
+                o.att("leader", "true");
+            }
+            if (usr.id == curUserId) {
+                o.att("you", "true");
+            }
         }
         return obj;
     }
@@ -95,9 +100,9 @@ export class XmlGenerator {
         return rootElem;
     }
 
-    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[]) {
+    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[], curUser: number) {
         let root = this.getXmlForWeek(c);
-        root.importDocument(this.getXmlForTeam(t, users));
+        root.importDocument(this.getXmlForTeam(t, users, curUser));
 
         root.dec({version: "1.0", encoding: "UTF-8"});
         root.dtd({sysID: "https://teamplanner.schimweg.net/teamplanner.dtd"});
@@ -107,9 +112,9 @@ export class XmlGenerator {
         return root.end({pretty: true});
     }
 
-    public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[]) {
+    public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[], curUser: number) {
         let root = this.getXmlForJobDefinitions(jobs);
-        root.importDocument(this.getXmlForTeam(t, users));
+        root.importDocument(this.getXmlForTeam(t, users, curUser));
 
         root.dec({version: "1.0", encoding: "UTF-8"});
         root.dtd({sysID: "https://teamplanner.schimweg.net/teamplanner.dtd"});

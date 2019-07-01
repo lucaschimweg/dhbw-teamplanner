@@ -2,14 +2,15 @@
 
 <!ELEMENT team (description?, memberDefinition+)>
 <!ATTLIST team
-    name CDATA #REQUIRED
-    leader IDREF #REQUIRED >
+    name CDATA #REQUIRED >
 
 <!ELEMENT description (#PCDATA) >
 
 <!ELEMENT memberDefinition EMPTY>
 <!ATTLIST memberDefinition
         id ID #REQUIRED
+        you (true|false) "false"
+        leader (true|false) "false"
         name CDATA >
 
 <!ELEMENT day (job*, jobContinuation*)>
