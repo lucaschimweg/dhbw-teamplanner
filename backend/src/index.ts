@@ -6,10 +6,9 @@ import {TeamplannerWebServer} from "./webserver";
 (async () => {
     console.log("Starting Teamplanner-Server!");
 
-    console.log("Loading config...");
     Config.loadConfigFrom("config.json");
 
-    console.log("Loaded config! Connecting DB!");
+    console.log("Connecting DB!");
     let connected = await Database.createWithProperties(Config.getInstance().getDatabaseConnectionProperties()).connect();
     if (!connected) {
         console.log("Could not connect DB!");
