@@ -15,7 +15,7 @@ export class LoginRoute {
 
         let session = await SessionManager.getInstance().loginUser(mail, password);
         if (session == null) {
-            res.status(401).end("Unauthorized");
+            res.redirect("/loginWithError.html");
             return;
         }
 
