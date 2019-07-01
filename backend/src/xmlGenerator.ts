@@ -1,5 +1,5 @@
 import * as xmlbuilder from "xmlbuilder"
-import {CachedJob, Team, User} from "./dbObjects";
+import {CachedJob, Job, Team, User} from "./dbObjects";
 import {XMLElement} from "xmlbuilder";
 import {Database} from "./database";
 
@@ -23,6 +23,29 @@ export class XmlGenerator {
                 .att("name", usr.firstName + " " + usr.lastName);
         }
         return obj;
+    }
+
+    private static getXmlForJobDefinitions(jobs: Job[]): XMLElement {
+        let root = xmlbuilder.create("teamOverview");
+
+        for (let job of jobs) {
+            let el = root.ele("jobDefinition")
+                .att("name", job.name)
+                .att("duration", job.plannedDuration)
+                .att("id", job.id);
+            if (job.description != "") {
+                el.ele("description", job.description)
+            }
+            for (let parent of job._parents) {
+                el.ele("dependsOn")
+                    .att("id", parent);
+            }
+            for (let part of job._participants) {
+                el.ele("member")
+                    .att("id", part);
+            }
+        }
+        return root;
     }
 
     private static getXmlForWeek(jobs: CachedJob[]): XMLElement {
@@ -74,6 +97,18 @@ export class XmlGenerator {
 
     public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[]) {
         let root = this.getXmlForWeek(c);
+        root.importDocument(this.getXmlForTeam(t, users));
+
+        root.dec({version: "1.0", encoding: "UTF-8"});
+        root.dtd({sysID: "https://teamplanner.schimweg.net/teamplanner.dtd"});
+
+        root.att("xmlns", "https://teamplanner.schimweg.net/teamplanner.dtd");
+
+        return root.end({pretty: true});
+    }
+
+    public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[]) {
+        let root = this.getXmlForJobDefinitions(jobs);
         root.importDocument(this.getXmlForTeam(t, users));
 
         root.dec({version: "1.0", encoding: "UTF-8"});

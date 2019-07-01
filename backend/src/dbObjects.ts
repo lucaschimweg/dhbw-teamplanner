@@ -41,6 +41,8 @@ export class Job {
     public readonly name: string;
     public readonly description: string;
     public readonly plannedDuration: number;
+    public _participants: number[] = [];
+    public _parents: number[] = [];
 
     constructor(id: number, teamId: number, name: string, description: string, plannedDuration: number) {
         this.id = id;

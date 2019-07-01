@@ -6,6 +6,7 @@ import * as cookieParser from "cookie-parser";
 import {LoginRoute} from "./routes/loginRoute";
 import {User} from "./dbObjects";
 import {SessionManager} from "./sessionManagement";
+import {TeamRoute} from "./routes/teamRoute";
 
 declare global {
     namespace Express {
@@ -51,6 +52,7 @@ export class TeamplannerWebServer {
         this.express.use(TeamplannerWebServer.checkLogin);
 
         this.express.use("/api/week", new WeekRoute().getRouter());
+        this.express.use("/api/team", new TeamRoute().getRouter());
     }
 
     public start() {

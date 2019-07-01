@@ -257,6 +257,10 @@ export class Database {
         return await this.query(DbRes.INSERT_JOB_DEPENDENCY, [parentJob, childJob]);
     }
 
+    public async getJobParticipantIds(job: number): Promise<number[]> {
+         return (await this.query(DbRes.SELECT_JOB_PARTICIPANT_IDS, [job])).map(x => x.user_id);
+    }
+
     // endregion
 
     // region Job Cache
@@ -293,7 +297,7 @@ export class Database {
         for (let cJob of cachedJobs) {
             let part = jobs.get(cJob.jobId);
             if (part == null) {
-                part = (await this.query(DbRes.SELECT_JOB_PARTICIPANT_IDS, [cJob.jobId])).map(x => x.user_id);
+                part = await this.getJobParticipantIds(cJob.jobId);
                 jobs.set(cJob.jobId, part);
             }
             cJob.participants = part;
