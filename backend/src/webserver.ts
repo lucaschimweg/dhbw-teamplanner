@@ -51,8 +51,8 @@ export class TeamplannerWebServer {
 
         this.express.use(TeamplannerWebServer.checkLogin);
 
-        this.express.use("/api/week", new WeekRoute().getRouter());
-        this.express.use("/api/team", new TeamRoute().getRouter());
+        this.express.use("/week", new WeekRoute().getRouter());
+        this.express.use("/team", new TeamRoute().getRouter());
     }
 
     public start() {
