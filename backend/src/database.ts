@@ -26,6 +26,10 @@ export class Database {
             + "-" + d.getUTCDate().toString().padStart(2, "0")
     }
 
+    public static parseDate(str: string): Date {
+        return new Date(str);
+    }
+
     // endregion
 
     // region Connection
@@ -263,7 +267,7 @@ export class Database {
             obj.job_id,
             obj.team_id,
             obj.user_id,
-            new Date(obj.day),
+            Database.parseDate(obj.day),
             obj.start_time,
             obj.end_time,
             obj.duration,

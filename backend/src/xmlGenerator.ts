@@ -34,7 +34,7 @@ export class XmlGenerator {
 
         let rootElem = xmlbuilder.create("week");
 
-        let curDate = Database.formatDate(jobs[0].day);
+        let curDate = "";
         let curDayObj: XMLElement|null = null;
 
         for (let job of jobs) {

@@ -55,7 +55,7 @@ export class DbRes {
         "  `job_id` int(11) unsigned NOT NULL,\n" +
         "  `team_id` int(11) unsigned NOT NULL,\n" +
         "  `user_id` int(11) unsigned NOT NULL,\n" +
-        "  `day` date NOT NULL,\n" +
+        "  `day` varchar(10) NOT NULL,\n" +
         "  `start_time` int(11) unsigned,\n" +
         "  `end_time` int(11) unsigned,\n" +
         "  `duration` int(11) unsigned,\n" +
