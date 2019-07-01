@@ -20,7 +20,7 @@ export class LoginRoute {
         }
 
         res.cookie("teamplanner-session", session[0]);
-        res.end("Logged in!");
+        res.redirect("/week");
     }
 
     constructor() {

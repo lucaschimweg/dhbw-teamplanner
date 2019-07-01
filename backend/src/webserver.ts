@@ -26,12 +26,12 @@ export class TeamplannerWebServer {
 
     private static checkLogin(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (!("teamplanner-session" in req.cookies)) {
-            res.status(401).end("Unauthorized!");
+            res.redirect("/login.html");
             return;
         }
         let user = SessionManager.getInstance().getSession(req.cookies["teamplanner-session"]);
         if (user == null) {
-            res.status(401).end("Unauthorized");
+            res.redirect("/login.html");
             return;
         }
         req.user = user;
@@ -43,13 +43,13 @@ export class TeamplannerWebServer {
         this.express.use(bodyParser.urlencoded({extended: false}));
         this.express.use(cookieParser());
 
-        this.express.get("/", [(req: express.Request, res: express.Response) => {
-            res.end("Welcome!!");
-        }]);
-
         this.express.use("/api/doLogin", new LoginRoute().getRouter());
 
         this.express.use(TeamplannerWebServer.checkLogin);
+
+        this.express.get("/", [(req: express.Request, res: express.Response) => {
+            res.redirect("/week");
+        }]);
 
         this.express.use("/week", new WeekRoute().getRouter());
         this.express.use("/team", new TeamRoute().getRouter());
