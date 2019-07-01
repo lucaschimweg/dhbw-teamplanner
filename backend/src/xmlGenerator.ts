@@ -12,6 +12,8 @@ export class XmlGenerator {
         let obj = xmlbuilder.create("team");
 
         obj.att("name", t.name);
+        obj.att("leader", t.leader.id);
+
         if (t.description != null)
             obj.ele("description", t.description);
 

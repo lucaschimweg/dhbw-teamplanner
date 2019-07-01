@@ -3,7 +3,6 @@ import * as mysql from 'mysql';
 import {Pool, MysqlError} from "mysql";
 import {DbRes} from "./res";
 import {CachedJob, Job, JobParticipant, JobParticipation, Team, User} from "./dbObjects";
-import {JobWithTime} from "./jobScheduler";
 
 export class Database {
 

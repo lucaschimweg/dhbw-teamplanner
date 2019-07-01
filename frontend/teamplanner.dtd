@@ -2,7 +2,8 @@
 
 <!ELEMENT team (description?, memberDefinition+)>
 <!ATTLIST team
-    name CDATA #REQUIRED >
+    name CDATA #REQUIRED
+    leader IDREF #REQUIRED >
 
 <!ELEMENT description (#PCDATA) >
 
@@ -33,11 +34,12 @@
 <!ATTLIST member
         id IDREF #REQUIRED >
 
-<!ELEMENT teamOverview (team, job*)
+<!ELEMENT teamOverview (team, jobDefinition*)
 
-<!ELEMENT jobDefinition (description?, dependsOn+)>
+<!ELEMENT jobDefinition (description?, member+, dependsOn+)>
 <!ATTLIST jobDefinition
         name CDATA #REQUIRED
+        id ID #REQUIRED
         duration CDATA #REQUIRED >
 
 <!ELEMENT dependsOn EMPTY>

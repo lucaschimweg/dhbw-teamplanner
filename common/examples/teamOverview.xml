@@ -2,11 +2,19 @@
 <!DOCTYPE teamOverview SYSTEM "https://teamplanner.schimweg.net/teamplanner.dtd" >
 
 <teamOverview xmlns="https://teamplanner.schimweg.net/teamplanner.dtd">
-    <team name="myTeam">
-        <memberDefinition id="25" name="Luca Schimweg"/>
+    <team name="Mein Team" leader="25">
+        <description>Das hier ist ein supercooles Team!</description>
+        <memberDefinition id="25" name="Luca Schimweg" />
+        <memberDefinition id="26" name="Hendrik Leier" />
     </team>
 
-    <job timeFrom="" timeTo="" name="" duration="" id="">
-        <member id=""/>
-    </job>
+    <jobDefinition name="Mein Superjob" duration="20" id="123">
+        <member id="25"/>
+    </jobDefinition>
+
+    <jobDefinition name="Mein zweiter Job" duration="20" id="456">
+        <description>Das hier ist ein Job</description>
+        <dependsOn id="123" />
+        <member id="25"/>
+    </jobDefinition>
 </teamOverview>
