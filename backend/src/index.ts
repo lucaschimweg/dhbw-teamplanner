@@ -2,6 +2,7 @@ import {Config} from "./config"
 import {Database} from "./database";
 import {SessionManager} from "./sessionManagement";
 import {TeamplannerWebServer} from "./webserver";
+import {JobScheduler} from "./jobScheduler";
 
 (async () => {
     console.log("Starting Teamplanner-Server!");
@@ -24,5 +25,5 @@ import {TeamplannerWebServer} from "./webserver";
     webServer.start();
 
     console.log("Server running!");
-
+    new JobScheduler(1).scheduleJobs(Database.parseDate("2019-07-01"));
 })();

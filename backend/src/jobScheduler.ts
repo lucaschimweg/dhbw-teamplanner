@@ -62,7 +62,7 @@ export class JobScheduler {
             let daysUsr = days;
             let endTimeOnDay = startTimeOnDay + time;
 
-            while (endTimeOnDay >= usr.user.endTime) {
+            while (endTimeOnDay > usr.user.endTime) {
                 job.cacheObjects.push(
                     new _CachedJob(usr.user.id, daysUsr, (daysUsr == days) ? startTimeOnDay : usr.user.startTime, usr.user.endTime, time)
                 );
@@ -74,6 +74,11 @@ export class JobScheduler {
             job.cacheObjects.push(
                 new _CachedJob(usr.user.id, daysUsr, (daysUsr == days) ? startTimeOnDay : usr.user.startTime, endTimeOnDay, time)
             );
+
+            if (endTimeOnDay == usr.user.endTime) {
+                endTimeOnDay = usr.user.startTime;
+                ++daysUsr;
+            }
 
             times.set(usr.user.id, daysUsr * JobScheduler.DAY_LENGTH + endTimeOnDay);
         }
@@ -116,7 +121,7 @@ export class JobScheduler {
         for (let u of this.users) {
             times.set(u.id, u.startTime);
         }
-
+        console.log(this.jobs);
         this.getEndJobs().forEach(job => this.scheduleUpwards(job, times));
 
         let jobs = this.createJobsWithTime(startDate);
