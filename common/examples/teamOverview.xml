@@ -4,7 +4,7 @@
 <teamOverview xmlns="https://teamplanner.schimweg.net/teamplanner.dtd">
     <team name="Mein Team">
         <description>Das hier ist ein supercooles Team!</description>
-        <memberDefinition leader="true" you="true" id="25" name="Luca Schimweg" />
+        <memberDefinition leader="true" you="true" startTime="08:00" endTime="16:00" id="25" name="Luca Schimweg" />
         <memberDefinition id="26" name="Hendrik Leier" />
     </team>
 

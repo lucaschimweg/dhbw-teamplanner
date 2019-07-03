@@ -11,6 +11,8 @@
         id ID #REQUIRED
         you (true|false) "false"
         leader (true|false) "false"
+        startTime CDATA #IMPLIED
+        endTime CDATA #IMPLIED
         name CDATA >
 
 <!ELEMENT day (job*, jobContinuation*)>

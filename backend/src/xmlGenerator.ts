@@ -25,6 +25,8 @@ export class XmlGenerator {
             }
             if (usr.id == curUserId) {
                 o.att("you", "true");
+                o.att("startTime", this.formatTime(usr.startTime));
+                o.att("endTime", this.formatTime(usr.endTime));
             }
         }
         return obj;
@@ -114,9 +116,9 @@ export class XmlGenerator {
         return rootElem;
     }
 
-    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[], curUser: number, firstDay: Date, lastDay: Date) {
+    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[], curUserId: number, firstDay: Date, lastDay: Date) {
         let root = this.getXmlForWeek(c, firstDay, lastDay);
-        root.importDocument(this.getXmlForTeam(t, users, curUser));
+        root.importDocument(this.getXmlForTeam(t, users, curUserId));
 
         root.dec({version: "1.0", encoding: "UTF-8"});
         root.dtd( {sysID: "https://planner.schimweg.net/dtd/teamplanner.dtd"});
@@ -126,9 +128,9 @@ export class XmlGenerator {
         return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/week.xsl");
     }
 
-    public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[], curUser: number) {
+    public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[], curUserId: number) {
         let root = this.getXmlForJobDefinitions(jobs);
-        root.importDocument(this.getXmlForTeam(t, users, curUser));
+        root.importDocument(this.getXmlForTeam(t, users, curUserId));
 
         root.dec("1.0", "UTF-8");
         root.dtd({sysID: "https://planner.schimweg.net/dtd/teamplanner.dtd"});

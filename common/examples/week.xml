@@ -5,7 +5,7 @@
     <team name="Supergeiles Team">
         <description>Wir wollen etwas sehr cooles bauen!</description>
         <memberDefinition id="25" leader="true" name="Luca Schimweg" />
-        <memberDefinition id="26" you="true" name="Hendrik Leier" />
+        <memberDefinition id="26" you="true" startTime="08:00" endTime="16:00" name="Hendrik Leier" />
         <memberDefinition id="27" name="Jonas Heinrich" />
     </team>
 
