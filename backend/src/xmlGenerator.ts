@@ -69,7 +69,7 @@ export class XmlGenerator {
         return [curDayObj, curDate, curDateObj];
     }
 
-    private static getXmlForWeek(jobs: CachedJob[], firstDate: Date, lastDate: Date): XMLElement {
+    private static getXmlForWeek(jobs: CachedJob[], firstDate: Date, lastDate: Date, offset: number): XMLElement {
         let handledJobs: number[] = [];
 
         jobs.sort((c1, c2) => {
@@ -79,6 +79,7 @@ export class XmlGenerator {
         });
 
         let rootElem = xmlbuilder.create("week");
+        rootElem.att("offset", offset);
 
         let curDate = Database.formatDate(firstDate);
         let curDateObj = firstDate;
@@ -116,8 +117,8 @@ export class XmlGenerator {
         return rootElem;
     }
 
-    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[], curUserId: number, firstDay: Date, lastDay: Date) {
-        let root = this.getXmlForWeek(c, firstDay, lastDay);
+    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[], curUserId: number, firstDay: Date, lastDay: Date, offset: number) {
+        let root = this.getXmlForWeek(c, firstDay, lastDay, offset);
         root.importDocument(this.getXmlForTeam(t, users, curUserId));
 
         root.dec({version: "1.0", encoding: "UTF-8"});

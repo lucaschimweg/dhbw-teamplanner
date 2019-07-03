@@ -43,7 +43,7 @@ export class WeekRoute {
         } else {
             res.contentType("application/xml")
                 .status(200)
-                .end(XmlGenerator.getXmlWeekOverview(team, users, jobs, req.user.id, monday, sunday));
+                .end(XmlGenerator.getXmlWeekOverview(team, users, jobs, req.user.id, monday, sunday, offset));
         }
     }
 

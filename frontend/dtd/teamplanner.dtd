@@ -1,4 +1,6 @@
 <!ELEMENT week (team, day+)>
+<!ATTLIST week
+    offset CDATA #REQUIRED >
 
 <!ELEMENT team (description?, memberDefinition+)>
 <!ATTLIST team
