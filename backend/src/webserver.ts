@@ -7,6 +7,7 @@ import {LoginRoute} from "./routes/loginRoute";
 import {User} from "./dbObjects";
 import {SessionManager} from "./sessionManagement";
 import {TeamRoute} from "./routes/teamRoute";
+import * as serveStatic from "serve-static";
 
 declare global {
     namespace Express {
@@ -38,8 +39,14 @@ export class TeamplannerWebServer {
         next();
     }
 
+    setHeaders (res: any, path: string) {
+        if (path.endsWith(".xsl")) {
+            res.setHeader("Content-Type", "text/xsl");
+        }
+    }
+
     private registerRoutes() {
-        this.express.use(express.static("../frontend"));
+        this.express.use(serveStatic("../frontend", {setHeaders: this.setHeaders}));
         this.express.use(bodyParser.urlencoded({extended: false}));
         this.express.use(cookieParser());
 
