@@ -1,41 +1,72 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE week SYSTEM "https://teamplanner.schimweg.net/dtd/teamplanner.dtd" >
-
-<week xmlns="https://teamplanner.schimweg.net/dtd/teamplanner.dtd" offset="0">
-    <team name="Supergeiles Team">
-        <description>Wir wollen etwas sehr cooles bauen!</description>
-        <memberDefinition id="25" leader="true" name="Luca Schimweg" />
-        <memberDefinition id="26" you="true" startTime="08:00" endTime="16:00" name="Hendrik Leier" />
-        <memberDefinition id="27" name="Jonas Heinrich" />
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/xslt/week.xsl"?>
+<!DOCTYPE week SYSTEM "/dtd/teamplanner.dtd">
+<week offset="0" xmlns="/dtd/teamplanner.dtd">
+    <day date="2019-07-01">
+        <job id="1" timeFrom="08:00" timeTo="09:00" duration="60" name="Projektbeginnbesprechung">
+            <description>Ein Kaffe und ab geht die Party!</description>
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+        <job id="2" timeFrom="09:00" timeTo="11:00" duration="120" name="Implementationsphase Backend">
+            <description>Luca implementiert</description>
+            <member id="u1"/>
+        </job>
+        <job id="4" timeFrom="11:00" timeTo="12:00" duration="60" name="Implementation zusammenführen">
+            <description>Kaffeee!!</description>
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+        <job id="5" timeFrom="12:00" timeTo="18:00" duration="600" name="QA Teamintern">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+    </day>
+    <day date="2019-07-02">
+        <jobContinuation job="5" timeFrom="08:00" timeTo="12:00"/>
+        <job id="6" timeFrom="12:00" timeTo="18:00" duration="360" name="QA 2 Teamextern">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+    </day>
+    <day date="2019-07-03">
+        <job id="7" timeFrom="08:00" timeTo="10:00" duration="120" name="Gemeinsames Meeting">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+        <job id="8" timeFrom="10:00" timeTo="12:00" duration="120" name="Revision mit Kunden">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+        <job id="9" timeFrom="12:00" timeTo="18:00" duration="360" name="Überarbeitung des Codes">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+    </day>
+    <day date="2019-07-04">
+        <job id="10" timeFrom="08:00" timeTo="12:00" duration="240" name="QA 3">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+        <job id="11" timeFrom="12:00" timeTo="14:00" duration="120" name="Erarbeitung Vortrag">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+        <job id="12" timeFrom="14:00" timeTo="16:00" duration="120" name="Vortrag Intern">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+        <job id="13" timeFrom="16:00" timeTo="18:00" duration="120" name="Vortrag Extern">
+            <member id="u1"/>
+            <member id="u4"/>
+        </job>
+    </day>
+    <day date="2019-07-05"/>
+    <day date="2019-07-06"/>
+    <day date="2019-07-07"/>
+    <team name="SuperTeam">
+        <description>Das hier ist ein Supergeiles Team! Yeah!</description>
+        <memberDefinition id="u1" name="Luca Schimweg" leader="true" you="true" startTime="08:00" endTime="18:00"/>
+        <memberDefinition id="u4" name="Hendrik Leier"/>
     </team>
-
-    <day date="2019-06-24">
-        <job timeFrom="08:00" timeTo="09:30" duration="90" name="Das hier ist der Name" id="2501">
-            <description>
-                Hallo das hier ist eine Supergeile description!
-            </description>
-            <member id="25" />
-            <member id="26" />
-            <member id="27" />
-        </job>
-        <job timeFrom="09:30" timeTo="10:00" duration="30" name="Job ohne description!" id="2391">
-            <member id="25" />
-        </job>
-        <job timeFrom="10:00" timeTo="18:00" duration="720" name="Job bis morgen" id="3210">
-            <member id="25" />
-            <member id="27" />
-        </job>
-    </day>
-
-    <day date="2019-06-25">
-        <jobContinuation timeFrom="08:00" timeTo="12:00" job="3210" />
-    </day>
-
-    <day date="2019-06-26">
-        <job timeFrom="08:00" timeTo="09:10" name="Frühstück" duration="60" id="84219">
-            <description>Brunch mit dem Team!</description>
-            <member id="25"/>
-            <member id="26"/>
-        </job>
-    </day>
 </week>

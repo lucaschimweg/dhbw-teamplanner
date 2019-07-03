@@ -15,7 +15,7 @@
         leader (true|false) "false"
         startTime CDATA #IMPLIED
         endTime CDATA #IMPLIED
-        name CDATA >
+        name CDATA #IMPLIED>
 
 <!ELEMENT day (job*, jobContinuation*)>
 <!ATTLIST day
@@ -39,7 +39,7 @@
 <!ATTLIST member
         id IDREF #REQUIRED >
 
-<!ELEMENT teamOverview (team, jobDefinition*)
+<!ELEMENT teamOverview (team, jobDefinition*)>
 
 <!ELEMENT jobDefinition (description?, member+, dependsOn+)>
 <!ATTLIST jobDefinition
