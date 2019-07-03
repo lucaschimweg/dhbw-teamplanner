@@ -18,7 +18,7 @@ export class XmlGenerator {
 
         for (let usr of users) {
             let o = obj.ele("memberDefinition")
-                .att("id", usr.id)
+                .att("id", "u" + usr.id)
                 .att("name", usr.firstName + " " + usr.lastName);
             if (usr.id == t.leader.id) {
                 o.att("leader", "true");
@@ -49,7 +49,7 @@ export class XmlGenerator {
             }
             for (let part of job._participants) {
                 el.ele("member")
-                    .att("id", part);
+                    .att("id", "u" + part);
             }
         }
         return root;
@@ -122,7 +122,7 @@ export class XmlGenerator {
         root.importDocument(this.getXmlForTeam(t, users, curUserId));
 
         root.dec({version: "1.0", encoding: "UTF-8"});
-        root.dtd( {sysID: ""});
+        root.dtd( {sysID: "https://planner.schimweg.net/dtd/teamplanner.dtd"});
 
         root.att("xmlns", "https://planner.schimweg.net/dtd/teamplanner.dtd");
 
