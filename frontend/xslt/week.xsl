@@ -4,7 +4,7 @@
 
 	<xsl:template match="n:week">
 		<html>
-            <link rel="stylesheet" type="text/css" href="css/week.css" />
+            <link rel="stylesheet" type="text/css" href="/css/week.css" />
 			<body>
             <div class="title">
             <h1><xsl:value-of select="//n:team/@name"/></h1>

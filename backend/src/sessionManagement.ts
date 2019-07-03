@@ -74,4 +74,8 @@ export class SessionManager {
         return usr.user;
     }
 
+    public deleteSession(sessId: string) {
+        this.sessions.delete(sessId);
+    }
+
 }

@@ -7,12 +7,15 @@ import {LoginRoute} from "./routes/loginRoute";
 import {User} from "./dbObjects";
 import {SessionManager} from "./sessionManagement";
 import {TeamRoute} from "./routes/teamRoute";
+import * as send from "send";
+import {ApiRoute} from "./routes/apiRoute";
 import * as serveStatic from "serve-static";
 
 declare global {
     namespace Express {
         export interface Request {
             user: User;
+            sessionId: string;
         }
     }
 }
@@ -23,6 +26,10 @@ export class TeamplannerWebServer {
     constructor() {
         this.express = require('express')();
         this.registerRoutes();
+        send.mime.define({
+            "text/xsl": ["xsl"],
+            "text/css": ["css"]
+        }, true)
     }
 
     private static checkLogin(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -36,17 +43,12 @@ export class TeamplannerWebServer {
             return;
         }
         req.user = user;
+        req.sessionId = req.cookies["teamplanner-session"];
         next();
     }
 
-    setHeaders (res: any, path: string) {
-        if (path.endsWith(".xsl")) {
-            res.setHeader("Content-Type", "text/xsl");
-        }
-    }
-
     private registerRoutes() {
-        this.express.use(serveStatic("../frontend", {setHeaders: this.setHeaders}));
+        this.express.use(serveStatic("../frontend"));
         this.express.use(bodyParser.urlencoded({extended: false}));
         this.express.use(cookieParser());
 
@@ -60,6 +62,7 @@ export class TeamplannerWebServer {
 
         this.express.use("/week", new WeekRoute().getRouter());
         this.express.use("/team", new TeamRoute().getRouter());
+        this.express.use("/api", new ApiRoute().getRouter());
     }
 
     public start() {

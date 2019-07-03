@@ -21,7 +21,9 @@
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/cookie-parser": "^1.4.1",
+    "@types/mime": "^2.0.1",
     "@types/mysql": "^2.15.6",
+    "@types/send": "^0.14.4",
     "@types/serve-static": "^1.13.2",
     "@types/xmlbuilder": "^11.0.1",
     "typescript": "^3.5.1"
