@@ -1,23 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:n="https://teamplanner.schimweg.net/teamplanner.dtd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:template match="/">
-        <html>
-            <body>
-                <h2>Week Overview</h2>
-                <table border="1">
-                    <tr bgcolor="green">
-                        <th>Name</th>
-                        <th>ID</th>
-                    </tr>
-                </table>
-                <xsl:for-each select="week/day">
-                    <xsl:value-of select="date" />
-                </xsl:for-each>
-            </body>
-        </html>
-    </xsl:template>
+	<xsl:template match="n:week">
+		<html>
+			<body>
+
+            <h1><xsl:value-of select="//n:team/@name"/></h1>
+            <ul>
+            <xsl:for-each select="//n:day">
+                <li><xsl:value-of select="@date"/>
+                    <ul>
+                    <xsl:for-each select=".//n:job">
+                        <li><xsl:value-of select="@name"/></li>
+                    </xsl:for-each>
+                    </ul>
+                </li>
+            </xsl:for-each>
+            </ul>
+            <!--
+				<xsl:for-each select="movie">
+					<xsl:value-of select="title"/><br />
+					<xsl:value-of select="genre"/><br />
+					<xsl:value-of select="year"/><br />
+				</xsl:for-each>
+            !-->
+			</body>
+		</html>
+	</xsl:template>
 
 </xsl:stylesheet>
