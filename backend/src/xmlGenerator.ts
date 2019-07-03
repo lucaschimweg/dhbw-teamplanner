@@ -122,7 +122,7 @@ export class XmlGenerator {
         root.importDocument(this.getXmlForTeam(t, users, curUserId));
 
         root.dec({version: "1.0", encoding: "UTF-8"});
-        root.dtd( {sysID: "https://planner.schimweg.net/dtd/teamplanner.dtd"});
+        root.dtd( {sysID: ""});
 
         root.att("xmlns", "https://planner.schimweg.net/dtd/teamplanner.dtd");
 
