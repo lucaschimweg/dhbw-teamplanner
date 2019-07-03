@@ -2,7 +2,6 @@ import * as xmlbuilder from "xmlbuilder"
 import {CachedJob, Job, Team, User} from "./dbObjects";
 import {XMLElement, XMLWriter} from "xmlbuilder";
 import {Database} from "./database";
-import {Config} from "./config";
 
 export class XmlGenerator {
     private static formatTime(minutes: number) {
@@ -54,7 +53,21 @@ export class XmlGenerator {
         return root;
     }
 
-    private static getXmlForWeek(jobs: CachedJob[]): XMLElement {
+    private static fillEmptyDays(rootElem: XMLElement, curDateObj: Date, curDate: string, curDayObj: XMLElement, targetDate: Date): [XMLElement, string, Date] {
+        let tar = Database.formatDate(targetDate);
+        if (curDate != tar) {
+            do {
+                curDateObj.setUTCDate(curDateObj.getUTCDate() + 1);
+
+                curDate = Database.formatDate(curDateObj);
+                curDayObj = rootElem.ele("day");
+                curDayObj.att("date", curDate);
+            } while (curDate != tar);
+        }
+        return [curDayObj, curDate, curDateObj];
+    }
+
+    private static getXmlForWeek(jobs: CachedJob[], firstDate: Date, lastDate: Date): XMLElement {
         let handledJobs: number[] = [];
 
         jobs.sort((c1, c2) => {
@@ -65,15 +78,14 @@ export class XmlGenerator {
 
         let rootElem = xmlbuilder.create("week");
 
-        let curDate = "";
-        let curDayObj: XMLElement|null = null;
+        let curDate = Database.formatDate(firstDate);
+        let curDateObj = firstDate;
+        let curDayObj: XMLElement = rootElem.ele("day");
+        curDayObj.att("date", curDate);
 
         for (let job of jobs) {
-            if (Database.formatDate(job.day) != curDate || curDayObj == null) {
-                curDayObj = rootElem.ele("day");
-                curDayObj.att("date", Database.formatDate(job.day));
-                curDate = Database.formatDate(job.day);
-            }
+            [curDayObj, curDate, curDateObj] = this.fillEmptyDays(rootElem, curDateObj, curDate, curDayObj, job.day);
+
             if (handledJobs.indexOf(job.jobId) != -1) {
                 curDayObj.ele("jobContinuation")
                     .att("job", job.jobId)
@@ -98,17 +110,18 @@ export class XmlGenerator {
                 }
             }
         }
+        this.fillEmptyDays(rootElem, curDateObj, curDate, curDayObj, lastDate);
         return rootElem;
     }
 
-    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[], curUser: number) {
-        let root = this.getXmlForWeek(c);
+    public static getXmlWeekOverview(t: Team, users: User[], c: CachedJob[], curUser: number, firstDay: Date, lastDay: Date) {
+        let root = this.getXmlForWeek(c, firstDay, lastDay);
         root.importDocument(this.getXmlForTeam(t, users, curUser));
 
         root.dec({version: "1.0", encoding: "UTF-8"});
-        root.dtd( {sysID: Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd"});
+        root.dtd( {sysID: "https://planner.schimweg.net/dtd/teamplanner.dtd"});
 
-        root.att("xmlns", Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd");
+        root.att("xmlns", "https://planner.schimweg.net/dtd/teamplanner.dtd");
 
         return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/week.xsl");
     }
@@ -118,9 +131,9 @@ export class XmlGenerator {
         root.importDocument(this.getXmlForTeam(t, users, curUser));
 
         root.dec("1.0", "UTF-8");
-        root.dtd({sysID: Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd"});
+        root.dtd({sysID: "https://planner.schimweg.net/dtd/teamplanner.dtd"});
 
-        root.att("xmlns", Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd");
+        root.att("xmlns", "https://planner.schimweg.net/dtd/teamplanner.dtd");
 
         return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/team.xsl");
     }
