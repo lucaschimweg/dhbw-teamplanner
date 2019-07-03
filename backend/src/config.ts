@@ -37,7 +37,8 @@ export class Config {
             "dbname": ""
         },
         "webserver": {
-            "port": 80
+            "port": 80,
+            "url": "https://planner.schimweg.net"
         }
     };
 
@@ -77,5 +78,9 @@ export class Config {
         return new WebServerConfig(
             this.config.webserver.port
         );
+    }
+
+    getWebServerHostname(): string {
+        return this.config.webserver.url;
     }
 }

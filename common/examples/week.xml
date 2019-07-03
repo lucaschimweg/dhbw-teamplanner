@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE week SYSTEM "https://teamplanner.schimweg.net/teamplanner.dtd" >
+<!DOCTYPE week SYSTEM "https://teamplanner.schimweg.net/dtd/teamplanner.dtd" >
 
-<week xmlns="https://teamplanner.schimweg.net/teamplanner.dtd">
+<week xmlns="https://teamplanner.schimweg.net/dtd/teamplanner.dtd">
     <team name="Supergeiles Team">
         <description>Wir wollen etwas sehr cooles bauen!</description>
         <memberDefinition id="25" leader="true" name="Luca Schimweg" />

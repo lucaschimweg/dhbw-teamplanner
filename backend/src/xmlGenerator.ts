@@ -1,7 +1,8 @@
 import * as xmlbuilder from "xmlbuilder"
 import {CachedJob, Job, Team, User} from "./dbObjects";
-import {XMLElement} from "xmlbuilder";
+import {XMLElement, XMLWriter} from "xmlbuilder";
 import {Database} from "./database";
+import {Config} from "./config";
 
 export class XmlGenerator {
     private static formatTime(minutes: number) {
@@ -105,22 +106,30 @@ export class XmlGenerator {
         root.importDocument(this.getXmlForTeam(t, users, curUser));
 
         root.dec({version: "1.0", encoding: "UTF-8"});
-        root.dtd({sysID: "https://teamplanner.schimweg.net/teamplanner.dtd"});
+        root.dtd( {sysID: Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd"});
 
-        root.att("xmlns", "https://teamplanner.schimweg.net/teamplanner.dtd");
+        root.att("xmlns", Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd");
 
-        return root.end({pretty: true});
+        return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/week.xsl");
     }
 
     public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[], curUser: number) {
         let root = this.getXmlForJobDefinitions(jobs);
         root.importDocument(this.getXmlForTeam(t, users, curUser));
 
-        root.dec({version: "1.0", encoding: "UTF-8"});
-        root.dtd({sysID: "https://teamplanner.schimweg.net/teamplanner.dtd"});
+        root.dec("1.0", "UTF-8");
+        root.dtd({sysID: Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd"});
 
-        root.att("xmlns", "https://teamplanner.schimweg.net/teamplanner.dtd");
+        root.att("xmlns", Config.getInstance().getWebServerHostname() + "/dtd/teamplanner.dtd");
 
-        return root.end({pretty: true});
+        return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/team.xsl");
+    }
+
+    public static injectXmlStylesheet(doc: string, path: string): string {
+        let ind = doc.indexOf("?>");
+        return doc.substr(0, ind+3)
+            + '<?xml-stylesheet type="text/xsl" href="' + path + '"?>\n'
+            + doc.substr(ind+3);
+
     }
 }
