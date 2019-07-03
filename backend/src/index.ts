@@ -25,5 +25,5 @@ import {JobScheduler} from "./jobScheduler";
     webServer.start();
 
     console.log("Server running!");
-    new JobScheduler(1).scheduleJobs(Database.parseDate("2019-07-01"));
+
 })();
