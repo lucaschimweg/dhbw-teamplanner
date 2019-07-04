@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <xsl:stylesheet version="1.0" xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:output method="html" encoding="UTF-8" indent="yes" />
+    <xsl:output method="xml" encoding="UTF-8" indent="yes" />
 	<xsl:template match="n:week">
-		<html>
+		<html xmlns="http://www.w3.org/1999/xhtml">
             <link rel="stylesheet" type="text/css" href="/css/week.css" />
 			<body>
             <div class="title">
