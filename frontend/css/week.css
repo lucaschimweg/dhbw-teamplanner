@@ -1,7 +1,6 @@
 .day {
     background-color: rgb(236, 236, 236);
     width: calc(100% / 7);
-    overflow: hidden;
     height: 100%;
     margin: 0px;
     border: 1px solid black;
@@ -56,4 +55,82 @@ body {
     background-color: rgb(218, 218, 218);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
+}
+
+.description_right {
+    display: none;
+    position: absolute;
+    width: 40em;
+    height: 30ex;
+    left: calc( 95% + 2px);
+    background-color: white;
+    border: 1px black dashed;
+    z-index: 1;
+}
+
+.description_left {
+    display: none;
+    position: absolute;
+    width: 40em;
+    height: 30ex;
+    right: calc( 95% + 2px);
+    background-color: white;
+    border: 1px black dashed;
+    z-index: 1;
+}
+.arrow_box, .arrow_box_left {
+	background: #ffffff;
+	border: 1px solid #000000;
+}
+
+.arrow_box:after, .arrow_box:before {
+	right: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box_left:after, .arrow_box_left:before {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-right-color: #ffffff;
+	border-width: 30px;
+	margin-top: -30px;
+}
+.arrow_box:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-right-color: #000000;
+	border-width: 31px;
+	margin-top: -31px;
+}
+
+.arrow_box_left:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-left-color: #ffffff;
+	border-width: 30px;
+	margin-top: -30px;
+}
+.arrow_box_left:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-left-color: #000000;
+	border-width: 31px;
+	margin-top: -31px;
+}
+
+.job:hover + .description_left, .job:hover + .description_right, .description_left:hover, .description_right:hover{
+    display: block;
 }
