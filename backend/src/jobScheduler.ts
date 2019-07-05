@@ -121,7 +121,7 @@ export class JobScheduler {
         for (let u of this.users) {
             times.set(u.id, u.startTime);
         }
-        console.log(this.jobs);
+
         this.getEndJobs().forEach(job => this.scheduleUpwards(job, times));
 
         let jobs = this.createJobsWithTime(startDate);

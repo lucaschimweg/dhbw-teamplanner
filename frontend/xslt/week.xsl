@@ -3,8 +3,10 @@
 <xsl:stylesheet version="1.0" xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
     <xsl:template match="n:week">
-		<html>
-            <link rel="stylesheet" type="text/css" href="/css/week.css" />
+		<html xmlns="http://www.w3.org/1999/xhtml">
+            <head>
+                <link rel="stylesheet" type="text/css" href="/css/week.css" />
+            </head>
 			<body>
                 <div class="title">
                     <h1><xsl:value-of select="//n:team/@name"/></h1>
