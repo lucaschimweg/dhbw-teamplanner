@@ -3,16 +3,39 @@
 <html lang="de">
 <head>
     <title>TeamPlanner - Login</title>
+    <style>
+	#example1 {
+  	  position: fixed;
+  	  right: 0;
+  	  left: 0;
+  	  margin-right: auto;
+  	  margin-left: auto;
+  	  min-height: 10em;
+	  min-width: 300px;
+  	  width: 70%;
+  	  border: 1px solid;
+  	  padding: 10px;
+  	  -webkit-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
+  	  -moz-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
+  	  box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
+	}
+    </style>
 </head>
 
 <body>
+	<div id="example1">	
     <form action="/api/doLogin" method="post">
         <label for="mail">E-Mail: </label>
-        <input type="text" id="mail" name="mail" />
+	<input type="text" id="mail" name="mail" />
+	<br>
+	<br>
         <label for="password">Passwort: </label>
-        <input type="password" id="password" name="password" />
+	<input type="password" id="password" name="password" />
+	<br>
+	<br>
         <input type="submit" value="Login" />
     </form>
+    </div>
 </body>
 
 </html>
