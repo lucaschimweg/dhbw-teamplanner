@@ -16,13 +16,15 @@ export class ApiRoute {
         let id = req.body.id;
         let newTime = req.body.duration;
 
-        if (!id || !newTime) {
+        if (!id || !newTime) { // currently not working
+            console.log("error1");
             res.status(400).end("Bad Request");
             return;
         }
 
         let partIds = await Database.getInstance().getJobParticipantIds(id);
         if (partIds.indexOf(req.user.id) == -1) {
+            console.log("error2");
             res.status(400).end("Bad Request");
             return;
         }
@@ -34,7 +36,11 @@ export class ApiRoute {
             return;
         }
         await new JobScheduler(req.user.teamId).scheduleJobs(team.start); // TODO takes long, implement background handling
-        res.redirect("/week?offset=" + (req.body.offset || 0));
+
+        res.writeHead(303, {
+            'Location': "/week?offset=" + (req.body.offset || 0)
+        });
+        res.end();
     }
 
     constructor() {
