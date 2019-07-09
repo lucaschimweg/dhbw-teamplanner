@@ -5,8 +5,6 @@
     <title>TeamPlanner - Login</title>
     <style>
 	#sh_box {
-  	  position: fixed;
-	  top: 120px;
   	  right: 0;
   	  left: 0;
   	  margin-right: auto;
@@ -22,17 +20,26 @@
   	  box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
 	}
 	#logo {
-	  position: fixed;
-	  top: 10px;
-	  left: 10px;
+	  top: 0;
+	  left: 0;
 	  padding: 0;
+	  width: auto;
+	  height: auto;
+	}
+	img {
+		width: 80%;
+		height: auto;
+		margin: auto;
 	}
     </style>
 </head>
 
 <body>
 	<div id="sh_box">	
-    <form action="/api/doLogin" method="post">
+    	<div id="logo">
+            <img src="img/logo_full.png" alt="logo">
+    	</div>
+    	<form action="/api/doLogin" method="post">
         <label for="mail"> </label>
 	<input type="text" id="mail" name="mail" placeholder="e-mail" />
 	<br>
@@ -43,9 +50,6 @@
 	<br>
         <input type="submit" value="Login" />
     </form>
-    </div>
-    <div id="logo">
-	    <img src="img/logo_full.png" alt="logo" width="319" height="47">
     </div>
 </body>
 

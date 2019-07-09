@@ -5,8 +5,6 @@
     <title>TeamPlanner - Login</title>
     <style>
         #sh_box {
-          position: fixed;
-	  top: 120px;
           right: 0;
           left: 0;
           margin-right: auto;
@@ -21,29 +19,55 @@
           -moz-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
           box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
         }
-    	#logo {
-          position: fixed;
-          top: 10px;
-          left: 10px;
-          padding: 0;
+	#error_box {
+	  right: 0;
+          left: 0;
+	  margin: 10px;
+          margin-right: auto;
+          margin-left: auto;
+          min-width: 300px;
+          width: 33%;
+          border: 1px solid;
+          padding: 10px;
+          background-color: #f0f0f0;
+          -webkit-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
+          -moz-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
+          box-shadow: 5px 5px 4px 0px rgba(145,0,0,0.75);
         }
+    	#logo {
+          top: 0;
+          left: 0;
+          padding: 0;
+	  width: auto;
+	  height: auto;
+        }
+	img {
+		width: 80%;
+		height: auto;
+		margin: auto;
+	}
     </style>
 </head>
 
 <body>
         <div id="sh_box">
-    <form action="/api/doLogin" method="post">
+	<div id="logo">
+            <img src="img/logo_full.png" alt="logo">
+        </div>
+    	<form action="/api/doLogin" method="post">
         <label for="mail"> </label>
-        <input type="text" id="mail" name="mail" placeholder="e-mail" /><br><br>
+        <input type="text" id="mail" name="mail" placeholder="e-mail" />
+	<br>
+	<br>
         <label for="password"> </label>
-        <input type="password" id="password" name="password" placeholder="password" /><br><br>
+        <input type="password" id="password" name="password" placeholder="password" />
+	<br>
+	<br>
         <input type="submit" value="Login" />
     </form>
-	<p>Wrong credentials!!!</p>
-    </div>
-    </div>
-    <div id="logo">
-	    <img src="img/logo_full.png" alt="logo" width="319" height="47">
+	</div>
+	<div id="error_box">
+		<p><b>Wrong credentials!!!</b></p>
     </div>
 </body>
 
