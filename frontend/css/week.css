@@ -266,6 +266,20 @@ h1 {
     margin-bottom: -4px;
 }
 
+#userArea {
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    margin-right: 8px;
+    font-size: 10pt;
+    color: white;
+    margin-top: calc((48px - 10pt) / 2 - 2px);
+    float: right;
+}
+
+a {
+    color: white;
+}
+
 /* Non Standard-CSS: Hiding Input Fields! */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

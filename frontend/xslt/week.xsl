@@ -16,6 +16,12 @@
                 <div class="title">
                     <img src="/img/logo_white.png" id="logo" />
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
+                    
+                    <div id="userArea">
+                        Logged in as
+                        <b><xsl:value-of select="//n:week/n:team/n:memberDefinition[@you='true']/@name" /></b>
+                        (<a href="/api/doLogout">Logout</a>)
+                    </div>
                 </div>
                 <div id="content">
                     <div id="scrollPane">
