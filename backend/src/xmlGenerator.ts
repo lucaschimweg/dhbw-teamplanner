@@ -114,7 +114,7 @@ export class XmlGenerator {
                     }
                     for (let part of job.participants) {
                         obj.ele("member")
-                            .att("id", part);
+                            .att("id", "u" + part);
                     }
                 }
             }
