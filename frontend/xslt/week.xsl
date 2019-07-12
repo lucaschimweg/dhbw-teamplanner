@@ -6,7 +6,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
     <xsl:template match="n:week">
-		<html>
+		<html lang="en">
             <head>
                 <link rel="stylesheet" type="text/css" href="/css/week.css" />
                 <link href="https://fonts.googleapis.com/css?family=Muli:300&amp;display=swap" rel="stylesheet" />
@@ -28,7 +28,20 @@
                         <div id="contentHeader">
                             <div id="contentHeaderSpacer" />
                             <xsl:for-each select="//n:day">
-                                <div class="date"> <xsl:value-of select="@date"/> </div>
+                                <xsl:variable name="monthday" select="substring-after(@date,'-')"/>
+                                <xsl:variable name="month" select="number(substring-before($monthday,'-'))"/>
+                                <xsl:variable name="day" select="number(substring-after($monthday,'-'))"/>
+                                <div class="date">
+                                    <p class="dateMonth">
+                                        <xsl:call-template name="numberToMonth">
+                                            <xsl:with-param name="number" select="$month" />
+                                        </xsl:call-template>
+                                    </p>
+                                    <p class="dateDay">
+                                        <xsl:value-of select="$day"/>
+                                    </p>
+                                </div>
+
                             </xsl:for-each>
                         </div>
                         <div id="scrollingContent">
@@ -185,7 +198,24 @@
             </xsl:call-template>
         </xsl:if>
 
+    </xsl:template>
 
+    <xsl:template name="numberToMonth">
+        <xsl:param name="number" />
+        <xsl:choose>
+            <xsl:when test="$number=1">Jan</xsl:when>
+            <xsl:when test="$number=2">Feb</xsl:when>
+            <xsl:when test="$number=3">Mar</xsl:when>
+            <xsl:when test="$number=4">Apr</xsl:when>
+            <xsl:when test="$number=5">May</xsl:when>
+            <xsl:when test="$number=6">Jun</xsl:when>
+            <xsl:when test="$number=7">Jul</xsl:when>
+            <xsl:when test="$number=8">Aug</xsl:when>
+            <xsl:when test="$number=9">Sep</xsl:when>
+            <xsl:when test="$number=10">Oct</xsl:when>
+            <xsl:when test="$number=11">Nov</xsl:when>
+            <xsl:when test="$number=12">Dec</xsl:when>
+        </xsl:choose>
     </xsl:template>
 
 </xsl:stylesheet>

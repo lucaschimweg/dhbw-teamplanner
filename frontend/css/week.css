@@ -9,6 +9,10 @@ h1 {
     padding: 0;
 }
 
+a {
+    color: white;
+}
+
 .title {
     border-bottom: 1px solid black;
     height: 48px;
@@ -97,8 +101,6 @@ h1 {
 }
 
 .date {
-    text-align: center;
-    vertical-align: middle;
     height: 100%;
     width: calc((100% - 40px) / 7 - 1px);
     float: left;
@@ -276,8 +278,19 @@ h1 {
     float: right;
 }
 
-a {
-    color: white;
+.dateMonth {
+    font-size: 14px;
+    font-weight: lighter;
+    float: left;
+    margin-top: 20px;
+    margin-left: 8px;
+}
+
+.dateDay {
+    margin-top: 4px;
+    font-size: 20pt;
+    float: left;
+    margin: 0;
 }
 
 /* Non Standard-CSS: Hiding Input Fields! */

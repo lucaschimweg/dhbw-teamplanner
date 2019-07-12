@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 
 <xsl:stylesheet version="1.0"
-                xmlns:n="/dtd/management.dtd"
+                xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
     <xsl:output method="xml" encoding="UTF-8" indent="yes" />
-    <xsl:template match="n:overview">
+    <xsl:template match="n:teamOverview">
         <html>
             <head>
                 <title>Management</title>
