@@ -32,6 +32,9 @@
                                 <xsl:variable name="month" select="number(substring-before($monthday,'-'))"/>
                                 <xsl:variable name="day" select="number(substring-after($monthday,'-'))"/>
                                 <div class="date">
+                                    <xsl:if test="@today='true'">
+                                        <xsl:attribute name="class">date today</xsl:attribute>
+                                    </xsl:if>
                                     <p class="dateDay">
                                         <xsl:value-of select="$day"/>
                                     </p>
@@ -54,7 +57,9 @@
                             <xsl:for-each select="//n:day">
                                 <div class="day">
                                     <xsl:variable name="dayPos" select="position()"/>
-
+                                    <xsl:if test="@today='true'">
+                                        <xsl:attribute name="class">day today</xsl:attribute>
+                                    </xsl:if>
                                     <div class="jobContainer">
                                         <xsl:for-each select=".//n:job|.//n:jobContinuation">
                                             <xsl:choose>
