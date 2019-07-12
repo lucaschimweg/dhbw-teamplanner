@@ -17,12 +17,15 @@
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
                 </div>
                 <div class="content">
-
+                    <div id="timeline">
+                        <xsl:call-template name="timeStripRecursive">
+                            <xsl:with-param name="currentHour" select="2" />
+                        </xsl:call-template>
+                    </div>
                     <xsl:for-each select="//n:day">
                         <div class="day">
                         <xsl:variable name="dayPos" select="position()"/>
-                        <xsl:attribute name="style">left:<xsl:value-of select="(position() - 1) * (100 div 7)"/>%;</xsl:attribute>
-                        
+
                         <div class="date"> <xsl:value-of select="@date"/> </div>
                             <xsl:for-each select=".//n:job|.//n:jobContinuation">
                                 <xsl:choose>
@@ -83,7 +86,10 @@
                 top:calc(<xsl:value-of select="($time_start_minutes div $working_minutes) * 100"/>% + 1px);
                 height:calc(<xsl:value-of select="($time_taken div $working_minutes) * 100"/>% - 2px);
             </xsl:attribute>
-            <xsl:value-of select="$name"/><br/>
+            <p class="jobName">
+                <xsl:value-of select="$name"/>
+            </p>
+
         </div>
 
         <!-- Darstellung der Popup boxen -->
@@ -118,6 +124,31 @@
                 <input type="submit" value="save" />
             </form>
         </div>
+
+    </xsl:template>
+
+    <xsl:template name="timeStripRecursive">
+        <xsl:param name="currentHour" />
+
+
+        <p class="timeValue">
+            <xsl:attribute name="style">
+                top:calc(<xsl:value-of select="($currentHour div 24) * 100"/>%);
+            </xsl:attribute>
+            <xsl:value-of select="$currentHour"/>
+        </p>
+        <div class="timeStrip">
+            <xsl:attribute name="style">
+                top:calc(<xsl:value-of select="($currentHour div 24) * 100"/>%);
+            </xsl:attribute>
+        </div>
+
+        <xsl:if test="$currentHour != 22">
+            <xsl:call-template name="timeStripRecursive">
+                <xsl:with-param name="currentHour" select="$currentHour + 2" />
+            </xsl:call-template>
+        </xsl:if>
+
 
     </xsl:template>
 
