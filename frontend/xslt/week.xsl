@@ -99,7 +99,7 @@
 
             <form action="/api/jobDuration" method="post">
                 <label for="duration">Dauer </label>
-                <input type="number" id="duration">
+                <input type="number" id="duration" name="duration">
                     <xsl:attribute name="value">
                         <xsl:value-of select="$duration" />
                     </xsl:attribute>

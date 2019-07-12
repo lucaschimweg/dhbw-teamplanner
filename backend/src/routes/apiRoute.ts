@@ -15,16 +15,13 @@ export class ApiRoute {
     private async postJobDuration(req: express.Request, res: express.Response) {
         let id = req.body.id;
         let newTime = req.body.duration;
-
-        if (!id || !newTime) { // currently not working
-            console.log("error1");
+        if (!id || !newTime) {
             res.status(400).end("Bad Request");
             return;
         }
 
         let partIds = await Database.getInstance().getJobParticipantIds(id);
         if (partIds.indexOf(req.user.id) == -1) {
-            console.log("error2");
             res.status(400).end("Bad Request");
             return;
         }
