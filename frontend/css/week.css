@@ -228,7 +228,7 @@ a {
 }
 
 .jobDescrTitle {
-    margin: 8px 8px 0;
+    margin: 8px 16px 0;
     word-wrap: break-word;
     font-size: 20pt;
     color: rgb(0, 77, 53);
@@ -236,17 +236,22 @@ a {
 }
 
 .jobDescrTime {
-    margin: 2px 8px 0;
+    margin: 2px 16px 0;
     font-size: 10pt;
     color: rgb(0, 161, 111);
 }
 
+.jobDescrDescription {
+    margin: 2px 16px 0;
+}
+
 .durationInput {
+    margin-top: 8px;
     border-top: none;
     border-left: none;
     border-right: none;
     border-bottom: 2px solid rgba(0, 150, 105, .9);
-    margin-left: 8px;
+    margin-left: 16px;
     width: 3em;
     margin-bottom: 15px;
 }

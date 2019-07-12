@@ -75,20 +75,24 @@
                                                     <xsl:call-template name="jobObject">
                                                         <xsl:with-param name="id" select="@id" />
                                                         <xsl:with-param name="name" select="@name" />
+                                                        <xsl:with-param name="description" select="n:description" />
                                                         <xsl:with-param name="timeFrom" select="@timeFrom" />
                                                         <xsl:with-param name="timeTo" select="@timeTo" />
                                                         <xsl:with-param name="duration" select="@duration" />
                                                         <xsl:with-param name="dayPos" select="$dayPos" />
+                                                        <xsl:with-param name="members" select="n:member" />
                                                     </xsl:call-template>
                                                 </xsl:when>
                                                 <xsl:otherwise>
                                                     <xsl:call-template name="jobObject">
                                                         <xsl:with-param name="id" select="@job" />
                                                         <xsl:with-param name="name" select="//n:job[@id=current()/@job]/@name" />
+                                                        <xsl:with-param name="description" select="//n:job[@id=current()/@job]/n:description" />
                                                         <xsl:with-param name="timeFrom" select="@timeFrom" />
                                                         <xsl:with-param name="timeTo" select="@timeTo" />
                                                         <xsl:with-param name="duration" select="//n:job[@id=current()/@job]/@duration" />
                                                         <xsl:with-param name="dayPos" select="$dayPos" />
+                                                        <xsl:with-param name="members" select="//n:job[@id=current()/@job]/n:member" />
                                                     </xsl:call-template>
                                                 </xsl:otherwise>
                                             </xsl:choose>
@@ -108,10 +112,12 @@
     <xsl:template name="jobObject">
         <xsl:param name="id" />
         <xsl:param name="name" />
+        <xsl:param name="description" />
         <xsl:param name="duration" />
         <xsl:param name="timeFrom" />
         <xsl:param name="timeTo" />
         <xsl:param name="dayPos" />
+        <xsl:param name="members" />
 
         <xsl:variable name="working_minutes" select="1440"/>
         <xsl:variable name="start_hours" select="number(substring-before($timeFrom,':'))"/>
@@ -174,6 +180,12 @@
                 <label for="duration" class="durationMinLabel"> min</label>
                 <input type="submit" class="durationSaveButton" value=""/>
             </form>
+            <p class="jobDescrDescription"><xsl:value-of select="$description" /></p>
+            <ul class="memberList">
+                <xsl:for-each select="$members">
+                    <li><xsl:value-of select="//n:week/n:team/n:memberDefinition[@id=current()/@id]/@name" /></li>
+                </xsl:for-each>
+            </ul>
         </div>
 
     </xsl:template>
