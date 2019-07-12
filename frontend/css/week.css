@@ -135,7 +135,7 @@ h1 {
 }
 
 .description_right {
-    margin-left: calc((100% - 40px) / 7 - 10px);
+    margin-left: calc(100% - 10px);
     transform: translateY(-50%);
 }
 
