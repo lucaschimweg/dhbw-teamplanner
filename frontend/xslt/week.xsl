@@ -32,13 +32,13 @@
                                 <xsl:variable name="month" select="number(substring-before($monthday,'-'))"/>
                                 <xsl:variable name="day" select="number(substring-after($monthday,'-'))"/>
                                 <div class="date">
+                                    <p class="dateDay">
+                                        <xsl:value-of select="$day"/>
+                                    </p>
                                     <p class="dateMonth">
                                         <xsl:call-template name="numberToMonth">
                                             <xsl:with-param name="number" select="$month" />
                                         </xsl:call-template>
-                                    </p>
-                                    <p class="dateDay">
-                                        <xsl:value-of select="$day"/>
                                     </p>
                                 </div>
 
