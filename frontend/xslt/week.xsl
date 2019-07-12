@@ -9,10 +9,12 @@
 		<html>
             <head>
                 <link rel="stylesheet" type="text/css" href="/css/week.css" />
+                <link href="https://fonts.googleapis.com/css?family=Muli:300&amp;display=swap" rel="stylesheet" />
             </head>
 			<body>
                 <div class="title">
-                    <h1><xsl:value-of select="//n:team/@name"/></h1>
+                    <img src="/img/logo_white.png" id="logo" />
+                    <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
                 </div>
                 <div class="content">
 
@@ -25,7 +27,7 @@
                             <xsl:for-each select=".//n:job|.//n:jobContinuation">
                                 <xsl:choose>
                                     <xsl:when test="name() = 'job'">
-                                        <xsl:call-template name="dayObject">
+                                        <xsl:call-template name="jobObject">
                                             <xsl:with-param name="id" select="@id" />
                                             <xsl:with-param name="name" select="@name" />
                                             <xsl:with-param name="timeFrom" select="@timeFrom" />
@@ -35,7 +37,7 @@
                                         </xsl:call-template>
                                     </xsl:when>
                                     <xsl:otherwise>
-                                        <xsl:call-template name="dayObject">
+                                        <xsl:call-template name="jobObject">
                                             <xsl:with-param name="id" select="@job" />
                                             <xsl:with-param name="name" select="//n:job[@id=current()/@job]/@name" />
                                             <xsl:with-param name="timeFrom" select="@timeFrom" />
@@ -53,7 +55,9 @@
 		</html>
 	</xsl:template>
 
-    <xsl:template name="dayObject">
+    <!-- Darstellung eines Termins -->
+
+    <xsl:template name="jobObject">
         <xsl:param name="id" />
         <xsl:param name="name" />
         <xsl:param name="duration" />
