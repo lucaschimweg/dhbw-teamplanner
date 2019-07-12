@@ -28,30 +28,32 @@
                         <xsl:variable name="dayPos" select="position()"/>
 
                         <div class="date"> <xsl:value-of select="@date"/> </div>
-                            <xsl:for-each select=".//n:job|.//n:jobContinuation">
-                                <xsl:choose>
-                                    <xsl:when test="name() = 'job'">
-                                        <xsl:call-template name="jobObject">
-                                            <xsl:with-param name="id" select="@id" />
-                                            <xsl:with-param name="name" select="@name" />
-                                            <xsl:with-param name="timeFrom" select="@timeFrom" />
-                                            <xsl:with-param name="timeTo" select="@timeTo" />
-                                            <xsl:with-param name="duration" select="@duration" />
-                                            <xsl:with-param name="dayPos" select="$dayPos" />
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:call-template name="jobObject">
-                                            <xsl:with-param name="id" select="@job" />
-                                            <xsl:with-param name="name" select="//n:job[@id=current()/@job]/@name" />
-                                            <xsl:with-param name="timeFrom" select="@timeFrom" />
-                                            <xsl:with-param name="timeTo" select="@timeTo" />
-                                            <xsl:with-param name="duration" select="//n:job[@id=current()/@job]/@duration" />
-                                            <xsl:with-param name="dayPos" select="$dayPos" />
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:for-each>
+                            <div class="jobContainer">
+                                <xsl:for-each select=".//n:job|.//n:jobContinuation">
+                                    <xsl:choose>
+                                        <xsl:when test="name() = 'job'">
+                                            <xsl:call-template name="jobObject">
+                                                <xsl:with-param name="id" select="@id" />
+                                                <xsl:with-param name="name" select="@name" />
+                                                <xsl:with-param name="timeFrom" select="@timeFrom" />
+                                                <xsl:with-param name="timeTo" select="@timeTo" />
+                                                <xsl:with-param name="duration" select="@duration" />
+                                                <xsl:with-param name="dayPos" select="$dayPos" />
+                                            </xsl:call-template>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:call-template name="jobObject">
+                                                <xsl:with-param name="id" select="@job" />
+                                                <xsl:with-param name="name" select="//n:job[@id=current()/@job]/@name" />
+                                                <xsl:with-param name="timeFrom" select="@timeFrom" />
+                                                <xsl:with-param name="timeTo" select="@timeTo" />
+                                                <xsl:with-param name="duration" select="//n:job[@id=current()/@job]/@duration" />
+                                                <xsl:with-param name="dayPos" select="$dayPos" />
+                                            </xsl:call-template>
+                                        </xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:for-each>
+                            </div>
                         </div>
                     </xsl:for-each>
                 </div>

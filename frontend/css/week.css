@@ -53,6 +53,11 @@ h1 {
     float: left;
 }
 
+.jobContainer {
+    width: calc((100% - 40px) / 7 - 1px);;
+    height: calc(100% - 20px);
+    position: absolute;
+}
 
 .content {
     position: absolute;
@@ -62,6 +67,8 @@ h1 {
 
 .date {
     text-align: center;
+    vertical-align: middle;
+    height: 18px;
     width: 100%;
     border-bottom: 2px solid black;
     font-family: 'Open Sans', sans-serif;
@@ -69,9 +76,9 @@ h1 {
 }
 
 .job {
-    margin: 0 5px;
+    margin: 0 4px;
     border-radius: 3px;
-    width: calc((100% - 40px) / 7 - 18px);
+    width: calc(100% - 14px);
     height: calc(20%);
     position: absolute;
     border-left: 5px solid rgba(0, 150, 105, .9);
