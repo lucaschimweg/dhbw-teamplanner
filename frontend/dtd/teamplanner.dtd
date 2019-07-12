@@ -19,6 +19,7 @@
 
 <!ELEMENT day (job*, jobContinuation*)>
 <!ATTLIST day
+        today (true|false) "false"
         date CDATA #REQUIRED >
 
 <!ELEMENT job (description?, member+)>

@@ -7,7 +7,7 @@ export class WeekRoute {
     private router: express.Router = express.Router();
 
     private static getLastMonday(offset: number): Date {
-        let d = new Date();
+        let d = Database.getCurrentDate();
         let weekday = d.getUTCDay() - 1;
         if (weekday == -1) weekday = 6;
 
@@ -16,7 +16,7 @@ export class WeekRoute {
     }
 
     private static getNextSunday(offset: number): Date {
-        let d = new Date();
+        let d = Database.getCurrentDate();
         let weekday = d.getUTCDay();
         if (weekday != 0) weekday = 7 - weekday;
 

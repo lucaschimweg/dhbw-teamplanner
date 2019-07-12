@@ -63,6 +63,10 @@ export class XmlGenerator {
 
                 curDate = Database.formatDate(curDateObj);
                 curDayObj = rootElem.ele("day");
+                console.log(Database.formatDate(Database.getCurrentDate()));
+                if (curDate == Database.formatDate(Database.getCurrentDate())) {
+                    curDayObj.att("today", "true")
+                }
                 curDayObj.att("date", curDate);
             } while (curDate != tar);
         }
@@ -84,6 +88,9 @@ export class XmlGenerator {
         let curDate = Database.formatDate(firstDate);
         let curDateObj = firstDate;
         let curDayObj: XMLElement = rootElem.ele("day");
+        if (curDate == Database.formatDate(Database.getCurrentDate())) {
+            curDayObj.att("today", "true")
+        }
         curDayObj.att("date", curDate);
 
         for (let job of jobs) {

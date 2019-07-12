@@ -25,6 +25,11 @@ export class Database {
             + "-" + d.getUTCDate().toString().padStart(2, "0")
     }
 
+    public static getCurrentDate(): Date {
+        let d = new Date();
+        return new Date(d.getTime() - d.getTimezoneOffset()*60*1000);
+    }
+
     public static parseDate(str: string): Date {
         return new Date(str);
     }
