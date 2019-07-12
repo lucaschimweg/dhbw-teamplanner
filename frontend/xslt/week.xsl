@@ -9,8 +9,11 @@
 		<html lang="en">
             <head>
                 <link rel="stylesheet" type="text/css" href="/css/week.css" />
-                <link href="https://fonts.googleapis.com/css?family=Muli:300&amp;display=swap" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap" rel="stylesheet" />
+                <link rel="icon" href="/img/favicon.png" type="image/png" />
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300&amp;display=swap" />
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap" />
+                <script src="/js/week.js" type="text/javascript" />
+                <title><xsl:value-of select="//n:team/@name"/> - week overview</title>
             </head>
 			<body>
                 <div class="title">
@@ -61,6 +64,11 @@
                                         <xsl:attribute name="class">day today</xsl:attribute>
                                     </xsl:if>
                                     <div class="jobContainer">
+                                        <xsl:if test="@today='true'">
+                                            <div id="currentTimeIndicator">
+                                                <div id="currentTimeBall" />
+                                            </div>
+                                        </xsl:if>
                                         <xsl:for-each select=".//n:job|.//n:jobContinuation">
                                             <xsl:choose>
                                                 <xsl:when test="name() = 'job'">
