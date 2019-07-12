@@ -63,7 +63,6 @@ export class XmlGenerator {
 
                 curDate = Database.formatDate(curDateObj);
                 curDayObj = rootElem.ele("day");
-                console.log(Database.formatDate(Database.getCurrentDate()));
                 if (curDate == Database.formatDate(Database.getCurrentDate())) {
                     curDayObj.att("today", "true")
                 }
