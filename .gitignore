@@ -21,3 +21,4 @@ backend/src/xmlGenerator.js
 *.json
 backend/package.json
 backend/package.json
+.idea/
