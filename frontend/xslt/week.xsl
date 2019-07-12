@@ -128,8 +128,7 @@
             </p>
 
             <form action="/api/jobDuration" method="post">
-                <label for="duration">Dauer </label>
-                <input type="number" id="duration" name="duration">
+                <input type="number" class="durationInput" name="duration">
                     <xsl:attribute name="value">
                         <xsl:value-of select="$duration" />
                     </xsl:attribute>
@@ -140,8 +139,8 @@
                 <input type="hidden" name="offset">
                     <xsl:attribute name="value"><xsl:value-of select="//n:week/@offset" /></xsl:attribute>
                 </input>
-                <label for="duration"> min</label>
-                <input type="submit" value="save" />
+                <label for="duration" class="durationMinLabel"> min</label>
+                <input type="submit" class="durationSaveButton" value=""/>
             </form>
         </div>
 

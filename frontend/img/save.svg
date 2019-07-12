@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/2000/svg">
+<svg version="1.1"
+     xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        width="16px">
+
+    <path d="M1,1 L1,13 L3,15 L15,15 L15,1 Z M6,15 L6,11 L11,11 L11,15 M8,15 L8,12" style="stroke: rgb(0, 150, 105); fill-opacity: 0"/>
+    <rect x="4" y="1" width="8" height="5" style="fill: rgb(0, 150, 105)"/>
+</svg>
