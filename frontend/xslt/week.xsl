@@ -17,45 +17,55 @@
                     <img src="/img/logo_white.png" id="logo" />
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
                 </div>
-                <div class="content">
-                    <div id="timeline">
-                        <xsl:call-template name="timeStripRecursive">
-                            <xsl:with-param name="currentHour" select="1" />
-                        </xsl:call-template>
-                    </div>
-                    <xsl:for-each select="//n:day">
-                        <div class="day">
-                        <xsl:variable name="dayPos" select="position()"/>
-
-                        <div class="date"> <xsl:value-of select="@date"/> </div>
-                            <div class="jobContainer">
-                                <xsl:for-each select=".//n:job|.//n:jobContinuation">
-                                    <xsl:choose>
-                                        <xsl:when test="name() = 'job'">
-                                            <xsl:call-template name="jobObject">
-                                                <xsl:with-param name="id" select="@id" />
-                                                <xsl:with-param name="name" select="@name" />
-                                                <xsl:with-param name="timeFrom" select="@timeFrom" />
-                                                <xsl:with-param name="timeTo" select="@timeTo" />
-                                                <xsl:with-param name="duration" select="@duration" />
-                                                <xsl:with-param name="dayPos" select="$dayPos" />
-                                            </xsl:call-template>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:call-template name="jobObject">
-                                                <xsl:with-param name="id" select="@job" />
-                                                <xsl:with-param name="name" select="//n:job[@id=current()/@job]/@name" />
-                                                <xsl:with-param name="timeFrom" select="@timeFrom" />
-                                                <xsl:with-param name="timeTo" select="@timeTo" />
-                                                <xsl:with-param name="duration" select="//n:job[@id=current()/@job]/@duration" />
-                                                <xsl:with-param name="dayPos" select="$dayPos" />
-                                            </xsl:call-template>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                </xsl:for-each>
-                            </div>
+                <div id="content">
+                    <div id="scrollPane">
+                        <div id="contentHeader">
+                            <div id="contentHeaderSpacer" />
+                            <xsl:for-each select="//n:day">
+                                <div class="date"> <xsl:value-of select="@date"/> </div>
+                            </xsl:for-each>
                         </div>
-                    </xsl:for-each>
+                        <div id="scrollingContent">
+                            <div id="timeline">
+                                <xsl:call-template name="timeStripRecursive">
+                                    <xsl:with-param name="currentHour" select="1" />
+                                </xsl:call-template>
+                            </div>
+
+                            <xsl:for-each select="//n:day">
+                                <div class="day">
+                                    <xsl:variable name="dayPos" select="position()"/>
+
+                                    <div class="jobContainer">
+                                        <xsl:for-each select=".//n:job|.//n:jobContinuation">
+                                            <xsl:choose>
+                                                <xsl:when test="name() = 'job'">
+                                                    <xsl:call-template name="jobObject">
+                                                        <xsl:with-param name="id" select="@id" />
+                                                        <xsl:with-param name="name" select="@name" />
+                                                        <xsl:with-param name="timeFrom" select="@timeFrom" />
+                                                        <xsl:with-param name="timeTo" select="@timeTo" />
+                                                        <xsl:with-param name="duration" select="@duration" />
+                                                        <xsl:with-param name="dayPos" select="$dayPos" />
+                                                    </xsl:call-template>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:call-template name="jobObject">
+                                                        <xsl:with-param name="id" select="@job" />
+                                                        <xsl:with-param name="name" select="//n:job[@id=current()/@job]/@name" />
+                                                        <xsl:with-param name="timeFrom" select="@timeFrom" />
+                                                        <xsl:with-param name="timeTo" select="@timeTo" />
+                                                        <xsl:with-param name="duration" select="//n:job[@id=current()/@job]/@duration" />
+                                                        <xsl:with-param name="dayPos" select="$dayPos" />
+                                                    </xsl:call-template>
+                                                </xsl:otherwise>
+                                            </xsl:choose>
+                                        </xsl:for-each>
+                                    </div>
+                                </div>
+                            </xsl:for-each>
+                        </div>
+                    </div>
                 </div>
 			</body>
 		</html>

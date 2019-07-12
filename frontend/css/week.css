@@ -54,25 +54,59 @@ h1 {
 }
 
 .jobContainer {
-    width: calc((100% - 40px) / 7 - 1px);;
-    height: calc(100% - 20px);
+    width: calc((100% - 40px) / 7 - 1px);
+    height: 100%;
     position: absolute;
 }
 
-.content {
+#content {
     position: absolute;
+    overflow-y: auto;
     width: 100%;
     height: calc(100% - 49px);
+}
+
+#scrollPane {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+#scrollingContent {
+    width: 100%;
+    /*height: 150%;*/
+    height: calc(100% - 20px);
+    position: absolute;
+    margin-top: 20px;
+}
+
+#contentHeader {
+    top: 0;
+    position: sticky;
+    width: inherit;
+    z-index: 1;
+}
+
+#contentHeaderSpacer {
+    width: 39px;
+    height: 18px;
+    float: left;
+    border-right: 1px solid black;
+    border-bottom: 2px solid black;
+    background: white;
 }
 
 .date {
     text-align: center;
     vertical-align: middle;
     height: 18px;
-    width: 100%;
+    width: calc((100% - 40px) / 7 - 1px);
+    float: left;
     border-bottom: 2px solid black;
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
+    border-right: 1px solid rgb(230, 230, 230);
+    background: white;
 }
 
 .job {
