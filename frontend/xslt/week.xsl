@@ -16,10 +16,24 @@
                 <title><xsl:value-of select="//n:team/@name"/> - week overview</title>
             </head>
 			<body>
-                <div class="title">
+                <div id="title">
                     <img src="/img/logo_white.png" id="logo" />
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
-                    
+                    <div id="navigator">
+                        <a class="navigatorButton">
+                            <xsl:attribute name="href">/week?offset=<xsl:value-of select="//n:week/@offset - 1" /></xsl:attribute>
+                            <img src="/img/previous.svg" />
+                        </a>
+                        <a class="navigatorButton">
+                            <xsl:attribute name="href">/week?offset=0</xsl:attribute>
+                            <img src="/img/current.svg" />
+                        </a>
+                        <a class="navigatorButton">
+                            <xsl:attribute name="href">/week?offset=<xsl:value-of select="//n:week/@offset + 1" /></xsl:attribute>
+                            <img src="/img/next.svg" />
+                        </a>
+                    </div>
+
                     <div id="userArea">
                         Logged in as
                         <b><xsl:value-of select="//n:week/n:team/n:memberDefinition[@you='true']/@name" /></b>

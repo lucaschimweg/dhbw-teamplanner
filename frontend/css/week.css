@@ -18,13 +18,48 @@ a {
     cursor: default;
 }
 
-.title {
+#title {
     border-bottom: 1px solid black;
     height: 48px;
     background-color: rgb(0, 173, 119);
     z-index: 5;
     position: relative;
     width: 100%;
+}
+
+#navigator {
+    height: 28px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 120px;
+    background-color: rgb(0, 99, 68);
+    border-radius: 7px;
+    float: left;
+    margin-left: 64px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.navigatorButton {
+    display: block;
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 33.3%;
+    text-decoration: none;
+}
+
+.navigatorButton img {
+    margin-top: calc((100% - 16px) / 4);
+    cursor: pointer;
+}
+
+.navigatorButton:hover {
+    background-color: rgb(0, 77, 53);
+}
+
+.navigatorButton:active {
+    background-color: rgb(0, 48, 33);
 }
 
 #logo {

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/2000/svg">
+<svg version="1.1"
+     xmlns="http://www.w3.org/2000/svg"
+        height="16px"
+        width="16px">
+
+    <path d="M8, 1 L1,8 L8,15 M1,8 L 15,8" style="stroke: white; fill-opacity: 0"/>
+</svg>
