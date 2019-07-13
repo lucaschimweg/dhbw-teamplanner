@@ -129,6 +129,7 @@ a {
 
 #contentHeader {
     top: 0;
+    position: -webkit-sticky;
     position: sticky;
     width: inherit;
     z-index: 2;
@@ -355,7 +356,6 @@ a {
     height: 1px;
     background: #ff2a00;
     position: absolute;
-    top: 10px;
     z-index: 1;
 }
 
