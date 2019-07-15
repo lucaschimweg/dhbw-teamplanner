@@ -336,7 +336,7 @@ a {
     font-weight: bold;
 }
 
-.date + .today {
+.date.today {
     background-color: rgb(0, 150, 105);
     color: white;
 }
