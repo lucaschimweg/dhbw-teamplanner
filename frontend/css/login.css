@@ -1,42 +1,64 @@
-#sh_box {
-    right: 0;
-    left: 0;
-    margin-right: auto;
-    margin-left: auto;
-    min-height: 10em;
-    min-width: 300px;
-    width: 33%;
-    border: 1px solid;
-    padding: 10px;
-    background-color: #f0f0f0;
-    -webkit-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
-    box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
-}
-#error_box {
-    right: 0;
-    left: 0;
-    margin: 10px;
-    margin-right: auto;
-    margin-left: auto;
-    min-width: 300px;
-    width: 33%;
-    border: 1px solid;
-    padding: 10px;
-    background-color: #f0f0f0;
-    -webkit-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 5px 5px 4px 0px rgba(0,0,0,0.75);
-    box-shadow: 5px 5px 4px 0px rgba(145,0,0,0.75);
-}
-#logo {
-    top: 0;
-    left: 0;
-    padding: 0;
-    width: auto;
-    height: auto;
-}
-img {
-    width: 80%;
-    height: auto;
+/* Bordered form */
+form {
+    border: 3px solid #f1f1f1;
+    width: 40%;
+    padding: 20px;
     margin: auto;
-}
+    position:relative;
+    margin-top: 150px;
+  }
+  
+  /* Full-width inputs */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  
+  label{
+  font-family: "verdana";
+  }/* Set a style for all buttons */
+  button {
+      background-color: rgb(0, 173, 119);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  /* Add a hover effect for buttons */
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  
+  
+  /* Center the avatar image inside this container */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+  }
+  
+  /* Avatar image */
+  img.avatar {
+    width: 50%;
+    /*border-radius: 50%;*/
+  }
+  
+  /* Add padding to containers */
+  .container {
+    padding: 16px;
+  }
+  
+  .register {
+  
+  position: relative;
+  bottom: 0;
+  float: right;
+  }

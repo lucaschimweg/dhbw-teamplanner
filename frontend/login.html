@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 
-<html lang="de">
+<html lang="en">
 <head>
-    <title>TeamPlanner - Login</title>
-	<link type="text/css" rel="stylesheet" href="css/login.css" />
-	<link rel="icon" href="/img/favicon.png" type="image/png" />
+  <title>TeamPlanner - Login</title>
+  <link rel="stylesheet" href="css/login.css" type="text/css" />
 </head>
 
 <body>
-	<div id="sh_box">	
-    	<div id="logo">
-            <img src="img/logo_full.png" alt="logo">
-    	</div>
-    	<form action="/api/doLogin" method="post">
-        <label for="mail"> </label>
-	<input type="text" id="mail" name="mail" placeholder="e-mail" />
-	<br>
-	<br>
-        <label for="password"> </label>
-	<input type="password" id="password" name="password" placeholder="password" />
-	<br>
-	<br>
-        <input type="submit" value="Login" />
-    </form>
-    </div>
+<form action="/api/doLogin.php" method="POST">
+  <div class="imgcontainer">
+    <img src="img/logo_full.png" alt="Avatar" class="avatar">
+  </div>
+
+  <div class="container">
+    <label for="mail"><b>E-Mail</b></label>
+    <input type="text" placeholder="Enter E-Mail" name="mail" id="mail" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+
+    <button type="submit" value="Login">Login</button>
+	<a class="register" href="register.html">Register</a>
+  </div>
+
+
+</form>
 </body>
 
 </html>
