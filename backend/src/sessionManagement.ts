@@ -68,6 +68,12 @@ export class SessionManager {
         return [sessId, usr];
     }
 
+    public  ceateUncheckedSession(usr: User): string {
+        let sessId = this.getSessionId();
+        this.sessions.set(sessId, new Session(usr, 4*60));
+        return sessId;
+    }
+
     public getSession(sessId: string): User|null {
         let usr = this.sessions.get(sessId);
         if (usr == null) return null;

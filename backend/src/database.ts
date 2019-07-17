@@ -150,6 +150,11 @@ export class Database {
         return obj.map(Database.createUserFromObject);
     }
 
+    public async userExists(mail: string): Promise<boolean> {
+        let ids = await this.query(DbRes.SELECT_USERID_BY_MAIL, [mail]);
+        return ids.length > 0;
+    }
+
     // endregion
 
     // region Team Management
@@ -172,9 +177,11 @@ export class Database {
         return Database.createTeamFromObject(obj[0], usr);
     }
 
-    public async createTeam(name: string, description: string, leaderId: number): Promise<Team|null> {
-        let id: number = (await this.query(DbRes.INSERT_TEAM, [name, description, leaderId]))[1][0].id;
-        return await this.getTeamById(id);
+    public async createTeam(name: string, description: string, leaderMail: string, leaderFName: string, leaderLName: string, leaderPwHash: string): Promise<User> {
+        let ldr = (await this.createUser(leaderMail, leaderFName, leaderLName, 0, leaderPwHash));
+        let id: number = (await this.query(DbRes.INSERT_TEAM, [name, description, ldr.id]))[1][0].id;
+        await this.query(DbRes.UPDATE_USER_TEAM, [id, ldr.id]);
+        return new User(ldr.id, ldr.email, ldr.firstName, ldr.lastName, id, ldr.startTime, ldr.endTime);
     }
 
     // endregion

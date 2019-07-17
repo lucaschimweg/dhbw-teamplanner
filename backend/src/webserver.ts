@@ -10,6 +10,7 @@ import {TeamRoute} from "./routes/teamRoute";
 import * as send from "send";
 import {ApiRoute} from "./routes/apiRoute";
 import * as serveStatic from "serve-static";
+import {CreateTeamRoute} from "./routes/createTeamRoute";
 
 declare global {
     namespace Express {
@@ -53,6 +54,7 @@ export class TeamplannerWebServer {
         this.express.use(cookieParser());
 
         this.express.use("/api/doLogin", new LoginRoute().getRouter());
+        this.express.use("/api/createTeam", new CreateTeamRoute().getRouter());
 
         this.express.use(TeamplannerWebServer.checkLogin);
 

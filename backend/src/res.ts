@@ -71,11 +71,15 @@ export class DbRes {
 
     public static SELECT_USERID_BY_LOGIN: string = "SELECT `user_id` from teamplanner_login WHERE `email`=? and `password_hash` = ?";
 
+    public static SELECT_USERID_BY_MAIL: string = "SELECT `user_id` from teamplanner_login WHERE `email`=?";
+
     public static SELECT_USER_BY_ID: string = "SELECT * from teamplanner_users WHERE `user_id`=?";
 
     public static SELECT_USER_BY_TEAM: string = "SELECT * from teamplanner_users WHERE `team`=?";
 
     public static UPDATE_USER_PW: string = "UPDATE teamplanner_login SET `password_hash` = ? WHERE `user_id` = ?";
+
+    public static UPDATE_USER_TEAM: string = "UPDATE teamplanner_users SET `team` = ? WHERE `user_id` = ?";
 
     public static DELETE_USER: string = "DELETE FROM teamplanner_users WHERE `user_id` = ?; DELETE FROM teamplanner_login WHERE `user_id`= ?";
 
