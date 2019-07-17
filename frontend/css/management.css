@@ -17,6 +17,74 @@
     text-align: center;
 }
 
+ul#user_list {
+    padding: 0;
+    margin: 0 20px;
+}
+
+h3#user_title {
+    font-family: 'Open Sans', sans-serif;
+}
+
+ul#user_list li {
+    margin-top: 5px;
+    list-style: none;
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    font-family: 'Open Sans', sans-serif;
+    background-color: rgba(0, 9, 255, 0.44);
+    border-radius: 3px;
+    padding: 5px;
+}
+
+ul#user_list li.leader {
+    background-color: rgb(218, 165, 32);
+}
+
+.deleteBtn {
+    width: 100%;
+    height: 100%;
+}
+
+.deleteBtn input[type="checkbox"] {
+    position: absolute;
+    display: none;
+    z-index: 2;
+}
+
+.deleteBtn input[type="submit"] {
+    z-index: 2;
+    position:relative
+}
+
+.deleteBtn input[type="checkbox"] + label {
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    background: url('/img/deleteWhite.svg');
+    z-index: 2;
+}
+
+.deleteBtn input[type="checkbox"]:checked + label {
+    background: url('/img/deleteRed.svg');
+}
+
+ul#user_list li.you {
+    background-color: rgb(50, 205, 50);
+}
+
+ul#user_list li:before{
+    content: '';
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    margin-right: 5px;
+    background: url('/img/person.svg');
+    background-size: 100%;
+
+}
+
 .not_assigned {
     position: absolute;
     width: calc(20% - 10px);

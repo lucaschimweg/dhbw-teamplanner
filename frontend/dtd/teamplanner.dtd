@@ -46,7 +46,8 @@
 <!ATTLIST jobDefinition
         name CDATA #REQUIRED
         id ID #REQUIRED
-        duration CDATA #REQUIRED >
+        duration CDATA #REQUIRED
+        planned (true|false) #IMPLIED>
 
 <!ELEMENT dependsOn EMPTY>
 <!ATTLIST dependsOn
