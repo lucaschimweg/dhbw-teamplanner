@@ -44,6 +44,7 @@
                     </ul>
                 </div>
                 <div class="graph">
+                        <xsl:apply-templates select="//n:jobDefinition[@editing='true']"/>
                         <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
                         <xsl:call-template name="drawRelations"/>
                 </div>
@@ -55,14 +56,17 @@
         </html>
     </xsl:template>
 
+    <xsl:template match="//n:jobDefinition[@editing='true']">
+        <div class="overlay">
+            <div class="content">
+                <h2><xsl:value-of select="$editing_id"/></h2>
+            </div>
+        </div>
+    </xsl:template>
+
     <xsl:template match="//n:jobDefinition[@planned='false']">
         <div class="jobElement unplanned_job">
             <xsl:value-of select="@name"/>
-            <a class="editUser">
-                <xsl:attribute name="href">
-                    /test/manageEditUsers.xml?jid=<xsl:value-of select="@id"/>
-                </xsl:attribute>
-            </a>
         </div>
     </xsl:template>
 
@@ -109,11 +113,6 @@
                 top: calc((<xsl:value-of select="$graph_item_height"/>px + <xsl:value-of select="$graph_y_space"/>px) * <xsl:value-of select="$depth"/> + <xsl:value-of select="$graph_margin"/>px);
             </xsl:attribute>
             <xsl:value-of select="//n:jobDefinition[@id=$jobId]/@name"/>
-            <a class="editUser">
-                <xsl:attribute name="href">
-                    /test/manageEditUsers.xml?jid=<xsl:value-of select="$jobId"/>
-                </xsl:attribute>
-            </a>
         </div>
 
     </xsl:template>

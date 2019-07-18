@@ -10,7 +10,7 @@
     <xsl:variable name="graph_y_space">100</xsl:variable>
     <xsl:variable name="graph_margin">5</xsl:variable>
     <xsl:variable name="item_connect_margin">5</xsl:variable>
-    <xsl:variable name="graph_item_height">50</xsl:variable>
+    <xsl:variable name="graph_item_height">80</xsl:variable>
     <xsl:variable name="graph_item_width">200</xsl:variable>
     <xsl:variable name="graph_item_border_width">5</xsl:variable>
     <xsl:variable name="graph_x_space">50</xsl:variable>
@@ -43,17 +43,18 @@
                         <xsl:apply-templates select="//n:team/n:memberDefinition"/>
                     </ul>
                 </div>
-                <div class="graph">
-                    <form action="/test/manageEditConnections.xml" method="get" class="deleteBtn">
-                        <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
-                        <xsl:call-template name="drawRelations"/>
-                        <xsl:call-template name="drawDeleteButton"/>
-                        <input id="submit" type="submit" value="Submit"/>
-                    </form>
-                </div>
-                <div class="not_assigned">
-                    <xsl:apply-templates select="//n:jobDefinition[@planned='false']"/>
-                </div>
+                <form action="/test/manageEditConnections.xml" method="post" class="editForm">
+                    <div class="graph">
+                            <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
+                            <xsl:call-template name="drawRelations"/>
+                            <xsl:call-template name="drawAddButton"/>
+                            <input id="addBtn" type="submit" value="Anwenden"/>
+
+                    </div>
+                    <div class="not_assigned">
+                        <xsl:apply-templates select="//n:jobDefinition[@planned='false']"/>
+                    </div>
+                </form>
             </body>
 
         </html>
@@ -61,7 +62,37 @@
 
     <xsl:template match="//n:jobDefinition[@planned='false']">
         <div class="jobElement unplanned_job">
-            <xsl:value-of select="@name"/>
+            <div>
+                <xsl:value-of select="@name"/>
+
+            </div>
+            <input type="radio" name="add_to">
+                <xsl:attribute name="value">
+                    <xsl:value-of select="@id"/>
+                </xsl:attribute>
+                <xsl:attribute name="id">
+                    t<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </input>
+            <label>
+                <xsl:attribute name="for">
+                    t<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </label>
+
+            <input type="radio" name="add_from">
+                <xsl:attribute name="value">
+                    <xsl:value-of select="@id"/>
+                </xsl:attribute>
+                <xsl:attribute name="id">
+                    f<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </input>
+            <label>
+                <xsl:attribute name="for">
+                    f<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </label>
         </div>
     </xsl:template>
 
@@ -115,8 +146,10 @@
                 top: calc((<xsl:value-of select="$graph_item_height"/>px + <xsl:value-of select="$graph_y_space"/>px) *
                 <xsl:value-of select="$depth"/> + <xsl:value-of select="$graph_margin"/>px);
             </xsl:attribute>
+            <div>
+                <xsl:value-of select="//n:jobDefinition[@id=$jobId]/@name"/>
+            </div>
 
-            <xsl:value-of select="//n:jobDefinition[@id=$jobId]/@name"/>
         </div>
 
     </xsl:template>
@@ -137,7 +170,6 @@
                     </xsl:call-template>
                 </xsl:variable>
 
-
                 <xsl:for-each select="current()/n:dependsOn">
                     <xsl:variable name="e_depth">
                         <xsl:call-template name="JobRecursion">
@@ -152,24 +184,20 @@
                     </xsl:variable>
 
                     <xsl:variable name="p1">
-                        <xsl:value-of
-                                select="$e_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 - ($item_dead_space div 2) - ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin)"/>,<xsl:value-of
-                            select="$e_depth * ($graph_y_space + $graph_item_height) + $graph_margin + $graph_item_height"/>
+                        <xsl:value-of select="$e_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 - ($item_dead_space div 2) - ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin)"/>,
+                        <xsl:value-of select="$e_depth * ($graph_y_space + $graph_item_height) + $graph_margin + $graph_item_height"/>
                     </xsl:variable>
                     <xsl:variable name="p2">
-                        <xsl:value-of
-                                select="$e_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 - ($item_dead_space div 2) - ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin)"/>,<xsl:value-of
-                            select="$e_depth * ($graph_y_space + $graph_item_height) + $graph_item_height + $initial_y_step + ($s_depth - $e_depth - 1) * $item_y_step"/>
+                        <xsl:value-of select="$e_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 - ($item_dead_space div 2) - ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin)"/>,
+                        <xsl:value-of select="$e_depth * ($graph_y_space + $graph_item_height) + $graph_item_height + $initial_y_step + (($s_depth - $e_depth - 1) * $item_y_step) mod ($graph_y_space div 2 - 3) + ($e_x_val * $connector_micro_y_step) mod ($item_y_step - 3)"/>
                     </xsl:variable>
                     <xsl:variable name="p3">
-                        <xsl:value-of
-                                select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($item_dead_space div 2) + ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin) + $e_depth * $connector_micro_x_step"/>,<xsl:value-of
-                            select="$e_depth * ($graph_y_space + $graph_item_height) + $graph_item_height + $initial_y_step + ($s_depth - $e_depth - 1) * $item_y_step"/>
+                        <xsl:value-of select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($item_dead_space div 2) + (($s_depth - $e_depth - 1) * $item_x_step) mod (($graph_item_width + $graph_item_border_width) div 2) + ($graph_margin) + ($e_depth * $connector_micro_x_step) mod $item_x_step"/>,
+                        <xsl:value-of select="$e_depth * ($graph_y_space + $graph_item_height) + $graph_item_height + $initial_y_step + (($s_depth - $e_depth - 1) * $item_y_step) mod ($graph_y_space div 2 - 3) + ($e_x_val * $connector_micro_y_step) mod ($item_y_step - 3)"/>
                     </xsl:variable>
                     <xsl:variable name="p4">
-                        <xsl:value-of
-                                select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($item_dead_space div 2) + ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin) + $e_depth * $connector_micro_x_step"/>,<xsl:value-of
-                            select="$s_depth * ($graph_y_space + $graph_item_height) + $graph_margin"/>
+                        <xsl:value-of select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($item_dead_space div 2) + (($s_depth - $e_depth - 1) * $item_x_step) mod (($graph_item_width + $graph_item_border_width) div 2) + ($graph_margin) + ($e_depth * $connector_micro_x_step) mod $item_x_step"/>,
+                        <xsl:value-of select="$s_depth * ($graph_y_space + $graph_item_height) + $graph_margin"/>
                     </xsl:variable>
 
                     <polyline stroke="rgba(0,128,128, 255)" fill="none" style="stroke-width:1">
@@ -205,7 +233,7 @@
         </svg>
     </xsl:template>
 
-    <xsl:template name="drawDeleteButton">
+    <xsl:template name="drawAddButton">
         <xsl:for-each select="//n:jobDefinition[@planned='true']">
 
             <xsl:variable name="s_depth">
@@ -220,42 +248,55 @@
                 </xsl:call-template>
             </xsl:variable>
 
+            <xsl:variable name="p4">
+                <xsl:value-of
+                        select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($graph_margin)"/>,<xsl:value-of
+                    select="$s_depth * ($graph_y_space + $graph_item_height) + $graph_margin"/>
+            </xsl:variable>
 
-            <xsl:for-each select="current()/n:dependsOn">
-                <xsl:variable name="e_depth">
-                    <xsl:call-template name="JobRecursion">
-                        <xsl:with-param name="jobId" select="@id"/>
-                    </xsl:call-template>
-                </xsl:variable>
+            <input type="radio" name="add_to">
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - $graph_margin"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') - $graph_margin"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="value">
+                    <xsl:value-of select="@id"/>
+                </xsl:attribute>
+                <xsl:attribute name="id">
+                    t<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </input>
+            <label>
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - 12.5"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') + 5"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="for">
+                    t<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </label>
 
-                <xsl:variable name="p4">
-                    <xsl:value-of
-                            select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($item_dead_space div 2) + ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin) + $e_depth * $connector_micro_x_step"/>,<xsl:value-of
-                        select="$s_depth * ($graph_y_space + $graph_item_height) + $graph_margin"/>
-                </xsl:variable>
-
-                <input type="checkbox" value="delete">
-                    <xsl:attribute name="style">
-                        left: <xsl:value-of select="substring-before($p4, ',') - $graph_margin"/>px;
-                        top: <xsl:value-of select="substring-after($p4, ',') - $graph_margin"/>px;
-                    </xsl:attribute>
-                    <xsl:attribute name="name">
-                        <xsl:value-of select="../@id"/>_<xsl:value-of select="@id"/>
-                    </xsl:attribute>
-                    <xsl:attribute name="id">
-                        <xsl:value-of select="../@id"/>_<xsl:value-of select="@id"/>
-                    </xsl:attribute>
-                </input>
-                <label>
-                    <xsl:attribute name="style">
-                        left: <xsl:value-of select="substring-before($p4, ',') - 8.5"/>px;
-                        top: <xsl:value-of select="substring-after($p4, ',') - 20"/>px;
-                    </xsl:attribute>
-                    <xsl:attribute name="for">
-                        <xsl:value-of select="../@id"/>_<xsl:value-of select="@id"/>
-                    </xsl:attribute>
-                </label>
-            </xsl:for-each>
+            <input type="radio" name="add_from">
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - $graph_margin"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') - $graph_margin"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="value">
+                    <xsl:value-of select="@id"/>
+                </xsl:attribute>
+                <xsl:attribute name="id">
+                    f<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </input>
+            <label>
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - 12.5"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') + $graph_item_height - 30"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="for">
+                    f<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </label>
 
         </xsl:for-each>
     </xsl:template>

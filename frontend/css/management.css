@@ -42,32 +42,133 @@ ul#user_list li.leader {
     background-color: rgb(218, 165, 32);
 }
 
-.deleteBtn {
+.editUser {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    bottom: 0;
+    right: 2px;
+    background-image: url('/img/favicon_grey.png');
+    background-size: contain;
+}
+
+.overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.overlay .content {
+    width: 80%;
+    height: 80%;
+    margin: 10%;
+    border-radius: 10px;
+    border: 1px solid gray;
+    background-color: white;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);
+}
+
+.editForm {
     width: 100%;
     height: 100%;
 }
 
-.deleteBtn input[type="checkbox"] {
+.editForm input[type="radio"] {
     position: absolute;
     display: none;
     z-index: 2;
 }
 
-.deleteBtn input[type="submit"] {
+.editForm input[type="submit"]#deleteBtn {
     z-index: 2;
-    position:relative
+    position: fixed;
+    bottom: 10px;
+    right: calc(20% + 10px);
+    background-color: firebrick;
+    border-radius: 5px;
+    border: 3px solid firebrick;
+    color: white;
+    font-size: 18px;
 }
 
-.deleteBtn input[type="checkbox"] + label {
+.editForm input[type="submit"]#addBtn {
+    z-index: 2;
+    position: fixed;
+    bottom: 10px;
+    right: calc(20% + 10px);
+    background-color: lime;
+    border-radius: 5px;
+    border: 3px solid lime;
+    color: black;
+    font-size: 18px;
+}
+
+.editForm input[type="radio"]:checked + label {
+    background-size: contain;
+}
+
+.editForm input[type="radio"] + label {
     position: absolute;
-    width: 17px;
-    height: 17px;
-    background: url('/img/deleteWhite.svg');
+    width: 25px;
+    height: 25px;
     z-index: 2;
 }
 
-.deleteBtn input[type="checkbox"]:checked + label {
-    background: url('/img/deleteRed.svg');
+.unplanned_job input[type="radio"][name="add_to"] + label {
+    top: 5px;
+    left: calc(50% - 12.5px);
+    position: absolute;
+}
+
+.unplanned_job input[type="radio"][name="add_from"] + label {
+    bottom: 5px;
+    left: calc(50% - 12.5px);
+    position: absolute;
+}
+
+.editForm input[type="radio"][name="delete_to"] + label {
+    background: url('/img/bin_upper_grey.svg');
+    background-size: contain;
+}
+
+.editForm input[type="radio"][name="delete_to"]:checked + label {
+    background: url('/img/bin_upper_red.svg');
+    background-size: contain;
+}
+
+.editForm input[type="radio"][name="delete_from"] + label {
+    background: url('/img/bin_lower_grey.svg');
+    background-size: contain;
+}
+
+.editForm input[type="radio"][name="delete_from"]:checked + label {
+    background: url('/img/bin_lower_blue.svg');
+    background-size: contain;
+}
+
+
+.editForm input[type="radio"][name="add_to"] + label {
+    background: url('/img/plus_upper_grey.svg');
+    background-size: contain;
+}
+
+.editForm input[type="radio"][name="add_to"]:checked + label {
+    background: url('/img/plus_upper_red.svg');
+    background-size: contain;
+}
+
+.editForm input[type="radio"][name="add_from"] + label {
+    background: url('/img/plus_lower_grey.svg');
+    background-size: contain;
+}
+
+.editForm input[type="radio"][name="add_from"]:checked + label {
+    background: url('/img/plus_lower_blue.svg');
+    background-size: contain;
 }
 
 ul#user_list li.you {
@@ -102,6 +203,7 @@ ul#user_list li:before{
 
 .unplanned_job {
     margin: 10px;
+    position: relative;
 }
 
 .jobElement {
@@ -115,6 +217,14 @@ ul#user_list li:before{
     z-index: 1;
     background-color: rgba(0, 209, 146, .5);
     /*float: left;*/
+}
+
+.jobElement div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bg_im {

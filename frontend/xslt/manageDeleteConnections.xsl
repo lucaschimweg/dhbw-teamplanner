@@ -4,21 +4,21 @@
                 xmlns:n="/dtd/teamplanner.dtd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-    <xsl:output method="xml" encoding="UTF-8" indent="yes" />
+    <xsl:output method="xml" encoding="UTF-8" indent="yes"/>
 
     <!-- Graph Config -->
     <xsl:variable name="graph_y_space">100</xsl:variable>
     <xsl:variable name="graph_margin">5</xsl:variable>
     <xsl:variable name="item_connect_margin">5</xsl:variable>
-    <xsl:variable name="graph_item_height">50</xsl:variable>
+    <xsl:variable name="graph_item_height">80</xsl:variable>
     <xsl:variable name="graph_item_width">200</xsl:variable>
     <xsl:variable name="graph_item_border_width">5</xsl:variable>
     <xsl:variable name="graph_x_space">50</xsl:variable>
     <xsl:variable name="item_x_step">30</xsl:variable>
     <xsl:variable name="item_y_step">15</xsl:variable>
     <xsl:variable name="item_dead_space">20</xsl:variable>
-    <xsl:variable name="connector_micro_x_step">10</xsl:variable>
-    <xsl:variable name="connector_micro_y_step">7</xsl:variable>
+    <xsl:variable name="connector_micro_x_step">5</xsl:variable>
+    <xsl:variable name="connector_micro_y_step">5</xsl:variable>
     <xsl:variable name="initial_y_step">20</xsl:variable>
     <!-- Graph Config End -->
 
@@ -29,9 +29,9 @@
                 <link type="text/css" rel="stylesheet" href="/css/management.css"/>
                 <style>
                     .jobElement {
-                        width: <xsl:value-of select="$graph_item_width"/>px;
-                        height: <xsl:value-of select="$graph_item_height"/>px;
-                        border-left: <xsl:value-of select="$graph_item_border_width"/>px solid rgba(0, 150, 105, .9);
+                    width: <xsl:value-of select="$graph_item_width"/>px;
+                    height: <xsl:value-of select="$graph_item_height"/>px;
+                    border-left: <xsl:value-of select="$graph_item_border_width"/>px solid rgba(0, 150, 105, .9);
                     }
                 </style>
 
@@ -44,8 +44,12 @@
                     </ul>
                 </div>
                 <div class="graph">
+                    <form action="/test/manageEditConnections.xml" method="post" class="editForm">
                         <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
                         <xsl:call-template name="drawRelations"/>
+                        <xsl:call-template name="drawDeleteButton"/>
+                        <input id="deleteBtn" type="submit" value="Anwenden"/>
+                    </form>
                 </div>
                 <div class="not_assigned">
                     <xsl:apply-templates select="//n:jobDefinition[@planned='false']"/>
@@ -58,11 +62,6 @@
     <xsl:template match="//n:jobDefinition[@planned='false']">
         <div class="jobElement unplanned_job">
             <xsl:value-of select="@name"/>
-            <a class="editUser">
-                <xsl:attribute name="href">
-                    /test/manageEditUsers.xml?jid=<xsl:value-of select="@id"/>
-                </xsl:attribute>
-            </a>
         </div>
     </xsl:template>
 
@@ -70,13 +69,19 @@
     <xsl:template match="n:memberDefinition">
         <xsl:choose>
             <xsl:when test="@leader='true'">
-                <li class="leader"><xsl:value-of select="@name"/></li>
+                <li class="leader">
+                    <xsl:value-of select="@name"/>
+                </li>
             </xsl:when>
             <xsl:when test="@you='true'">
-                <li class="you"><xsl:value-of select="@name"/></li>
+                <li class="you">
+                    <xsl:value-of select="@name"/>
+                </li>
             </xsl:when>
             <xsl:otherwise>
-                <li><xsl:value-of select="@name"/></li>
+                <li>
+                    <xsl:value-of select="@name"/>
+                </li>
             </xsl:otherwise>
         </xsl:choose>
 
@@ -105,19 +110,18 @@
 
         <div class="jobElement planned_job">
             <xsl:attribute name="style">
-                left: calc((<xsl:value-of select="$graph_item_width"/>px + <xsl:value-of select="$graph_x_space"/>px) * <xsl:value-of select="$x_val"/>);
-                top: calc((<xsl:value-of select="$graph_item_height"/>px + <xsl:value-of select="$graph_y_space"/>px) * <xsl:value-of select="$depth"/> + <xsl:value-of select="$graph_margin"/>px);
+                left: calc((<xsl:value-of select="$graph_item_width"/>px + <xsl:value-of select="$graph_x_space"/>px) *
+                <xsl:value-of select="$x_val"/>);
+                top: calc((<xsl:value-of select="$graph_item_height"/>px + <xsl:value-of select="$graph_y_space"/>px) *
+                <xsl:value-of select="$depth"/> + <xsl:value-of select="$graph_margin"/>px);
             </xsl:attribute>
-            <xsl:value-of select="//n:jobDefinition[@id=$jobId]/@name"/>
-            <a class="editUser">
-                <xsl:attribute name="href">
-                    /test/manageEditUsers.xml?jid=<xsl:value-of select="$jobId"/>
-                </xsl:attribute>
-            </a>
+            <div>
+                <xsl:value-of select="//n:jobDefinition[@id=$jobId]/@name"/>
+            </div>
         </div>
 
     </xsl:template>
-    
+
     <xsl:template name="drawRelations">
         <svg class="bg_im" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
             <xsl:for-each select="//n:jobDefinition[@planned='true']">
@@ -133,7 +137,6 @@
                         <xsl:with-param name="jobId" select="@id"/>
                     </xsl:call-template>
                 </xsl:variable>
-
 
                 <xsl:for-each select="current()/n:dependsOn">
                     <xsl:variable name="e_depth">
@@ -196,6 +199,112 @@
 
             </xsl:for-each>
         </svg>
+    </xsl:template>
+
+    <xsl:template name="drawDeleteButton">
+        <xsl:for-each select="//n:jobDefinition[@planned='true']">
+
+            <xsl:variable name="s_depth">
+                <xsl:call-template name="JobRecursion">
+                    <xsl:with-param name="jobId" select="@id"/>
+                </xsl:call-template>
+            </xsl:variable>
+
+            <xsl:variable name="s_x_val">
+                <xsl:call-template name="getXPosFor">
+                    <xsl:with-param name="jobId" select="@id"/>
+                </xsl:call-template>
+            </xsl:variable>
+
+            <xsl:variable name="p4">
+                <xsl:value-of
+                        select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($graph_margin)"/>,<xsl:value-of
+                    select="$s_depth * ($graph_y_space + $graph_item_height) + $graph_margin"/>
+            </xsl:variable>
+
+            <input type="radio" name="delete_to">
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - $graph_margin"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') - $graph_margin"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="value">
+                    <xsl:value-of select="@id"/>
+                </xsl:attribute>
+                <xsl:attribute name="id">
+                    t<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </input>
+            <label>
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - 12.5"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') + 5"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="for">
+                    t<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </label>
+
+            <input type="radio" name="delete_from">
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - $graph_margin"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') - $graph_margin"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="value">
+                    <xsl:value-of select="@id"/>
+                </xsl:attribute>
+                <xsl:attribute name="id">
+                    f<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </input>
+            <label>
+                <xsl:attribute name="style">
+                    left: <xsl:value-of select="substring-before($p4, ',') - 12.5"/>px;
+                    top: <xsl:value-of select="substring-after($p4, ',') + $graph_item_height - 30"/>px;
+                </xsl:attribute>
+                <xsl:attribute name="for">
+                    f<xsl:value-of select="@id"/>
+                </xsl:attribute>
+            </label>
+
+            <!--
+            <xsl:for-each select="current()/n:dependsOn">
+                <xsl:variable name="e_depth">
+                    <xsl:call-template name="JobRecursion">
+                        <xsl:with-param name="jobId" select="@id"/>
+                    </xsl:call-template>
+                </xsl:variable>
+
+                <xsl:variable name="p4">
+                    <xsl:value-of
+                            select="$s_x_val * ($graph_item_width + $graph_x_space) + ($graph_item_width + $graph_item_border_width) div 2 + ($item_dead_space div 2) + ($s_depth - $e_depth - 1) * $item_x_step + ($graph_margin) + $e_depth * $connector_micro_x_step"/>,<xsl:value-of
+                        select="$s_depth * ($graph_y_space + $graph_item_height) + $graph_margin"/>
+                </xsl:variable>
+
+                <input type="checkbox" value="delete">
+                    <xsl:attribute name="style">
+                        left: <xsl:value-of select="substring-before($p4, ',') - $graph_margin"/>px;
+                        top: <xsl:value-of select="substring-after($p4, ',') - $graph_margin"/>px;
+                    </xsl:attribute>
+                    <xsl:attribute name="name">
+                        <xsl:value-of select="../@id"/>_<xsl:value-of select="@id"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="id">
+                        <xsl:value-of select="../@id"/>_<xsl:value-of select="@id"/>
+                    </xsl:attribute>
+                </input>
+                <label>
+                    <xsl:attribute name="style">
+                        left: <xsl:value-of select="substring-before($p4, ',') - 8.5"/>px;
+                        top: <xsl:value-of select="substring-after($p4, ',') - 20"/>px;
+                    </xsl:attribute>
+                    <xsl:attribute name="for">
+                        <xsl:value-of select="../@id"/>_<xsl:value-of select="@id"/>
+                    </xsl:attribute>
+                </label>
+            </xsl:for-each>
+            -->
+
+        </xsl:for-each>
     </xsl:template>
 
     <!--
@@ -277,7 +386,8 @@
         <xsl:choose>
             <xsl:when test="$choiceCnt = $currentChoice">
                 <xsl:call-template name="JobRecursion">
-                    <xsl:with-param name="jobId" select="//n:jobDefinition[@id=$jobId]/n:dependsOn[$currentChoice]/@id"/>
+                    <xsl:with-param name="jobId"
+                                    select="//n:jobDefinition[@id=$jobId]/n:dependsOn[$currentChoice]/@id"/>
                     <xsl:with-param name="origId" select="$jobId"/>
                     <xsl:with-param name="recursionDepth" select="$recursionDepth + 1"/>
                 </xsl:call-template>
@@ -285,7 +395,8 @@
             <xsl:otherwise>
                 <xsl:variable name="a">
                     <xsl:call-template name="JobRecursion">
-                        <xsl:with-param name="jobId" select="//n:jobDefinition[@id=$jobId]/n:dependsOn[$currentChoice]/@id"/>
+                        <xsl:with-param name="jobId"
+                                        select="//n:jobDefinition[@id=$jobId]/n:dependsOn[$currentChoice]/@id"/>
                         <xsl:with-param name="origId" select="$jobId"/>
                         <xsl:with-param name="recursionDepth" select="$recursionDepth + 1"/>
                     </xsl:call-template>
@@ -325,12 +436,13 @@
             <xsl:when test="count(//n:jobDefinition[@id=$jobId and @planned='true']/n:dependsOn)&gt;0">
                 <xsl:call-template name="JobReduce">
                     <xsl:with-param name="jobId" select="$jobId"/>
-                    <xsl:with-param name="choiceCnt" select="count(//n:jobDefinition[@id=$jobId and @planned='true']/n:dependsOn)"/>
+                    <xsl:with-param name="choiceCnt"
+                                    select="count(//n:jobDefinition[@id=$jobId and @planned='true']/n:dependsOn)"/>
                     <xsl:with-param name="recursionDepth" select="$recursionDepth"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
-                    <xsl:value-of select="$recursionDepth"/>
+                <xsl:value-of select="$recursionDepth"/>
             </xsl:otherwise>
         </xsl:choose>
 

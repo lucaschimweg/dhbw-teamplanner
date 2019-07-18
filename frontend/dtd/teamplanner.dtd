@@ -47,7 +47,8 @@
         name CDATA #REQUIRED
         id ID #REQUIRED
         duration CDATA #REQUIRED
-        planned (true|false) #IMPLIED>
+        planned (true|false) #IMPLIED
+        editing (true|false) #IMPLIED>
 
 <!ELEMENT dependsOn EMPTY>
 <!ATTLIST dependsOn

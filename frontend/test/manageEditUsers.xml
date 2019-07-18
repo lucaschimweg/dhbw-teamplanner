@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="http://localhost/xslt/manageEditConnections.xsl"?>
+<?xml-stylesheet type="text/xsl" href="http://localhost/xslt/manageEditUsers.xsl"?>
 <!DOCTYPE teamOverview SYSTEM "/dtd/teamplanner.dtd">
 
 <teamOverview xmlns="/dtd/teamplanner.dtd">
@@ -38,7 +38,7 @@
         <dependsOn id="2"/>
     </jobDefinition>
 
-    <jobDefinition name="Kickoff 5" id="5" planned="true" duration="0">
+    <jobDefinition name="Kickoff 5" editing="true" id="5" planned="true" duration="0">
         <member id="u1"/>
         <member id="u4"/>
     </jobDefinition>
