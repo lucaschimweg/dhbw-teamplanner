@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="http://localhost/xslt/manageEditUsers.xsl"?>
+<?xml-stylesheet type="text/xsl" href="http://localhost/xslt/manageSemanticError.xsl"?>
 <!DOCTYPE teamOverview SYSTEM "/dtd/teamplanner.dtd">
-<teamOverview xmlns="/dtd/teamplanner.dtd">
 
+<teamOverview xmlns="/dtd/teamplanner.dtd">
     <team name="TP Development Team IV">
         <description>Das hier ist ein Supergeiles Team! Yeah!</description>
         <memberDefinition id="u1" name="Luca Schimweg"/>
@@ -11,6 +11,11 @@
         <memberDefinition id="u6" name="Zeno Berkan" startTime="08:00" endTime="18:00"/>
         <memberDefinition id="u7" name="Nico Diefenbacher" startTime="08:00" endTime="18:00"/>
     </team>
+
+
+    <semanticError>
+        Irgendwas von wegen das ist nicht erlaubt zum Beispiel wenn man versucht einen zyklischen Grafen zu erzeugen...
+    </semanticError>
 
     <jobDefinition name="Kickoff 1" id="0" planned="true" duration="0">
         <member id="u1"/>

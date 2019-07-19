@@ -17,7 +17,7 @@
     text-align: center;
 }
 
-ul#user_list {
+ul.user_list {
     padding: 0;
     margin: 0 20px;
 }
@@ -26,7 +26,7 @@ h3#user_title {
     font-family: 'Open Sans', sans-serif;
 }
 
-ul#user_list li {
+ul.user_list li {
     margin-top: 5px;
     list-style: none;
     line-height: 32px;
@@ -38,9 +38,62 @@ ul#user_list li {
     padding: 5px;
 }
 
-ul#user_list li.leader {
+ul.user_list li.leader {
     background-color: rgb(218, 165, 32);
 }
+
+.duration {
+    margin: 10px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.duration input {
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+input#minutes {
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    width: 50px;
+}
+
+input#minutes + label {
+    position: absolute;
+    left: 160px;
+    top: 100px;
+}
+
+input#name {
+    position: absolute;
+    left: 100px;
+    width: 20em;
+    font-size: 20px;
+}
+
+.duration input[type="submit"] {
+    background-color: lightgreen;
+    color: black;
+    border-radius: 5px;
+    border: 1px solid lightgreen;
+    font-size: 18px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.duration label[for="minutes"] {
+    margin-right: 50px;
+    margin-left: 5px;
+}
+
+.close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
 
 .editUser {
     position: absolute;
@@ -52,6 +105,16 @@ ul#user_list li.leader {
     background-size: contain;
 }
 
+.deleteJob {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 5px;
+    right: 5px;
+    background-image: url('/img/deleteWhite.svg');
+    background-size: contain;
+}
+
 .overlay {
     position: absolute;
     width: 100%;
@@ -60,16 +123,46 @@ ul#user_list li.leader {
     background-color: rgba(255, 255, 255, 0.8);
 }
 
+.overlay .content p {
+    width: calc(100% - 40px);
+    margin: 10px;
+    background-color: #ff8f9d;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Open Sans', sans-serif;
+}
+
 .overlay .content {
+    position: relative;
     width: 80%;
     height: 80%;
     margin: 10%;
     border-radius: 10px;
     border: 1px solid gray;
     background-color: white;
-    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.changeTime {
+}
+
+.overlay .content h2 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+ul.user_list li {
+    position: relative;
+}
+
+ul.user_list li div a img {
+    float: right;
+}
+
+ul.user_list li div {
+    position: absolute;
+    right: 10px;
 }
 
 .editForm {
@@ -171,11 +264,11 @@ ul#user_list li.leader {
     background-size: contain;
 }
 
-ul#user_list li.you {
+ul.user_list li.you {
     background-color: rgb(50, 205, 50);
 }
 
-ul#user_list li:before{
+ul.user_list li:before {
     content: '';
     display: inline-block;
     height: 32px;

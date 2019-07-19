@@ -40,7 +40,7 @@
 <!ATTLIST member
         id IDREF #REQUIRED >
 
-<!ELEMENT teamOverview (team, jobDefinition*)>
+<!ELEMENT teamOverview (team, jobDefinition*, semanticError)>
 
 <!ELEMENT jobDefinition (description?, member+, dependsOn+)>
 <!ATTLIST jobDefinition
@@ -49,6 +49,8 @@
         duration CDATA #REQUIRED
         planned (true|false) #IMPLIED
         editing (true|false) #IMPLIED>
+
+<!ELEMENT semanticError (#PCDATA)>
 
 <!ELEMENT dependsOn EMPTY>
 <!ATTLIST dependsOn

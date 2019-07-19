@@ -38,16 +38,27 @@
             </head>
             <body>
                 <div class="users">
+                    <div class="overlay"/>
                     <h3 id="user_title">Team Mitglieder</h3>
                     <ul class="user_list">
                         <xsl:apply-templates select="//n:team/n:memberDefinition"/>
                     </ul>
                 </div>
                 <div class="graph">
+                    <div class="overlay">
+                        <div class="content">
+                            <a class="close" href="/back/to/manage">
+                                <img src="/img/deleteWhite.svg"/>
+                            </a>
+                            <h2>Eingabe Fehler</h2>
+                            <p><xsl:value-of select="//n:semanticError"/></p>
+                        </div>
+                    </div>
                         <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
                         <xsl:call-template name="drawRelations"/>
                 </div>
                 <div class="not_assigned">
+                    <div class="overlay"/>
                     <xsl:apply-templates select="//n:jobDefinition[@planned='false']"/>
                 </div>
             </body>
@@ -61,12 +72,6 @@
             <a class="editUser">
                 <xsl:attribute name="href">
                     /test/manageEditUsers.xml?jid=<xsl:value-of select="@id"/>
-                </xsl:attribute>
-            </a>
-
-            <a class="deleteJob">
-                <xsl:attribute name="href">
-                    /api/delete/?jid=<xsl:value-of select="@id"/>
                 </xsl:attribute>
             </a>
         </div>
@@ -123,12 +128,6 @@
             <a class="editUser">
                 <xsl:attribute name="href">
                     /test/manageEditUsers.xml?jid=<xsl:value-of select="$jobId"/>
-                </xsl:attribute>
-            </a>
-
-            <a class="deleteJob">
-                <xsl:attribute name="href">
-                    /api/delete/?jid=<xsl:value-of select="$jobId"/>
                 </xsl:attribute>
             </a>
         </div>

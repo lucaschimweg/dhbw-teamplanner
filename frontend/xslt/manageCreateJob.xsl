@@ -38,16 +38,35 @@
             </head>
             <body>
                 <div class="users">
+                    <div class="overlay"/>
                     <h3 id="user_title">Team Mitglieder</h3>
                     <ul class="user_list">
                         <xsl:apply-templates select="//n:team/n:memberDefinition"/>
                     </ul>
                 </div>
                 <div class="graph">
+                    <div class="overlay">
+                        <div class="content">
+                            <a class="close" href="/back/to/manage">
+                                <img src="/img/deleteWhite.svg"/>
+                            </a>
+                            <h2>Job erstellen</h2>
+                            <div class="changeTime">
+                                <form method="post" action="/diesdas/" class="duration">
+
+                                    <input type="text" id="name" name="name" placeholder="Name"></input><br/>
+                                    <input type="number" id="minutes" name="minutes" placeholder="Dauer"></input>
+                                    <label for="minutes">Minuten</label>
+                                    <input type="submit" value="Speichern"></input>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                         <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
                         <xsl:call-template name="drawRelations"/>
                 </div>
                 <div class="not_assigned">
+                    <div class="overlay"/>
                     <xsl:apply-templates select="//n:jobDefinition[@planned='false']"/>
                 </div>
             </body>
@@ -61,12 +80,6 @@
             <a class="editUser">
                 <xsl:attribute name="href">
                     /test/manageEditUsers.xml?jid=<xsl:value-of select="@id"/>
-                </xsl:attribute>
-            </a>
-
-            <a class="deleteJob">
-                <xsl:attribute name="href">
-                    /api/delete/?jid=<xsl:value-of select="@id"/>
                 </xsl:attribute>
             </a>
         </div>
@@ -123,12 +136,6 @@
             <a class="editUser">
                 <xsl:attribute name="href">
                     /test/manageEditUsers.xml?jid=<xsl:value-of select="$jobId"/>
-                </xsl:attribute>
-            </a>
-
-            <a class="deleteJob">
-                <xsl:attribute name="href">
-                    /api/delete/?jid=<xsl:value-of select="$jobId"/>
                 </xsl:attribute>
             </a>
         </div>

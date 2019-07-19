@@ -39,7 +39,7 @@
             <body>
                 <div class="users">
                     <h3 id="user_title">Team Mitglieder</h3>
-                    <ul id="user_list">
+                    <ul class="user_list">
                         <xsl:apply-templates select="//n:team/n:memberDefinition"/>
                     </ul>
                 </div>
@@ -99,14 +99,19 @@
 
     <xsl:template match="n:memberDefinition">
         <xsl:choose>
-            <xsl:when test="@leader='true'">
+            <xsl:when test="@leader='true' and @you='false'">
                 <li class="leader">
                     <xsl:value-of select="@name"/>
                 </li>
             </xsl:when>
-            <xsl:when test="@you='true'">
+            <xsl:when test="@you='true' and @leader='false'">
                 <li class="you">
-                    <xsl:value-of select="@name"/>
+                    <xsl:value-of select="@name"/> (You)
+                </li>
+            </xsl:when>
+            <xsl:when test="@you='true' and @leader='true'">
+                <li class="you">
+                    <xsl:value-of select="@name"/> (You, Leader)
                 </li>
             </xsl:when>
             <xsl:otherwise>

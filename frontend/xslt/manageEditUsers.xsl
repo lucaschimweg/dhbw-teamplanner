@@ -38,8 +38,8 @@
             </head>
             <body>
                 <div class="users">
-                    <h3 id="user_title">Team Mitglieder</h3>
-                    <ul id="user_list">
+                    <h3 id="user_title">Verfügbare Team Mitglieder</h3>
+                    <ul class="user_list">
                         <xsl:apply-templates select="//n:team/n:memberDefinition"/>
                     </ul>
                 </div>
@@ -50,6 +50,7 @@
                         <xsl:call-template name="drawRelations"/>
                 </div>
                 <div class="not_assigned">
+                    <div class="overlay"/>
                     <xsl:apply-templates select="//n:jobDefinition[@planned='false']"/>
                 </div>
             </body>
@@ -60,12 +61,49 @@
     <xsl:template name="drawOverlay">
         <div class="overlay">
             <div class="content">
+                <a class="close" href="/back/to/manage">
+                    <img src="/img/deleteWhite.svg"/>
+                </a>
                 <h2><xsl:value-of select="n:jobDefinition[@editing='true']/@name"/></h2>
-                <ul>
+                <ul class="user_list">
                     <xsl:for-each select="n:jobDefinition[@editing='true']/n:member">
-                        <li>Test</li>
+                        <xsl:variable name="curr_id"><xsl:value-of select="@id"/></xsl:variable>
+                        <li>
+                        <xsl:choose>
+                            <xsl:when test="//n:memberDefinition[@id=$curr_id]/@leader='true' and //n:memberDefinition[@id=$curr_id]/@you='false'">
+                                <xsl:attribute name="class">leader</xsl:attribute>
+                                <xsl:value-of select="//n:memberDefinition[@id=$curr_id]/@name"/>
+                            </xsl:when>
+                            <xsl:when test="//n:memberDefinition[@id=$curr_id]/@you='true' and //n:memberDefinition[@id=$curr_id]/@leader='false'">
+                                <xsl:attribute name="class">you</xsl:attribute>
+                                <xsl:value-of select="//n:memberDefinition[@id=$curr_id]/@name"/> (You)
+                            </xsl:when>
+                            <xsl:when test="//n:memberDefinition[@id=$curr_id]/@you='true' and //n:memberDefinition[@id=$curr_id]/@leader='true'">
+                                <xsl:attribute name="class">you</xsl:attribute>
+                                <xsl:value-of select="//n:memberDefinition[@id=$curr_id]/@name"/> (You, Leader)
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:value-of select="//n:memberDefinition[@id=$curr_id]/@name"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                            <div>
+                                <a>
+                                    <xsl:attribute name="href">/manageUsers/remove?uid=<xsl:value-of select="$curr_id"/>&amp;jid=<xsl:value-of
+                                            select="//n:jobDefinition[@editing='true']/@id"/></xsl:attribute>
+                                    <img src="/img/deleteRed.svg" width="20px" height="20px"/>
+                                </a>
+                            </div>
+                        </li>
                     </xsl:for-each>
                 </ul>
+                <div class="changeTime">
+                    <form method="post" action="/diesdas/" class="duration">
+                        Dauer
+                        <input type="number" id="minutes" name="minutes"></input>
+                        <label for="minutes">Minuten</label>
+                        <input type="submit" value="Speichern"></input>
+                    </form>
+                </div>
             </div>
         </div>
     </xsl:template>
@@ -78,18 +116,39 @@
 
 
     <xsl:template match="n:memberDefinition">
+        <xsl:variable name="focused_job"><xsl:value-of select="//n:jobDefinition[@editing='true']/@id"/></xsl:variable>
         <xsl:choose>
-            <xsl:when test="@leader='true'">
-                <li class="leader"><xsl:value-of select="@name"/></li>
-            </xsl:when>
-            <xsl:when test="@you='true'">
-                <li class="you"><xsl:value-of select="@name"/></li>
-            </xsl:when>
-            <xsl:otherwise>
-                <li><xsl:value-of select="@name"/></li>
-            </xsl:otherwise>
-        </xsl:choose>
+            <xsl:when test="//n:jobDefinition[@id=$focused_job]/n:member/@id=current()/@id"/>
+                <xsl:otherwise>
+                    <li>
+                    <xsl:choose>
+                        <xsl:when test="@leader='true' and @you='false'">
+                            <xsl:attribute name="class">leader</xsl:attribute>
+                            <xsl:value-of select="@name"/>
+                        </xsl:when>
+                        <xsl:when test="@you='true' and @leader='false'">
+                            <xsl:attribute name="class">you</xsl:attribute>
+                            <xsl:value-of select="@name"/> (You)
+                        </xsl:when>
+                        <xsl:when test="@you='true' and @leader='true'">
+                            <xsl:attribute name="class">you</xsl:attribute>
+                            <xsl:value-of select="@name"/> (You, Leader)
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="@name"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
 
+                    <div>
+                        <a>
+                            <xsl:attribute name="href">/manageUsers/add?uid=<xsl:value-of select="@id"/>&amp;jid=<xsl:value-of
+                                    select="$focused_job"/></xsl:attribute>
+                            <img src="/img/plus_green.svg" width="25px" height="25px"/>
+                        </a>
+                    </div>
+                    </li>
+                </xsl:otherwise>
+            </xsl:choose>
     </xsl:template>
 
     <xsl:template match="n:jobDefinition[@planned='true']">

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="http://localhost/xslt/manageEditUsers.xsl"?>
+<?xml-stylesheet type="text/xsl" href="http://localhost/xslt/manageCreateJob.xsl"?>
 <!DOCTYPE teamOverview SYSTEM "/dtd/teamplanner.dtd">
-<teamOverview xmlns="/dtd/teamplanner.dtd">
 
+<teamOverview xmlns="/dtd/teamplanner.dtd">
     <team name="TP Development Team IV">
         <description>Das hier ist ein Supergeiles Team! Yeah!</description>
         <memberDefinition id="u1" name="Luca Schimweg"/>
