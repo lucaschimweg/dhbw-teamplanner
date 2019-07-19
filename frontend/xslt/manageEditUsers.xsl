@@ -44,8 +44,9 @@
                     </ul>
                 </div>
                 <div class="graph">
-                        <xsl:apply-templates select="//n:jobDefinition[@editing='true']"/>
-                        <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
+                        <xsl:call-template name="drawOverlay"/>
+                        <xsl:apply-templates select="n:jobDefinition[@planned='true']"/>
+                        <!--<xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>-->
                         <xsl:call-template name="drawRelations"/>
                 </div>
                 <div class="not_assigned">
@@ -56,15 +57,20 @@
         </html>
     </xsl:template>
 
-    <xsl:template match="//n:jobDefinition[@editing='true']">
+    <xsl:template name="drawOverlay">
         <div class="overlay">
             <div class="content">
-                <h2><xsl:value-of select="$editing_id"/></h2>
+                <h2><xsl:value-of select="n:jobDefinition[@editing='true']/@name"/></h2>
+                <ul>
+                    <xsl:for-each select="n:jobDefinition[@editing='true']/n:member">
+                        <li>Test</li>
+                    </xsl:for-each>
+                </ul>
             </div>
         </div>
     </xsl:template>
 
-    <xsl:template match="//n:jobDefinition[@planned='false']">
+    <xsl:template match="n:jobDefinition[@planned='false']">
         <div class="jobElement unplanned_job">
             <xsl:value-of select="@name"/>
         </div>

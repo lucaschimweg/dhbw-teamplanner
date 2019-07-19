@@ -38,7 +38,7 @@
         <dependsOn id="2"/>
     </jobDefinition>
 
-    <jobDefinition name="Kickoff 5" editing="true" id="5" planned="true" duration="0">
+    <jobDefinition name="Kickoff 5" y="true" id="5" planned="true" duration="0">
         <member id="u1"/>
         <member id="u4"/>
     </jobDefinition>
