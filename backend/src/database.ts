@@ -141,7 +141,7 @@ export class Database {
     }
 
     public async deleteUser(id: number) {
-        return this.query(DbRes.DELETE_USER, [id]);
+        return this.query(DbRes.DELETE_USER, [id, id, id]);
     }
 
     public async getUsersByTeam(teamId: number): Promise<User[]|null> {

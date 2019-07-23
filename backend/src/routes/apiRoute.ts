@@ -40,9 +40,87 @@ export class ApiRoute {
         res.end();
     }
 
+    private async postTeamUser(req: express.Request, res: express.Response) {
+        if (!("mail" in req.body && "password" in req.body && "firstname" in req.body && "lastname" in req.body)) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let mail = req.body.mail;
+        let password = req.body.password;
+        let firstname = req.body.firstname;
+        let lastname = req.body.lastname;
+
+        let team = await Database.getInstance().getTeamById(req.user.teamId);
+        if (!team) {
+            res.status(500).end("Server error");
+            return;
+        }
+
+        if (team.leader.id != req.user.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        if (await Database.getInstance().userExists(mail)) {
+            res.writeHead(303, {
+                'Location': '/team?error="User already exists with that mail!"'
+            });
+            return;
+        }
+
+        await Database.getInstance().createUser(mail, firstname, lastname, team.id, SessionManager.hashPassword(password));
+
+        res.writeHead(303, {
+            'Location': "/team"
+        });
+        res.end();
+    }
+
+    private async deleteTeamUser(req: express.Request, res: express.Response) {
+        if (!("user")) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let userId = req.body.user.substr(1);
+
+        let team = await Database.getInstance().getTeamById(req.user.teamId);
+        if (!team) {
+            res.status(500).end("Server error");
+            return;
+        }
+
+        if (team.leader.id != req.user.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        let user = await Database.getInstance().getUserById(userId);
+
+        if (!user) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        if (user.teamId != team.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        await Database.getInstance().deleteUser(userId);
+
+        res.writeHead(303, {
+            'Location': "/team"
+        });
+        res.end();
+    }
+
     constructor() {
         this.router.get("/doLogout", this.doLogout.bind(this));
         this.router.post("/jobDuration", this.postJobDuration.bind(this));
+        this.router.post("/teamUser", this.postTeamUser.bind(this));
+        this.router.post("/deleteTeamUser", this.deleteTeamUser.bind(this));
     }
 
     public getRouter(): express.Router {

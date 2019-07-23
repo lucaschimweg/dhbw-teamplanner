@@ -1,0 +1,79 @@
+#teamMembers {
+    width: 20%
+}
+
+#content {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.teamMemberElement {
+    text-align: left;
+    padding: 8px;
+    font-size: 16px;
+}
+
+#addTeamMember {
+    font-style: italic;
+}
+
+.teamMemberElement:hover {
+    background-color: #cccccc;
+}
+
+.teamMember > form {
+    float: right;
+}
+
+.teamMember > form > input[type="submit"] {
+    border-radius: 0;
+    background: transparent url("/img/deleteWhite.svg") no-repeat;
+    background-size: contain;
+    border: none;
+    height: 16px;
+    width: 16px;
+    display: none;
+    margin-top: 3px;
+}
+
+.teamMember:hover > form > input[type="submit"] {
+    display: block;
+    cursor: pointer;
+}
+
+.teamMember:hover > form > input[type="submit"]:hover {
+    background-image: url("/img/deleteRed.svg");
+}
+
+#addTeamMemberPane {
+    display: none;
+    position: relative;
+    margin-left: 80%;
+    transform: translateY(-50%);
+    margin-top: -18px;
+    width: 30em;
+    font-family: 'Open Sans', sans-serif;
+    background-color: white;
+    z-index: 10;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+    -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.75);
+    padding: 8px;
+}
+
+#addTeamMember:hover + #addTeamMemberPane, #addTeamMemberPane:hover {
+    display: block;
+}
+
+#addTeamMemberPane > form {
+    font-size: 10pt;
+}
+
+#addTeamMemberPane > form > input {
+    margin-bottom: 8px;
+}
+
+.inputName {
+    width: 8em;
+    font-size: 200%;
+}

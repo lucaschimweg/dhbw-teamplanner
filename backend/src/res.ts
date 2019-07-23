@@ -81,7 +81,7 @@ export class DbRes {
 
     public static UPDATE_USER_TEAM: string = "UPDATE teamplanner_users SET `team` = ? WHERE `user_id` = ?";
 
-    public static DELETE_USER: string = "DELETE FROM teamplanner_users WHERE `user_id` = ?; DELETE FROM teamplanner_login WHERE `user_id`= ?";
+    public static DELETE_USER: string = "DELETE FROM teamplanner_users WHERE `user_id` = ?; DELETE FROM teamplanner_login WHERE `user_id`= ?; DELETE FROM teamplanner_job_participants WHERE `user_id`= ?";
 
     public static SELECT_TEAM_BY_ID: string = "SELECT * FROM teamplanner_teams JOIN teamplanner_users ON `user_id` = `leader` WHERE `team_id` = ?";
 

@@ -144,7 +144,7 @@ export class XmlGenerator {
 
         root.att("xmlns", "https://planner.schimweg.net/dtd/teamplanner.dtd");
 
-        return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/manage.xsl");
+        return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/team.xsl");
     }
 
     public static injectXmlStylesheet(doc: string, path: string): string {

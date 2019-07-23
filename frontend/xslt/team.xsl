@@ -4,19 +4,18 @@
                 xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
-    <xsl:template match="n:week">
-		<html lang="en">
+    <xsl:output method="xml" encoding="UTF-8" indent="yes" />
+    <xsl:template match="n:teamOverview">
+        <html lang="en">
             <head>
-                <link rel="stylesheet" type="text/css" href="/css/week.css" />
+                <link rel="stylesheet" type="text/css" href="/css/team.css" />
                 <link rel="stylesheet" type="text/css" href="/css/header.css" />
                 <link rel="icon" href="/img/favicon.png" type="image/png" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300&amp;display=swap" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap" />
-                <script src="/js/week.js" type="text/javascript" />
                 <title><xsl:value-of select="//n:team/@name"/> - week overview</title>
             </head>
-			<body>
+            <body>
                 <div id="title">
                     <img src="/img/logo_white.png" id="logo" />
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
@@ -37,90 +36,47 @@
 
                     <div id="userArea">
                         Logged in as
-                        <b><xsl:value-of select="//n:week/n:team/n:memberDefinition[@you='true']/@name" /></b>
+                        <b><xsl:value-of select="//n:team/n:memberDefinition[@you='true']/@name" /></b>
                         (<a href="/api/doLogout">Logout</a>)
                     </div>
                 </div>
                 <div id="content">
-                    <div id="scrollPane">
-                        <div id="contentHeader">
-                            <div id="contentHeaderSpacer" />
-                            <xsl:for-each select="//n:day">
-                                <xsl:variable name="monthday" select="substring-after(@date,'-')"/>
-                                <xsl:variable name="month" select="number(substring-before($monthday,'-'))"/>
-                                <xsl:variable name="day" select="number(substring-after($monthday,'-'))"/>
-                                <div class="date">
-                                    <xsl:if test="@today='true'">
-                                        <xsl:attribute name="class">date today</xsl:attribute>
-                                    </xsl:if>
-                                    <p class="dateDay">
-                                        <xsl:value-of select="$day"/>
-                                    </p>
-                                    <p class="dateMonth">
-                                        <xsl:call-template name="numberToMonth">
-                                            <xsl:with-param name="number" select="$month" />
-                                        </xsl:call-template>
-                                    </p>
-                                </div>
-
-                            </xsl:for-each>
-                        </div>
-                        <div id="scrollingContent">
-                            <div id="timeline">
-                                <xsl:call-template name="timeStripRecursive">
-                                    <xsl:with-param name="currentHour" select="1" />
-                                </xsl:call-template>
+                    <div id="teamMembers">
+                        <xsl:for-each select="n:team/n:memberDefinition">
+                            <div class="teamMemberElement teamMember">
+                                <xsl:value-of select="current()/@name" />
+                                <xsl:if test="not(current()/@leader = 'true')">
+                                    <form method="post" action="/api/deleteTeamUser">
+                                        <input type="hidden" name="user">
+                                            <xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
+                                        </input>
+                                        <input type="submit" value=""/>
+                                    </form>
+                                </xsl:if>
                             </div>
-
-                            <xsl:for-each select="//n:day">
-                                <div class="day">
-                                    <xsl:variable name="dayPos" select="position()"/>
-                                    <xsl:if test="@today='true'">
-                                        <xsl:attribute name="class">day today</xsl:attribute>
-                                    </xsl:if>
-                                    <div class="jobContainer">
-                                        <xsl:if test="@today='true'">
-                                            <div id="currentTimeIndicator">
-                                                <div id="currentTimeBall" />
-                                            </div>
-                                        </xsl:if>
-                                        <xsl:for-each select=".//n:job|.//n:jobContinuation">
-                                            <xsl:choose>
-                                                <xsl:when test="name() = 'job'">
-                                                    <xsl:call-template name="jobObject">
-                                                        <xsl:with-param name="id" select="@id" />
-                                                        <xsl:with-param name="name" select="@name" />
-                                                        <xsl:with-param name="description" select="n:description" />
-                                                        <xsl:with-param name="timeFrom" select="@timeFrom" />
-                                                        <xsl:with-param name="timeTo" select="@timeTo" />
-                                                        <xsl:with-param name="duration" select="@duration" />
-                                                        <xsl:with-param name="dayPos" select="$dayPos" />
-                                                        <xsl:with-param name="members" select="n:member" />
-                                                    </xsl:call-template>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <xsl:call-template name="jobObject">
-                                                        <xsl:with-param name="id" select="@job" />
-                                                        <xsl:with-param name="name" select="//n:job[@id=current()/@job]/@name" />
-                                                        <xsl:with-param name="description" select="//n:job[@id=current()/@job]/n:description" />
-                                                        <xsl:with-param name="timeFrom" select="@timeFrom" />
-                                                        <xsl:with-param name="timeTo" select="@timeTo" />
-                                                        <xsl:with-param name="duration" select="//n:job[@id=current()/@job]/@duration" />
-                                                        <xsl:with-param name="dayPos" select="$dayPos" />
-                                                        <xsl:with-param name="members" select="//n:job[@id=current()/@job]/n:member" />
-                                                    </xsl:call-template>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </xsl:for-each>
-                                    </div>
-                                </div>
-                            </xsl:for-each>
+                        </xsl:for-each>
+                        <div class="teamMemberElement" id="addTeamMember">
+                            Add Member...
+                        </div>
+                        <div class="arrow_box" id="addTeamMemberPane">
+                            <form action="/api/teamUser" method="post">
+                                <input type="text" name="firstname" class="inputName" placeholder="First Name"/>
+                                <input type="text" name="lastname" class="inputName" placeholder="Last Name"/>
+                                <br />
+                                <label for="inputMail" >E-Mail: </label>
+                                <input type="text" name="mail" id="inputMail" placeholder="E-Mail"/>
+                                <br />
+                                <label for="inputPassword" >Initial Password: </label>
+                                <input type="password" name="password" id="inputPassword"/>
+                                <br />
+                                <input type="submit" value="Add" />
+                            </form>
                         </div>
                     </div>
                 </div>
-			</body>
-		</html>
-	</xsl:template>
+            </body>
+        </html>
+    </xsl:template>
 
     <!-- Darstellung eines Termins -->
 
