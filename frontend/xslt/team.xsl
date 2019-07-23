@@ -79,6 +79,7 @@
                             <div class="job">
                                 <xsl:variable name="job" select="." />
                                 <xsl:variable name="jobId" select="@id" />
+                                <xsl:attribute name="id">j<xsl:value-of select="$jobId" /></xsl:attribute>
                                 <p class="jobTitle"><xsl:value-of select="current()/@name"/></p>
                                 <p class="jobDuration"><xsl:value-of select="current()/@duration" /> min</p>
                                 <p class="jobDescription"><xsl:value-of select="current()/n:description"/></p>
@@ -103,7 +104,7 @@
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                     </input>
                                     <select name="user">
-                                        <option value="-1" selected="selected">Add user...</option>
+                                        <option value="none" selected="selected">Add user...</option>
                                         <xsl:for-each select="//n:team/n:memberDefinition">
                                             <xsl:if test="not($job/n:member[@id=current()/@id])">
                                                 <option>
@@ -139,7 +140,7 @@
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                     </input>
                                     <select name="parent">
-                                        <option value="-1" selected="selected">Add dependency...</option>
+                                        <option value="none" selected="selected">Add dependency...</option>
                                         <xsl:for-each select="//n:jobDefinition">
                                             <xsl:if test="not($job/n:dependsOn[@id=current()/@id]) and not($jobId = current()/@id)">
                                                 <option>

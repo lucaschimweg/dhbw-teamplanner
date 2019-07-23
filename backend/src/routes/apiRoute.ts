@@ -124,8 +124,15 @@ export class ApiRoute {
             return;
         }
 
-        let userId = req.body.user.substr(1);
         let jobId = req.body.job;
+        let userId = req.body.user.substr(1);
+        if (userId == "one" ) {
+            res.writeHead(303, {
+                'Location': "/team#" + "j" + jobId
+            });
+            res.end();
+            return;
+        }
 
         let team = await Database.getInstance().getTeamById(req.user.teamId);
         if (!team) {
@@ -167,7 +174,7 @@ export class ApiRoute {
         await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
 
         res.writeHead(303, {
-            'Location': "/team"
+            'Location': "/team#" + "j" + jobId
         });
         res.end();
     }
@@ -224,7 +231,7 @@ export class ApiRoute {
         await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
 
         res.writeHead(303, {
-            'Location': "/team"
+            'Location': "/team#" + "j" + jobId
         });
         res.end();
     }
@@ -235,8 +242,15 @@ export class ApiRoute {
             return;
         }
 
-        let parentId = req.body.parent;
         let jobId = req.body.job;
+        let parentId = req.body.parent;
+        if (parentId == "none" ) {
+            res.writeHead(303, {
+                'Location': "/team#" + "j" + jobId
+            });
+            res.end();
+            return;
+        }
 
         let team = await Database.getInstance().getTeamById(req.user.teamId);
         if (!team) {
@@ -284,7 +298,7 @@ export class ApiRoute {
         await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
 
         res.writeHead(303, {
-            'Location': "/team"
+            'Location': "/team#" + "j" + jobId
         });
         res.end();
     }
@@ -339,7 +353,7 @@ export class ApiRoute {
         await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
 
         res.writeHead(303, {
-            'Location': "/team"
+            'Location': "/team#" + "j" + jobId
         });
         res.end();
     }
