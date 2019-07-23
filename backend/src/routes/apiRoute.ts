@@ -78,7 +78,7 @@ export class ApiRoute {
     }
 
     private async deleteTeamUser(req: express.Request, res: express.Response) {
-        if (!("user")) {
+        if (!("user" in req.body)) {
             res.status(400).end("Bad Request");
             return;
         }
@@ -110,7 +110,7 @@ export class ApiRoute {
 
         await Database.getInstance().deleteUser(userId);
 
-        await new JobScheduler(req.user.teamId).scheduleJobs(team.start); // TODO takes long, implement background handling
+        await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
 
         res.writeHead(303, {
             'Location': "/team"
@@ -118,11 +118,126 @@ export class ApiRoute {
         res.end();
     }
 
+    private async addJobUser(req: express.Request, res: express.Response) {
+        if (!("user" in req.body && "job" in req.body)) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let userId = req.body.user.substr(1);
+        let jobId = req.body.job;
+
+        let team = await Database.getInstance().getTeamById(req.user.teamId);
+        if (!team) {
+            res.status(500).end("Server error");
+            return;
+        }
+
+        if (team.leader.id != req.user.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        let user = await Database.getInstance().getUserById(userId);
+
+        if (!user) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        if (user.teamId != team.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        let job = await Database.getInstance().getJobById(jobId);
+
+        if (!job) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        if (job.teamId != team.id) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        await Database.getInstance().addParticipantToJob(jobId, userId);
+
+        await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
+
+        res.writeHead(303, {
+            'Location': "/team"
+        });
+        res.end();
+    }
+
+    private async deleteJobUser(req: express.Request, res: express.Response) {
+        if (!("user" in req.body && "job" in req.body)) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let userId = req.body.user.substr(1);
+        let jobId = req.body.job;
+
+        let team = await Database.getInstance().getTeamById(req.user.teamId);
+        if (!team) {
+            res.status(500).end("Server error");
+            return;
+        }
+
+        if (team.leader.id != req.user.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        let user = await Database.getInstance().getUserById(userId);
+
+        if (!user) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        if (user.teamId != team.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        let job = await Database.getInstance().getJobById(jobId);
+
+        if (!job) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        if (job.teamId != team.id) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let part = await Database.getInstance().getParticipantsForJob(jobId);
+
+        // if user does not exist in job nothing will happen
+        await Database.getInstance().removeParticipantFromJob(jobId, userId);
+
+        await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
+
+        res.writeHead(303, {
+            'Location': "/team"
+        });
+        res.end();
+    }
+
+
     constructor() {
         this.router.get("/doLogout", this.doLogout.bind(this));
         this.router.post("/jobDuration", this.postJobDuration.bind(this));
         this.router.post("/teamUser", this.postTeamUser.bind(this));
         this.router.post("/deleteTeamUser", this.deleteTeamUser.bind(this));
+        this.router.post("/addJobUser", this.addJobUser.bind(this));
+        this.router.post("/deleteJobUser", this.deleteJobUser.bind(this));
+
     }
 
     public getRouter(): express.Router {
