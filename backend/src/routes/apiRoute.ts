@@ -32,7 +32,7 @@ export class ApiRoute {
             res.status(500).end("Server error");
             return;
         }
-        await new JobScheduler(req.user.teamId).scheduleJobs(team.start); // TODO takes long, implement background handling
+        await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
 
         res.writeHead(303, {
             'Location': "/week?offset=" + (req.body.offset || 0)
@@ -65,7 +65,7 @@ export class ApiRoute {
         if (await Database.getInstance().userExists(mail)) {
             res.writeHead(303, {
                 'Location': '/team?error="User already exists with that mail!"'
-            });
+            }).end();
             return;
         }
 
@@ -109,6 +109,8 @@ export class ApiRoute {
         }
 
         await Database.getInstance().deleteUser(userId);
+
+        await new JobScheduler(req.user.teamId).scheduleJobs(team.start); // TODO takes long, implement background handling
 
         res.writeHead(303, {
             'Location': "/team"

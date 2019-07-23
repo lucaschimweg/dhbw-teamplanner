@@ -4,11 +4,16 @@
 
 #content {
     font-family: 'Open Sans', sans-serif;
+    position: absolute;
+    overflow-y: auto;
+    width: 100%;
+    height: calc(100% - 49px);
+    background: whitesmoke;
 }
 
 .teamMemberElement {
     text-align: left;
-    padding: 8px;
+    padding: 8px 8px 8px 12px;
     font-size: 16px;
 }
 
@@ -76,4 +81,76 @@
 .inputName {
     width: 8em;
     font-size: 200%;
+}
+
+.sectionHeading {
+    font-weight: bolder;
+    margin: 0;
+    padding: 8px;
+    color: rgb(0, 77, 53);
+    text-decoration: underline;
+}
+
+
+#teamMembers {
+    border-right: 1px solid black;
+    height: 100%;
+    margin: 0;
+    float: left;
+    position: relative;
+    width: calc(20% - 1px);
+}
+
+#teamJobs {
+    height: 100%;
+    margin: 0;
+    float: left;
+    position: relative;
+    width: 80%;
+    overflow-y: auto;
+}
+
+.job {
+    width: calc(100% - 24px);
+    margin: 8px;
+    border-radius: 3px;
+    background: white;
+    padding: 4px;
+    -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
+    -moz-box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.75);
+}
+
+.jobTitle {
+    margin: 4px 4px 0;
+    color: rgb(0, 77, 53);
+    font-weight: bold;
+    font-size: 16pt;
+}
+
+.jobDuration {
+    margin: 0 4px 4px;
+    font-size: 10pt;
+}
+
+.jobDescription {
+    margin: 4px;
+    font-size: 12pt;
+}
+
+.jobSectionHeading {
+    margin: 8px 4px 4px;
+    color: rgb(0, 77, 53);
+    text-decoration: underline;
+    font-weight: bolder;
+}
+
+.addMemberForm {
+    margin-left: 8px;
+    margin-bottom: 4px;
+    margin-top: 0;
+}
+
+.addMemberForm > select {
+    margin-right: 4px;
 }

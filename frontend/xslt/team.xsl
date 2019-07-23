@@ -3,7 +3,7 @@
 <xsl:stylesheet version="1.0"
                 xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml" xmlns:xsL="http://www.w3.org/1999/XSL/Transform">
     <xsl:output method="xml" encoding="UTF-8" indent="yes" />
     <xsl:template match="n:teamOverview">
         <html lang="en">
@@ -42,6 +42,7 @@
                 </div>
                 <div id="content">
                     <div id="teamMembers">
+                        <p class="sectionHeading">Members</p>
                         <xsl:for-each select="n:team/n:memberDefinition">
                             <div class="teamMemberElement teamMember">
                                 <xsl:value-of select="current()/@name" />
@@ -72,6 +73,88 @@
                                 <input type="submit" value="Add" />
                             </form>
                         </div>
+                    </div>
+                    <div id="teamJobs">
+                        <xsl:for-each select="n:jobDefinition">
+                            <div class="job">
+                                <xsl:variable name="job" select="." />
+                                <xsl:variable name="jobId" select="@id" />
+                                <p class="jobTitle"><xsl:value-of select="current()/@name"/></p>
+                                <p class="jobDuration"><xsl:value-of select="current()/@duration" /> min</p>
+                                <p class="jobDescription"><xsl:value-of select="current()/n:description"/></p>
+                                <p class="jobSectionHeading">Members</p>
+                                <xsl:for-each select="n:member">
+                                    <xsl:variable name="user" select="//n:team/n:memberDefinition[@id=current()/@id]" />
+                                    <div class="teamMemberElement teamMember">
+                                        <xsl:value-of select="$user/@name" />
+                                        <form method="post" action="/api/deleteJobUser">
+                                            <input type="hidden" name="user">
+                                                <xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
+                                            </input>
+                                            <input type="hidden" name="job">
+                                                <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
+                                            </input>
+                                            <input type="submit" value=""/>
+                                        </form>
+                                    </div>
+                                </xsl:for-each>
+                                <form method="post" action="/api/addJobUser" class="addMemberForm">
+                                    <input type="hidden" name="job">
+                                        <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
+                                    </input>
+                                    <select name="user">
+                                        <option value="-1" selected="selected">Add user...</option>
+                                        <xsl:for-each select="//n:team/n:memberDefinition">
+                                            <xsl:if test="not($job/n:member[@id=current()/@id])">
+                                                <option>
+                                                    <xsl:attribute name="value">
+                                                        <xsL:value-of select="@id" />
+                                                    </xsl:attribute>
+                                                    <xsl:value-of select="@name" />
+                                                </option>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </select>
+                                    <input type="submit" value="add" />
+                                </form>
+
+                                <p class="jobSectionHeading">Dependencies</p>
+                                <xsl:for-each select="n:dependsOn">
+                                    <xsl:variable name="dependency" select="//n:jobDefinition[@id=current()/@id]" />
+                                    <div class="teamMemberElement teamMember">
+                                        <xsl:value-of select="$dependency/@name" />
+                                        <form method="post" action="/api/deleteJobDependency">
+                                            <input type="hidden" name="parent">
+                                                <xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
+                                            </input>
+                                            <input type="hidden" name="job">
+                                                <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
+                                            </input>
+                                            <input type="submit" value=""/>
+                                        </form>
+                                    </div>
+                                </xsl:for-each>
+                                <form method="post" action="/api/addJobDependency" class="addMemberForm">
+                                    <input type="hidden" name="job">
+                                        <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
+                                    </input>
+                                    <select name="parent">
+                                        <option value="-1" selected="selected">Add dependency...</option>
+                                        <xsl:for-each select="//n:jobDefinition">
+                                            <xsl:if test="not($job/n:dependsOn[@id=current()/@id]) and not($jobId = current()/@id)">
+                                                <option>
+                                                    <xsl:attribute name="value">
+                                                        <xsL:value-of select="@id" />
+                                                    </xsl:attribute>
+                                                    <xsl:value-of select="@name" />
+                                                </option>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </select>
+                                    <input type="submit" value="add" />
+                                </form>
+                            </div>
+                        </xsl:for-each>
                     </div>
                 </div>
             </body>
