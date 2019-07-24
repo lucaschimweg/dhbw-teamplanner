@@ -83,6 +83,10 @@
     font-size: 200%;
 }
 
+.inputName[name="lastname"] {
+    margin-left: 4px;
+}
+
 .sectionHeading {
     font-weight: bolder;
     margin: 0;
@@ -153,4 +157,44 @@
 
 .addMemberForm > select {
     margin-right: 4px;
+}
+
+#addJob {
+
+}
+
+#addJobContainer {
+    display: none;
+    margin: 4px;
+}
+
+#addJob:hover > #addJobContainer, #addJobContainer:hover {
+    display: block;
+}
+
+#addJobText {
+    margin: 4px;
+    font-style: italic;
+}
+
+#inputTitle {
+    width: 20em;
+    font-size: 16pt;
+    color: rgb(0, 77, 53);
+}
+
+#inputDuration {
+    width: 4em;
+}
+
+#inputDescription {
+    margin-top: 8px;
+    width: 32em;
+}
+
+#addJobSeperator {
+    width: calc(100% + 16px);
+    margin: 8px -8px;
+    background-color: #333333;
+    height: 1px;
 }

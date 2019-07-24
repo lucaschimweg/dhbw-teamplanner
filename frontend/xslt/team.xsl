@@ -60,21 +60,38 @@
                             Add Member...
                         </div>
                         <div class="arrow_box" id="addTeamMemberPane">
-                            <form action="/api/teamUser" method="post">
-                                <input type="text" name="firstname" class="inputName" placeholder="First Name"/>
-                                <input type="text" name="lastname" class="inputName" placeholder="Last Name"/>
+                            <form action="/api/addTeamUser" method="post">
+                                <input type="text" name="firstname" class="inputName" autocomplete="off" placeholder="First Name"/>
+                                <input type="text" name="lastname" class="inputName" autocomplete="off" placeholder="Last Name"/>
                                 <br />
                                 <label for="inputMail" >E-Mail: </label>
-                                <input type="text" name="mail" id="inputMail" placeholder="E-Mail"/>
+                                <input type="email" name="mail" id="inputMail" autocomplete="off" placeholder="E-Mail"/>
                                 <br />
                                 <label for="inputPassword" >Initial Password: </label>
-                                <input type="password" name="password" id="inputPassword"/>
+                                <input type="password" name="password" autocomplete="off" id="inputPassword"/>
                                 <br />
                                 <input type="submit" value="Add" />
                             </form>
                         </div>
                     </div>
                     <div id="teamJobs">
+                        <div class="job" id="addJob">
+                            <p id="addJobText"> Add Job... </p>
+                            <div id="addJobContainer">
+                                <div id="addJobSeperator"/>
+                                <form action="/api/createJob" method="post">
+                                    <input type="text" name="name" id="inputTitle" autocomplete="off" placeholder="Title"/>
+                                    <br />
+                                    <input type="number" name="duration" id="inputDuration" autocomplete="off" value="60"/> min
+
+                                    <br />
+                                    <textarea name="description" id="inputDescription" autocomplete="off" placeholder="Description" rows="2"/>
+                                    <br />
+                                    <input type="submit" value="Add" />
+                                </form>
+                            </div>
+                        </div>
+
                         <xsl:for-each select="n:jobDefinition">
                             <div class="job">
                                 <xsl:variable name="job" select="." />
@@ -160,124 +177,6 @@
                 </div>
             </body>
         </html>
-    </xsl:template>
-
-    <!-- Darstellung eines Termins -->
-
-    <xsl:template name="jobObject">
-        <xsl:param name="id" />
-        <xsl:param name="name" />
-        <xsl:param name="description" />
-        <xsl:param name="duration" />
-        <xsl:param name="timeFrom" />
-        <xsl:param name="timeTo" />
-        <xsl:param name="dayPos" />
-        <xsl:param name="members" />
-
-        <xsl:variable name="working_minutes" select="1440"/>
-        <xsl:variable name="start_hours" select="number(substring-before($timeFrom,':'))"/>
-        <xsl:variable name="start_minutes" select="number(substring-after($timeFrom,':'))"/>
-        <xsl:variable name="time_start_minutes" select="$start_hours * 60 + $start_minutes"/>
-
-        <xsl:variable name="end_hours" select="number(substring-before($timeTo,':'))"/>
-        <xsl:variable name="end_minutes" select="number(substring-after($timeTo,':'))"/>
-        <xsl:variable name="time_end_minutes" select="$end_hours * 60 + $end_minutes"/>
-
-        <xsl:variable name="time_taken" select="$time_end_minutes - $time_start_minutes"/>
-
-        <!-- Darstellung der Jobs im Kalender -->
-
-        <div class="job">
-            <xsl:attribute name="style">
-                top:calc(<xsl:value-of select="($time_start_minutes div $working_minutes) * 100"/>% + 1px);
-                height:calc(<xsl:value-of select="($time_taken div $working_minutes) * 100"/>% - 2px);
-            </xsl:attribute>
-            <p class="jobName">
-                <xsl:value-of select="$name"/>
-            </p>
-
-        </div>
-
-        <!-- Darstellung der Popup boxen -->
-
-        <div>
-            <xsl:attribute name="style">
-                top:calc(<xsl:value-of select="($time_start_minutes div $working_minutes + ($time_taken div $working_minutes) div 2) * 100"/>%);
-            </xsl:attribute>
-            <xsl:choose>
-                <xsl:when test="$dayPos > 4">
-                    <xsl:attribute name="class">jobDescr description_left arrow_box_left</xsl:attribute>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:attribute name="class">jobDescr description_right arrow_box</xsl:attribute>
-                </xsl:otherwise>
-            </xsl:choose>
-
-            <p class="jobDescrTitle"><xsl:value-of select="$name" /></p>
-            <p class="jobDescrTime">
-                <xsl:value-of select="../@date" />,
-                <xsl:value-of select="$timeFrom" /> -
-                <xsl:value-of select="$timeTo" />
-            </p>
-
-            <form action="/api/jobDuration" method="post">
-                <input type="number" class="durationInput" name="duration">
-                    <xsl:attribute name="value">
-                        <xsl:value-of select="$duration" />
-                    </xsl:attribute>
-                </input>
-                <input type="hidden" name="id">
-                    <xsl:attribute name="value"><xsl:value-of select="$id" /></xsl:attribute>
-                </input>
-                <input type="hidden" name="offset">
-                    <xsl:attribute name="value"><xsl:value-of select="//n:week/@offset" /></xsl:attribute>
-                </input>
-                <label for="duration" class="durationMinLabel"> min</label>
-                <input type="submit" class="durationSaveButton" value=""/>
-            </form>
-            <p class="jobDescrDescription"><xsl:value-of select="$description" /></p>
-            <ul class="memberList">
-                <xsl:for-each select="$members">
-                    <li><xsl:value-of select="//n:week/n:team/n:memberDefinition[@id=current()/@id]/@name" /></li>
-                </xsl:for-each>
-            </ul>
-        </div>
-
-    </xsl:template>
-
-    <xsl:template name="timeStripRecursive">
-        <xsl:param name="currentHour" />
-
-        <xsl:choose>
-            <xsl:when test="$currentHour mod 2 = 0">
-                <p class="timeValue">
-                    <xsl:attribute name="style">
-                        top:calc(<xsl:value-of select="($currentHour div 24) * 100"/>%);
-                    </xsl:attribute>
-                    <xsl:value-of select="$currentHour"/>
-                </p>
-                <div class="timeStrip">
-                    <xsl:attribute name="style">
-                        top:calc(<xsl:value-of select="($currentHour div 24) * 100"/>%);
-                    </xsl:attribute>
-                </div>
-            </xsl:when>
-            <xsl:otherwise>
-                <div class="timeStripSmall">
-                    <xsl:attribute name="style">
-                        top:calc(<xsl:value-of select="($currentHour div 24) * 100"/>%);
-                    </xsl:attribute>
-                </div>
-            </xsl:otherwise>
-        </xsl:choose>
-
-
-        <xsl:if test="$currentHour != 23">
-            <xsl:call-template name="timeStripRecursive">
-                <xsl:with-param name="currentHour" select="$currentHour + 1" />
-            </xsl:call-template>
-        </xsl:if>
-
     </xsl:template>
 
     <xsl:template name="numberToMonth">

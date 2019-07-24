@@ -358,16 +358,46 @@ export class ApiRoute {
         res.end();
     }
 
+    private async createJob(req: express.Request, res: express.Response) {
+        if (!("name" in req.body && "duration" in req.body)) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let name = req.body.name;
+        let descr = req.body.description || "";
+        let duration = req.body.duration;
+
+
+        let team = await Database.getInstance().getTeamById(req.user.teamId);
+        if (!team) {
+            res.status(500).end("Server error");
+            return;
+        }
+
+        if (team.leader.id != req.user.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        let job = await Database.getInstance().createJob(team.id, name, descr, duration);
+
+        res.writeHead(303, {
+            'Location': "/team#j" + job.id
+        });
+        res.end();
+    }
 
     constructor() {
         this.router.get("/doLogout", this.doLogout.bind(this));
         this.router.post("/jobDuration", this.postJobDuration.bind(this));
-        this.router.post("/teamUser", this.postTeamUser.bind(this));
+        this.router.post("/addTeamUser", this.postTeamUser.bind(this));
         this.router.post("/deleteTeamUser", this.deleteTeamUser.bind(this));
         this.router.post("/addJobUser", this.addJobUser.bind(this));
         this.router.post("/deleteJobUser", this.deleteJobUser.bind(this));
         this.router.post("/addJobDependency", this.addJobDependency.bind(this));
         this.router.post("/deleteJobDependency", this.deleteJobDependency.bind(this));
+        this.router.post("/createJob", this.createJob.bind(this));
     }
 
     public getRouter(): express.Router {
