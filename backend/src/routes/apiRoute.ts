@@ -388,6 +388,47 @@ export class ApiRoute {
         res.end();
     }
 
+    private async deleteJob(req: express.Request, res: express.Response) {
+        if (!("job" in req.body)) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let jobId = req.body.job;
+
+        let team = await Database.getInstance().getTeamById(req.user.teamId);
+        if (!team) {
+            res.status(500).end("Server error");
+            return;
+        }
+
+        if (team.leader.id != req.user.id) {
+            res.status(403).end("Forbidden");
+            return;
+        }
+
+        let job = await Database.getInstance().getJobById(jobId);
+
+        if (!job) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        if (job.teamId != team.id) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        await Database.getInstance().deleteJob(jobId);
+
+        await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
+
+        res.writeHead(303, {
+            'Location': "/team"
+        });
+        res.end();
+    }
+
     constructor() {
         this.router.get("/doLogout", this.doLogout.bind(this));
         this.router.post("/jobDuration", this.postJobDuration.bind(this));
@@ -398,6 +439,7 @@ export class ApiRoute {
         this.router.post("/addJobDependency", this.addJobDependency.bind(this));
         this.router.post("/deleteJobDependency", this.deleteJobDependency.bind(this));
         this.router.post("/createJob", this.createJob.bind(this));
+        this.router.post("/deleteJob", this.deleteJob.bind(this));
     }
 
     public getRouter(): express.Router {

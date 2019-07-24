@@ -209,6 +209,7 @@
     margin-top: 8px;
     margin-right: 8px;
     float: right;
+    cursor: pointer;
 }
 
 #deleteJobForm > input[type="submit"]:hover {

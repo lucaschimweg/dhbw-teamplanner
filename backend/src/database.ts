@@ -214,6 +214,10 @@ export class Database {
         return new Job(id, teamId, name, description, plannedDuration);
     }
 
+    public async deleteJob(jobId: number): Promise<void> {
+        await this.query(DbRes.DELETE_JOB, [jobId, jobId, jobId, jobId]);
+    }
+
     private static createJobParticipantFromObject(obj: any): JobParticipant {
         return new JobParticipant(
             Database.createUserFromObject(obj),

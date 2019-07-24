@@ -95,6 +95,11 @@ export class DbRes {
     public static INSERT_JOB: string = "INSERT INTO teamplanner_jobs (`team_id`, `name`, `description`, `planned_duration`) VALUES (?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
+    public static DELETE_JOB: string = "DELETE FROM teamplanner_jobs WHERE `job_id` = ?; " +
+        "DELETE FROM teamplanner_job_participants WHERE `job_id`= ?; " +
+        "DELETE FROM teamplanner_job_dependencies WHERE `job_parent`= ? OR `job_child` = ?";
+
+
     public static SELECT_JOB_PARTICIPANTS_BY_JOB: string = "SELECT * FROM teamplanner_job_participants JOIN teamplanner_users ON " +
         "teamplanner_job_participants .`user_id` = teamplanner_users.`user_id` WHERE `job_id` = ?";
 
