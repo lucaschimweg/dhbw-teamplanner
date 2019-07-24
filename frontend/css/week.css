@@ -64,7 +64,7 @@
     background: white;
 }
 
-.job {
+.job{
     margin: 0 4px;
     border-radius: 3px;
     width: calc(100% - 14px);
@@ -167,7 +167,7 @@
     margin-top: 8px;
     margin-left: 16px;
     width: 3em;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .durationMinLabel {
@@ -234,6 +234,10 @@
     background: #ff2a00;
     margin-top: -5px;
     margin-left: -6px;
+}
+
+ul.memberList {
+    margin-top: 4px;
 }
 
 /* Non Standard-CSS: Hiding Input Fields! */

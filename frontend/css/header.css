@@ -140,3 +140,9 @@ input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:foc
     border-bottom: 2px solid rgba(0, 61, 43, .9);
     outline: none;
 }
+
+pre {
+    font: inherit;
+    white-space: pre-wrap;
+    word-wrap: break-word
+}

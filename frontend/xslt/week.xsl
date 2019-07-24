@@ -195,7 +195,9 @@
                 <label for="duration" class="durationMinLabel"> min</label>
                 <input type="submit" class="durationSaveButton" value=""/>
             </form>
-            <p class="jobDescrDescription"><xsl:value-of select="$description" /></p>
+            <xsl:if test="$description != ''">
+                <pre class="jobDescrDescription"><xsl:value-of select="$description" /></pre>
+            </xsl:if>
             <ul class="memberList">
                 <xsl:for-each select="$members">
                     <li><xsl:value-of select="//n:week/n:team/n:memberDefinition[@id=current()/@id]/@name" /></li>

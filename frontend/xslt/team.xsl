@@ -98,9 +98,16 @@
                                 <xsl:variable name="job" select="." />
                                 <xsl:variable name="jobId" select="@id" />
                                 <xsl:attribute name="id">j<xsl:value-of select="$jobId" /></xsl:attribute>
+                                <form action="/api/deleteJob" id="deleteJobForm" method="post">
+                                    <input type="hidden" name="job">
+                                        <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
+                                    </input>
+                                    <input type="submit" value=""/>
+
+                                </form>
                                 <p class="jobTitle"><xsl:value-of select="current()/@name"/></p>
                                 <p class="jobDuration"><xsl:value-of select="current()/@duration" /> min</p>
-                                <p class="jobDescription"><xsl:value-of select="current()/n:description"/></p>
+                                <pre class="jobDescription"><xsl:value-of select="current()/n:description"/></pre>
                                 <p class="jobSectionHeading">Members</p>
                                 <xsl:for-each select="n:member">
                                     <xsl:variable name="user" select="//n:team/n:memberDefinition[@id=current()/@id]" />
@@ -153,6 +160,7 @@
                                         </form>
                                     </div>
                                 </xsl:for-each>
+
                                 <form method="post" action="/api/addJobDependency" class="addMemberForm">
                                     <input type="hidden" name="job">
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
