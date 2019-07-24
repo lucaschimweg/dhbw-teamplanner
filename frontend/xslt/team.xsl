@@ -20,18 +20,9 @@
                 <div id="title">
                     <img src="/img/logo_white.png" id="logo" />
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
-                    <div id="navigator">
-                        <a class="navigatorButton">
-                            <xsl:attribute name="href">/week?offset=<xsl:value-of select="//n:week/@offset - 1" /></xsl:attribute>
-                            <img src="/img/previous.svg" />
-                        </a>
-                        <a class="navigatorButton">
-                            <xsl:attribute name="href">/week?offset=0</xsl:attribute>
-                            <img src="/img/current.svg" />
-                        </a>
-                        <a class="navigatorButton">
-                            <xsl:attribute name="href">/week?offset=<xsl:value-of select="//n:week/@offset + 1" /></xsl:attribute>
-                            <img src="/img/next.svg" />
+                    <div id="changeViewButton">
+                        <a class="navigatorButton" href="/week">
+                            <img src="/img/calendar.svg" />
                         </a>
                     </div>
 

@@ -35,6 +35,15 @@
                         </a>
                     </div>
 
+                    <xsl:if test="//n:week/n:team/n:memberDefinition[@you='true'][@leader='true']">
+                        <div id="changeViewButton">
+                            <a class="navigatorButton" href="/team">
+                                <img src="/img/edit.svg" />
+                            </a>
+                        </div>
+
+                    </xsl:if>
+
                     <div id="userArea">
                         Logged in as
                         <b><xsl:value-of select="//n:week/n:team/n:memberDefinition[@you='true']/@name" /></b>
