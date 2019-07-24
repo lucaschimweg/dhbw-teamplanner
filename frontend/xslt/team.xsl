@@ -13,6 +13,7 @@
                 <link rel="icon" href="/img/favicon.png" type="image/png" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300&amp;display=swap" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap" />
+                <script src="/js/team.js" type="text/javascript" />
                 <title><xsl:value-of select="//n:team/@name"/> - week overview</title>
             </head>
             <body>
