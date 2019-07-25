@@ -3,6 +3,8 @@ window.addEventListener('load', updateTimeIndicator, false );
 var lastMin = -1;
 
 function updateTimeIndicator() {
+    let ind = document.getElementById("currentTimeIndicator");
+    if (!ind) return;
     setTimeout(updateTimeIndicator, 5000); // run every 5s
 
     var d = new Date();
@@ -16,5 +18,5 @@ function updateTimeIndicator() {
     lastMin = currentMinutes;
 
     var perc = currentMinutes / (24*60) * 100;
-    document.getElementById("currentTimeIndicator").style.setProperty("top", perc + "%");
+    ind.style.setProperty("top", perc + "%");
 }

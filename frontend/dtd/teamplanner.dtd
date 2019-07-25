@@ -1,57 +1,57 @@
 <!ELEMENT week (day+, team)>
-<!ATTLIST week
-    offset CDATA #REQUIRED >
+        <!ATTLIST week
+                offset CDATA #REQUIRED >
 
-<!ELEMENT team (description?, memberDefinition+)>
-<!ATTLIST team
-    name CDATA #REQUIRED >
+        <!ELEMENT team (description?, memberDefinition+)>
+        <!ATTLIST team
+                name CDATA #REQUIRED >
 
-<!ELEMENT description (#PCDATA) >
+        <!ELEMENT description (#PCDATA) >
 
-<!ELEMENT memberDefinition EMPTY>
-<!ATTLIST memberDefinition
-        id ID #REQUIRED
-        you (true|false) "false"
-        leader (true|false) "false"
-        startTime CDATA #IMPLIED
-        endTime CDATA #IMPLIED
-        name CDATA #IMPLIED>
+        <!ELEMENT memberDefinition EMPTY>
+        <!ATTLIST memberDefinition
+                id ID #REQUIRED
+                you (true|false) "false"
+                leader (true|false) "false"
+                startTime CDATA #IMPLIED
+                endTime CDATA #IMPLIED
+                name CDATA #IMPLIED>
 
-<!ELEMENT day (job*, jobContinuation*)>
-<!ATTLIST day
-        today (true|false) "false"
-        date CDATA #REQUIRED >
+        <!ELEMENT day ((job | jobContinuation)*)>
+        <!ATTLIST day
+                today (true|false) "false"
+                date CDATA #REQUIRED >
 
-<!ELEMENT job (description?, member+)>
-<!ATTLIST job
-        timeFrom CDATA #REQUIRED
-        timeTo CDATA #REQUIRED
-        name CDATA #REQUIRED
-        duration CDATA #REQUIRED
-        id ID #REQUIRED >
+        <!ELEMENT job (description?, member+)>
+        <!ATTLIST job
+                timeFrom CDATA #REQUIRED
+                timeTo CDATA #REQUIRED
+                name CDATA #REQUIRED
+                duration CDATA #REQUIRED
+                id ID #REQUIRED >
 
-<!ELEMENT jobContinuation EMPTY>
-<!ATTLIST jobContinuation
-        timeFrom CDATA #REQUIRED
-        timeTo CDATA #REQUIRED
-        job IDREF #REQUIRED >
+        <!ELEMENT jobContinuation EMPTY>
+        <!ATTLIST jobContinuation
+                timeFrom CDATA #REQUIRED
+                timeTo CDATA #REQUIRED
+                job IDREF #REQUIRED >
 
-<!ELEMENT member EMPTY>
-<!ATTLIST member
-        id IDREF #REQUIRED >
+        <!ELEMENT member EMPTY>
+        <!ATTLIST member
+                id IDREF #REQUIRED >
 
-<!ELEMENT teamOverview (team, jobDefinition*, semanticError)>
+        <!ELEMENT teamOverview (jobDefinition*, team)>
+        <!ATTLIST teamOverview
+                error CDATA #IMPLIED>
 
-<!ELEMENT jobDefinition (description?, member+, dependsOn+)>
-<!ATTLIST jobDefinition
-        name CDATA #REQUIRED
-        id ID #REQUIRED
-        duration CDATA #REQUIRED
-        planned (true|false) #IMPLIED
-        editing (true|false) #IMPLIED>
+        <!ELEMENT jobDefinition (description?, (dependsOn | member)+)>
+        <!ATTLIST jobDefinition
+                name CDATA #REQUIRED
+                id ID #REQUIRED
+                duration CDATA #REQUIRED
+                planned (true|false) #IMPLIED
+                editing (true|false) #IMPLIED>
 
-<!ELEMENT semanticError (#PCDATA)>
-
-<!ELEMENT dependsOn EMPTY>
-<!ATTLIST dependsOn
-        id IDREF #REQUIRED>
+        <!ELEMENT dependsOn EMPTY>
+        <!ATTLIST dependsOn
+                id IDREF #REQUIRED>
