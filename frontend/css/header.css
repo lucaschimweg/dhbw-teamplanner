@@ -19,6 +19,12 @@ a {
     cursor: default;
 }
 
+fieldset {
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+}
 
 #title {
     border-bottom: 1px solid black;

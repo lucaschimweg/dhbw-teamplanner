@@ -29,7 +29,7 @@
     float: right;
 }
 
-.teamMember > form > input[type="submit"] {
+.teamMember > form > fieldset > input[type="submit"] {
     border-radius: 0;
     background: transparent url("/img/deleteWhite.svg") no-repeat;
     background-size: contain;
@@ -40,12 +40,12 @@
     margin-top: 3px;
 }
 
-.teamMember:hover > form > input[type="submit"] {
+.teamMember:hover > form > fieldset > input[type="submit"] {
     display: block;
     cursor: pointer;
 }
 
-.teamMember:hover > form > input[type="submit"]:hover {
+.teamMember:hover > form > fieldset > input[type="submit"]:hover {
     background-image: url("/img/deleteRed.svg");
 }
 
@@ -74,7 +74,7 @@
     font-size: 10pt;
 }
 
-#addTeamMemberPane > form > input {
+#addTeamMemberPane > form > fieldset > input {
     margin-bottom: 8px;
 }
 
@@ -146,7 +146,7 @@
     margin-top: 0;
 }
 
-.addMemberForm > select {
+.addMemberForm > fieldset > select {
     margin-right: 4px;
 }
 
@@ -190,7 +190,7 @@
     height: 1px;
 }
 
-.deleteJobForm > input[type="submit"] {
+.deleteJobForm > fieldset > input[type="submit"] {
     border-radius: 0;
     background: transparent url("/img/deleteWhite.svg") no-repeat;
     background-size: contain;
@@ -203,7 +203,7 @@
     cursor: pointer;
 }
 
-.deleteJobForm > input[type="submit"]:hover {
+.deleteJobForm > fieldset > input[type="submit"]:hover {
     background-image: url("/img/deleteRed.svg");
 }
 
@@ -228,6 +228,12 @@
     float: left;
     position: relative;
     width: 80%;
+}
+
+#rightView > fieldset {
+    height: 100%;
+    position: relative;
+    width: 100%;
 }
 
 #leftTabRadio:checked ~ #teamJobs  {
@@ -276,4 +282,9 @@
 
 #rightTabRadio:checked ~ #tabDiv > #rightTabButton  {
     border-color: rgb(0, 77, 53);
+}
+
+.deleteJobForm > fieldset {
+    width: 16px;
+    float: right;
 }

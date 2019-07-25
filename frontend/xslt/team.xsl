@@ -41,12 +41,14 @@
                         </p>
                         <div id="changePasswordArea">
                             <form action="/api/password" method="post">
-                                <input type="hidden" name="offset" value="team"/>
-                                <label for="password" >Change Password: </label>
-                                <br />
-                                <input id="password" name="password" type="password" />
-                                <br />
-                                <input type="submit" value="change" />
+                                <fieldset>
+                                    <input type="hidden" name="offset" value="team"/>
+                                    <label for="password" >Change Password: </label>
+                                    <br />
+                                    <input id="password" name="password" type="password" />
+                                    <br />
+                                    <input type="submit" value="change" />
+                                </fieldset>
                             </form>
                         </div>
                     </div>
@@ -59,10 +61,12 @@
                                 <xsl:value-of select="current()/@name" />
                                 <xsl:if test="not(current()/@leader = 'true')">
                                     <form method="post" action="/api/deleteTeamUser">
+                                        <fieldset>
                                         <input type="hidden" name="user">
                                             <xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
                                         </input>
                                         <input type="submit" value=""/>
+                                        </fieldset>
                                     </form>
                                 </xsl:if>
                             </div>
@@ -72,6 +76,7 @@
                         </div>
                         <div class="arrow_box" id="addTeamMemberPane">
                             <form action="/api/addTeamUser" method="post">
+                                <fieldset>
                                 <input type="text" name="firstname" class="inputName" autocomplete="off" placeholder="First Name"/>
                                 <input type="text" name="lastname" class="inputName" autocomplete="off" placeholder="Last Name"/>
                                 <br />
@@ -82,10 +87,12 @@
                                 <input type="password" name="password" autocomplete="off" id="inputPassword"/>
                                 <br />
                                 <input type="submit" value="Add" />
+                                </fieldset>
                             </form>
                         </div>
                     </div>
                     <form id="rightView" >
+                        <fieldset>
                         <input type="radio" class="tabRadio" name="selectedTab" id="rightTabRadio"/>
                         <input type="radio" class="tabRadio" name="selectedTab" checked="checked" id="leftTabRadio"/>
 
@@ -105,6 +112,7 @@
                             <div id="addJobContainer">
                                 <div id="addJobSeperator"/>
                                 <form action="/api/createJob" method="post">
+                                    <fieldset>
                                     <input type="text" name="name" id="inputTitle" autocomplete="off" placeholder="Title"/>
                                     <br />
                                     <input type="number" name="duration" id="inputDuration" autocomplete="off" value="60"/> min
@@ -113,6 +121,7 @@
                                     <textarea name="description" id="inputDescription" autocomplete="off" placeholder="Description" rows="2"/>
                                     <br />
                                     <input type="submit" value="Add" />
+                                    </fieldset>
                                 </form>
                             </div>
                         </div>
@@ -123,11 +132,12 @@
                                 <xsl:variable name="jobId" select="@id" />
                                 <xsl:attribute name="id"><xsl:value-of select="$jobId" /></xsl:attribute>
                                 <form action="/api/deleteJob" class="deleteJobForm" method="post">
+                                    <fieldset>
                                     <input type="hidden" name="job">
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                     </input>
                                     <input type="submit" value=""/>
-
+                                    </fieldset>
                                 </form>
                                 <p class="jobTitle"><xsl:value-of select="current()/@name"/></p>
                                 <p class="jobDuration"><xsl:value-of select="current()/@duration" /> min</p>
@@ -138,6 +148,7 @@
                                     <div class="teamMemberElement teamMember">
                                         <xsl:value-of select="$user/@name" />
                                         <form method="post" action="/api/deleteJobUser">
+                                            <fieldset>
                                             <input type="hidden" name="user">
                                                 <xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
                                             </input>
@@ -145,10 +156,12 @@
                                                 <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                             </input>
                                             <input type="submit" value=""/>
+                                            </fieldset>
                                         </form>
                                     </div>
                                 </xsl:for-each>
                                 <form method="post" action="/api/addJobUser" class="addMemberForm">
+                                    <fieldset>
                                     <input type="hidden" name="job">
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                     </input>
@@ -166,6 +179,7 @@
                                         </xsl:for-each>
                                     </select>
                                     <input type="submit" value="add" />
+                                    </fieldset>
                                 </form>
 
                                 <p class="jobSectionHeading">Dependencies</p>
@@ -174,6 +188,7 @@
                                     <div class="teamMemberElement teamMember">
                                         <xsl:value-of select="$dependency/@name" />
                                         <form method="post" action="/api/deleteJobDependency">
+                                            <fieldset>
                                             <input type="hidden" name="parent">
                                                 <xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
                                             </input>
@@ -181,11 +196,13 @@
                                                 <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                             </input>
                                             <input type="submit" value=""/>
+                                            </fieldset>
                                         </form>
                                     </div>
                                 </xsl:for-each>
 
                                 <form method="post" action="/api/addJobDependency" class="addMemberForm">
+                                    <fieldset>
                                     <input type="hidden" name="job">
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                     </input>
@@ -203,6 +220,7 @@
                                         </xsl:for-each>
                                     </select>
                                     <input type="submit" value="add" />
+                                    </fieldset>
                                 </form>
                             </div>
                         </xsl:for-each>
@@ -210,6 +228,7 @@
                         <div id="graph">
                             <xsl:call-template name="jobGraph" />
                         </div>
+                        </fieldset>
                     </form>
 
 

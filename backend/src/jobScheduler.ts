@@ -52,8 +52,8 @@ export class JobScheduler {
         if (job.startTime != -1) return false;
         job.startTime = -2;
         for (let parent of job.parents) {
-            if (!this.scheduleUpwards(parent, times)) {
-                return false;
+            if (this.scheduleUpwards(parent, times)) {
+                return true;
             }
         }
 
@@ -89,7 +89,7 @@ export class JobScheduler {
 
             times.set(usr.user.id, daysUsr * JobScheduler.DAY_LENGTH + endTimeOnDay);
         }
-        return true;
+        return false;
     }
 
     public createJobsWithTime(start: Date): JobWithTime[] {

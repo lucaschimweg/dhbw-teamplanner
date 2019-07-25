@@ -4,7 +4,9 @@
                 xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
+	<xsl:output method="xml" encoding="UTF-8" indent="yes"
+                doctype-public="-//W3C//DTD XHTML 1.1//EN"
+                doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
     <xsl:template match="n:week">
 		<html lang="en">
             <head>
@@ -18,27 +20,27 @@
             </head>
 			<body>
                 <div id="title">
-                    <img src="/img/logo_white.png" id="logo" />
+                    <img src="/img/logo_white.png" id="logo" alt="teamplanner logo"/>
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
                     <div id="navigator">
                         <a class="navigatorButton">
                             <xsl:attribute name="href">/week?offset=<xsl:value-of select="//n:week/@offset - 1" /></xsl:attribute>
-                            <img src="/img/previous.svg" />
+                            <img src="/img/previous.svg" alt="previous week"/>
                         </a>
                         <a class="navigatorButton">
                             <xsl:attribute name="href">/week?offset=0</xsl:attribute>
-                            <img src="/img/current.svg" />
+                            <img src="/img/current.svg" alt="current week"/>
                         </a>
                         <a class="navigatorButton">
                             <xsl:attribute name="href">/week?offset=<xsl:value-of select="//n:week/@offset + 1" /></xsl:attribute>
-                            <img src="/img/next.svg" />
+                            <img src="/img/next.svg" alt="next week"/>
                         </a>
                     </div>
 
                     <xsl:if test="//n:week/n:team/n:memberDefinition[@you='true'][@leader='true']">
                         <div id="changeViewButton">
                             <a class="navigatorButton" href="/team">
-                                <img src="/img/edit.svg" />
+                                <img src="/img/edit.svg" alt="edit team"/>
                             </a>
                         </div>
 
@@ -52,14 +54,16 @@
                         </p>
                         <div id="changePasswordArea">
                             <form action="/api/password" method="post">
-                                <input type="hidden" name="offset">
-                                    <xsl:attribute name="value"><xsl:value-of select="//n:week/@offset" /></xsl:attribute>
-                                </input>
-                                <label for="password" >Change Password: </label>
-                                <br />
-                                <input id="password" name="password" type="password" />
-                                <br />
-                                <input type="submit" value="change" />
+                                <fieldset>
+                                    <input type="hidden" name="offset">
+                                        <xsl:attribute name="value"><xsl:value-of select="//n:week/@offset" /></xsl:attribute>
+                                    </input>
+                                    <label for="password" >Change Password: </label>
+                                    <br />
+                                    <input id="password" name="password" type="password" />
+                                    <br />
+                                    <input type="submit" value="change" />
+                                </fieldset>
                             </form>
                         </div>
                     </div>
@@ -204,19 +208,21 @@
             </p>
 
             <form action="/api/jobDuration" method="post">
-                <input type="number" class="durationInput" name="duration">
-                    <xsl:attribute name="value">
-                        <xsl:value-of select="$duration" />
-                    </xsl:attribute>
-                </input>
-                <input type="hidden" name="id">
-                    <xsl:attribute name="value"><xsl:value-of select="$id" /></xsl:attribute>
-                </input>
-                <input type="hidden" name="offset">
-                    <xsl:attribute name="value"><xsl:value-of select="//n:week/@offset" /></xsl:attribute>
-                </input>
-                <label for="duration" class="durationMinLabel"> min</label>
-                <input type="submit" class="durationSaveButton" value=""/>
+                <fieldset>
+                    <input type="number" class="durationInput" name="duration">
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="$duration" />
+                        </xsl:attribute>
+                    </input>
+                    <input type="hidden" name="id">
+                        <xsl:attribute name="value"><xsl:value-of select="$id" /></xsl:attribute>
+                    </input>
+                    <input type="hidden" name="offset">
+                        <xsl:attribute name="value"><xsl:value-of select="//n:week/@offset" /></xsl:attribute>
+                    </input>
+                    <label class="durationMinLabel"> min</label>
+                    <input type="submit" class="durationSaveButton" value=""/>
+                </fieldset>
             </form>
             <xsl:if test="$description != ''">
                 <pre class="jobDescrDescription"><xsl:value-of select="$description" /></pre>

@@ -261,7 +261,7 @@ export class ApiRoute {
         }
 
         let jobId = req.body.job.substr(1);
-        let parentId = req.body.parent;
+        let parentId = req.body.parent.substr(1);
         if (parentId == "none" ) {
             res.writeHead(303, {
                 'Location': "/team#" + "j" + jobId
@@ -283,7 +283,7 @@ export class ApiRoute {
 
         let parent = await Database.getInstance().getJobById(jobId);
 
-        if (!parent) {
+        if (parent == null) {
             res.status(400).end("Bad Request");
             return;
         }
