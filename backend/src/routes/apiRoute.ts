@@ -29,12 +29,14 @@ export class ApiRoute {
     }
 
     private async postJobDuration(req: express.Request, res: express.Response) {
-        let id = req.body.id;
+        let id = req.body.id.substr(1);
         let newTime = req.body.duration;
         if (!id || !newTime) {
             res.status(400).end("Bad Request");
             return;
         }
+
+        console.log(id);
 
         let partIds = await Database.getInstance().getJobParticipantIds(id);
         if (partIds.indexOf(req.user.id) == -1) {
@@ -140,7 +142,7 @@ export class ApiRoute {
             return;
         }
 
-        let jobId = req.body.job;
+        let jobId = req.body.job.substr(1);
         let userId = req.body.user.substr(1);
         if (userId == "one" ) {
             res.writeHead(303, {
@@ -202,7 +204,7 @@ export class ApiRoute {
         }
 
         let userId = req.body.user.substr(1);
-        let jobId = req.body.job;
+        let jobId = req.body.job.substr(1);
 
         let team = await Database.getInstance().getTeamById(req.user.teamId);
         if (!team) {
@@ -258,7 +260,7 @@ export class ApiRoute {
             return;
         }
 
-        let jobId = req.body.job;
+        let jobId = req.body.job.substr(1);
         let parentId = req.body.parent;
         if (parentId == "none" ) {
             res.writeHead(303, {
@@ -311,7 +313,15 @@ export class ApiRoute {
 
         await Database.getInstance().addJobDependency(parentId, jobId);
 
-        await new JobScheduler(req.user.teamId).scheduleJobs(team.start);
+        if (!await new JobScheduler(req.user.teamId).scheduleJobs(team.start)) {
+            // Circular dependency
+            await Database.getInstance().deleteJobDependency(parentId, jobId);
+            res.writeHead(303, {
+                'Location': '/team?error="Circular dependency detected!"#' + "j" + jobId
+            });
+            res.end();
+            return;
+        }
 
         res.writeHead(303, {
             'Location': "/team#" + "j" + jobId
@@ -326,7 +336,7 @@ export class ApiRoute {
         }
 
         let parentId = req.body.parent;
-        let jobId = req.body.job;
+        let jobId = req.body.job.substr(1);
 
         let team = await Database.getInstance().getTeamById(req.user.teamId);
         if (!team) {
@@ -410,7 +420,7 @@ export class ApiRoute {
             return;
         }
 
-        let jobId = req.body.job;
+        let jobId = req.body.job.substr(1);
 
         let team = await Database.getInstance().getTeamById(req.user.teamId);
         if (!team) {

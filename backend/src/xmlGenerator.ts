@@ -39,13 +39,13 @@ export class XmlGenerator {
             let el = root.ele("jobDefinition")
                 .att("name", job.name)
                 .att("duration", job.plannedDuration)
-                .att("id", job.id);
+                .att("id", "j" + job.id);
             if (job.description != "") {
                 el.ele("description", job.description)
             }
             for (let parent of job._parents) {
                 el.ele("dependsOn")
-                    .att("id", parent);
+                    .att("id", "j" + parent);
             }
             for (let part of job._participants) {
                 el.ele("member")
@@ -97,14 +97,14 @@ export class XmlGenerator {
 
             if (handledJobs.indexOf(job.jobId) != -1) {
                 curDayObj.ele("jobContinuation")
-                    .att("job", job.jobId)
+                    .att("job", "j" + job.jobId)
                     .att("timeFrom", XmlGenerator.formatTime(job.startTime))
                     .att("timeTo", XmlGenerator.formatTime(job.endTime));
             } else {
                 handledJobs.push(job.jobId);
                 if (job.job != null) {
                     let obj = curDayObj.ele("job")
-                        .att("id", job.jobId)
+                        .att("id", "j" + job.jobId)
                         .att("timeFrom", XmlGenerator.formatTime(job.startTime))
                         .att("timeTo", XmlGenerator.formatTime(job.endTime))
                         .att("duration", job.duration)

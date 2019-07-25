@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/xslt/team.xsl"?>
+<!DOCTYPE teamOverview SYSTEM "https://planner.schimweg.net/dtd/teamplanner.dtd">
+<teamOverview xmlns="https://planner.schimweg.net/dtd/teamplanner.dtd">
+    <jobDefinition name="Projektbeginnbesprechung" duration="60" id="1">
+        <description>Ein Kaffe und ab geht die Party!</description>
+        <dependsOn id="14"/>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u8"/>
+        <member id="u18"/>
+    </jobDefinition>
+    <jobDefinition name="Implementationsphase Backend" duration="120" id="2">
+        <description>Luca implementiert</description>
+        <dependsOn id="1"/>
+        <dependsOn id="3"/>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u8"/>
+    </jobDefinition>
+    <jobDefinition name="Implementationsphase Frontend" duration="60" id="3">
+        <description>Hendrik implementiert</description>
+        <dependsOn id="1"/>
+        <member id="u4"/>
+    </jobDefinition>
+    <jobDefinition name="Implementation zusammenführen" duration="60" id="4">
+        <description>Kaffeee!!</description>
+        <dependsOn id="1"/>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u18"/>
+    </jobDefinition>
+    <jobDefinition name="QA Teamintern" duration="600" id="5">
+        <dependsOn id="4"/>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u8"/>
+        <member id="u18"/>
+    </jobDefinition>
+    <jobDefinition name="QA 2 Teamextern" duration="360" id="6">
+        <dependsOn id="5"/>
+        <member id="u1"/>
+        <member id="u4"/>
+    </jobDefinition>
+    <jobDefinition name="Gemeinsames Meeting" duration="120" id="7">
+        <dependsOn id="6"/>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u18"/>
+    </jobDefinition>
+    <jobDefinition name="Revision mit Kunden" duration="120" id="8">
+        <dependsOn id="7"/>
+        <member id="u1"/>
+        <member id="u4"/>
+    </jobDefinition>
+    <jobDefinition name="Überarbeitung des Codes" duration="360" id="9">
+        <dependsOn id="7"/>
+        <member id="u1"/>
+        <member id="u4"/>
+    </jobDefinition>
+    <jobDefinition name="QA 3" duration="240" id="10">
+        <dependsOn id="9"/>
+        <member id="u1"/>
+        <member id="u4"/>
+    </jobDefinition>
+    <jobDefinition name="Erarbeitung Vortrag" duration="120" id="11">
+        <dependsOn id="9"/>
+        <dependsOn id="10"/>
+        <member id="u1"/>
+        <member id="u4"/>
+    </jobDefinition>
+    <jobDefinition name="Vortrag Intern" duration="120" id="12">
+        <dependsOn id="11"/>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u8"/>
+    </jobDefinition>
+    <jobDefinition name="Vortrag Extern" duration="120" id="13">
+        <dependsOn id="12"/>
+        <member id="u1"/>
+        <member id="u4"/>
+    </jobDefinition>
+    <jobDefinition name="Kennenlernen" duration="60" id="14">
+        <description>Wir wollen uns ja auch erstmal kennenlernen!</description>
+        <dependsOn id="15"/>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u8"/>
+    </jobDefinition>
+    <jobDefinition name="Gemeinsames Frühstück" duration="60" id="15">
+        <description>Das hier ist ein supercooles Frühstück, ich freue mich schon wirklich darauf!&#xD;
+            &#xD;
+            Auf uns!&#xD;
+            &#xD;
+            &#xD;
+            Gruß&#xD;
+            Luca</description>
+        <member id="u1"/>
+        <member id="u4"/>
+        <member id="u8"/>
+        <member id="u18"/>
+    </jobDefinition>
+    <team name="TP Development Team IV">
+        <description>Das hier ist ein Supergeiles Team! Yeah!</description>
+        <memberDefinition id="u1" name="Luca Schimweg" leader="true" you="true" startTime="08:00" endTime="18:00"/>
+        <memberDefinition id="u4" name="Hendrik Leier"/>
+        <memberDefinition id="u8" name="Nico Diefenbacher"/>
+        <memberDefinition id="u18" name="Jonas Heinrich"/>
+        <memberDefinition id="u19" name="Zeno Berkhan"/>
+    </team>
+</teamOverview>

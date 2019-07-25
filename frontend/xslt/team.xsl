@@ -118,7 +118,7 @@
                             <div class="job">
                                 <xsl:variable name="job" select="." />
                                 <xsl:variable name="jobId" select="@id" />
-                                <xsl:attribute name="id">j<xsl:value-of select="$jobId" /></xsl:attribute>
+                                <xsl:attribute name="id"><xsl:value-of select="$jobId" /></xsl:attribute>
                                 <form action="/api/deleteJob" class="deleteJobForm" method="post">
                                     <input type="hidden" name="job">
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>

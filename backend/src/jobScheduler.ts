@@ -44,10 +44,17 @@ export class JobScheduler {
         return Array.from(this.jobs.values()).filter(x => x.children.length == 0);
     }
 
-    private scheduleUpwards(job: JobHierarchyObject, times: Map<number, number>) {
-        if (job.startTime != -1) return;
+    private scheduleUpwards(job: JobHierarchyObject, times: Map<number, number>): boolean {
+        if (job.startTime == -2) {
+             // LOOP DETECTED
+            return true;
+        }
+        if (job.startTime != -1) return false;
+        job.startTime = -2;
         for (let parent of job.parents) {
-            this.scheduleUpwards(parent, times);
+            if (!this.scheduleUpwards(parent, times)) {
+                return false;
+            }
         }
 
         job.startTime = Math.max(...job.users.map(usr => times.get(usr.user.id) || 0));;
@@ -82,6 +89,7 @@ export class JobScheduler {
 
             times.set(usr.user.id, daysUsr * JobScheduler.DAY_LENGTH + endTimeOnDay);
         }
+        return true;
     }
 
     public createJobsWithTime(start: Date): JobWithTime[] {
@@ -113,7 +121,7 @@ export class JobScheduler {
         }
     }
 
-    public async scheduleJobs(startDate: Date, writeToCache: boolean = true): Promise<JobWithTime[]> {
+    public async scheduleJobs(startDate: Date, writeToCache: boolean = true): Promise<boolean> {
         await this.loadJobs();
 
         let times = new Map<number, number>();
@@ -122,7 +130,10 @@ export class JobScheduler {
             times.set(u.id, u.startTime);
         }
 
-        this.getEndJobs().forEach(job => this.scheduleUpwards(job, times));
+        if (this.getEndJobs().map(job => this.scheduleUpwards(job, times)).filter(x => x).length > 0) {
+            return false;
+        }
+
 
         let jobs = this.createJobsWithTime(startDate);
 
@@ -130,7 +141,7 @@ export class JobScheduler {
             await this.writeToCache(jobs);
         }
 
-        return jobs;
+        return true;
     }
 
     public static getEndForJob(job: JobWithTime, usr: JobParticipant): Date {
