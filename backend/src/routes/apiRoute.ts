@@ -12,6 +12,22 @@ export class ApiRoute {
         res.redirect("/login.html");
     }
 
+    private async postPassword(req: express.Request, res: express.Response) {
+        if (!("password" in req.body)) {
+            res.status(400).end("Bad Request");
+            return;
+        }
+
+        let newPass = req.body.password;
+
+        await Database.getInstance().updateUserPassword(req.user.id, SessionManager.hashPassword(newPass));
+
+        res.writeHead(303, {
+            'Location': (req.body.offset != "team") ? "/week?offset=" + (req.body.offset || 0) : "/team"
+        });
+        res.end();
+    }
+
     private async postJobDuration(req: express.Request, res: express.Response) {
         let id = req.body.id;
         let newTime = req.body.duration;
@@ -431,6 +447,7 @@ export class ApiRoute {
 
     constructor() {
         this.router.get("/doLogout", this.doLogout.bind(this));
+        this.router.post("/password", this.postPassword.bind(this));
         this.router.post("/jobDuration", this.postJobDuration.bind(this));
         this.router.post("/addTeamUser", this.postTeamUser.bind(this));
         this.router.post("/deleteTeamUser", this.deleteTeamUser.bind(this));

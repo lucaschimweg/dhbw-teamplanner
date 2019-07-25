@@ -27,9 +27,21 @@
                     </div>
 
                     <div id="userArea">
-                        Logged in as
-                        <b><xsl:value-of select="//n:team/n:memberDefinition[@you='true']/@name" /></b>
-                        (<a href="/api/doLogout">Logout</a>)
+                        <p>
+                            Logged in as
+                            <b><xsl:value-of select="//n:team/n:memberDefinition[@you='true']/@name" /></b>
+                            (<a href="/api/doLogout">Logout</a>)
+                        </p>
+                        <div id="changePasswordArea">
+                            <form action="/api/password" method="post">
+                                <input type="hidden" name="offset" value="team"/>
+                                <label for="password" >Change Password: </label>
+                                <br />
+                                <input id="password" name="password" type="password" />
+                                <br />
+                                <input type="submit" value="change" />
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div id="content">

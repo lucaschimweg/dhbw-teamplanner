@@ -45,9 +45,23 @@
                     </xsl:if>
 
                     <div id="userArea">
-                        Logged in as
-                        <b><xsl:value-of select="//n:week/n:team/n:memberDefinition[@you='true']/@name" /></b>
-                        (<a href="/api/doLogout">Logout</a>)
+                        <p>
+                            Logged in as
+                            <b><xsl:value-of select="//n:week/n:team/n:memberDefinition[@you='true']/@name" /></b>
+                            (<a href="/api/doLogout">Logout</a>)
+                        </p>
+                        <div id="changePasswordArea">
+                            <form action="/api/password" method="post">
+                                <input type="hidden" name="offset">
+                                    <xsl:attribute name="value"><xsl:value-of select="//n:week/@offset" /></xsl:attribute>
+                                </input>
+                                <label for="password" >Change Password: </label>
+                                <br />
+                                <input id="password" name="password" type="password" />
+                                <br />
+                                <input type="submit" value="change" />
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div id="content">
