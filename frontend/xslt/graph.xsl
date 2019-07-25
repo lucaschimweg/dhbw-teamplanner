@@ -1,12 +1,10 @@
 <?xml version="1.0"?>
 
 <xsl:stylesheet version="1.0"
-                xmlns:n="/dtd/teamplanner.dtd"
+                xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml">
-    <xsl:output method="xml" encoding="UTF-8" indent="yes" />
 
-    <!-- Graph Config -->
     <xsl:variable name="graph_y_space">100</xsl:variable>
     <xsl:variable name="graph_margin">5</xsl:variable>
     <xsl:variable name="item_connect_margin">5</xsl:variable>
@@ -20,80 +18,13 @@
     <xsl:variable name="connector_micro_x_step">10</xsl:variable>
     <xsl:variable name="connector_micro_y_step">7</xsl:variable>
     <xsl:variable name="initial_y_step">20</xsl:variable>
-    <!-- Graph Config End -->
 
-    <xsl:template match="n:teamOverview">
-        <html>
-            <head>
-                <title>Management</title>
-                <link type="text/css" rel="stylesheet" href="/css/management.css"/>
-                <style>
-                    .jobElement {
-                        width: <xsl:value-of select="$graph_item_width"/>px;
-                        height: <xsl:value-of select="$graph_item_height"/>px;
-                        border-left: <xsl:value-of select="$graph_item_border_width"/>px solid rgba(0, 150, 105, .9);
-                    }
-                </style>
-
-            </head>
-            <body>
-                <div class="users">
-                    <h3 id="user_title">Team Mitglieder</h3>
-                    <ul class="user_list">
-                        <xsl:apply-templates select="//n:team/n:memberDefinition"/>
-                    </ul>
-                </div>
-                <div class="graph">
-                        <xsl:apply-templates select="//n:jobDefinition[@planned='true']"/>
-                        <xsl:call-template name="drawRelations"/>
-                </div>
-                <div class="not_assigned">
-                    <xsl:apply-templates select="//n:jobDefinition[@planned='false']"/>
-                </div>
-            </body>
-
-        </html>
+    <xsl:template name="jobGraph">
+        <xsl:apply-templates select="//n:jobDefinition"/>
+        <xsl:call-template name="drawRelations"/>
     </xsl:template>
 
-    <xsl:template match="//n:jobDefinition[@planned='false']">
-        <div class="jobElement unplanned_job">
-            <xsl:value-of select="@name"/>
-            <a class="editUser">
-                <xsl:attribute name="href">
-                    /test/manageEditUsers.xml?jid=<xsl:value-of select="@id"/>
-                </xsl:attribute>
-            </a>
-
-            <a class="deleteJob">
-                <xsl:attribute name="href">
-                    /api/delete/?jid=<xsl:value-of select="@id"/>
-                </xsl:attribute>
-            </a>
-        </div>
-    </xsl:template>
-
-
-    <xsl:template match="n:memberDefinition">
-        <xsl:choose>
-            <xsl:when test="@leader='true' and @you='false'">
-                <li class="leader"><xsl:value-of select="@name"/> (Leader)</li>
-            </xsl:when>
-            <xsl:when test="@you='true' and @leader='false'">
-                <li class="you"><xsl:value-of select="@name"/> (You)</li>
-            </xsl:when>
-            <xsl:when test="@you='true' and @leader='true'">
-                <li class="you">
-                    <xsl:value-of select="@name"/> (You, Leader)
-                </li>
-            </xsl:when>
-            <xsl:otherwise>
-                <li><xsl:value-of select="@name"/></li>
-            </xsl:otherwise>
-        </xsl:choose>
-
-    </xsl:template>
-
-    <xsl:template match="n:jobDefinition[@planned='true']">
+    <xsl:template match="n:jobDefinition">
         <xsl:call-template name="drawJob">
             <xsl:with-param name="jobId" select="@id"/>
         </xsl:call-template>
@@ -120,24 +51,13 @@
                 top: calc((<xsl:value-of select="$graph_item_height"/>px + <xsl:value-of select="$graph_y_space"/>px) * <xsl:value-of select="$depth"/> + <xsl:value-of select="$graph_margin"/>px);
             </xsl:attribute>
             <xsl:value-of select="//n:jobDefinition[@id=$jobId]/@name"/>
-            <a class="editUser">
-                <xsl:attribute name="href">
-                    /test/manageEditUsers.xml?jid=<xsl:value-of select="$jobId"/>
-                </xsl:attribute>
-            </a>
-
-            <a class="deleteJob">
-                <xsl:attribute name="href">
-                    /api/delete/?jid=<xsl:value-of select="$jobId"/>
-                </xsl:attribute>
-            </a>
         </div>
 
     </xsl:template>
-    
+
     <xsl:template name="drawRelations">
-        <svg class="bg_im" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <xsl:for-each select="//n:jobDefinition[@planned='true']">
+        <svg class="bg_im" id="svgGraph" xmlns="http://www.w3.org/2000/svg" >
+            <xsl:for-each select="//n:jobDefinition">
 
                 <xsl:variable name="s_depth">
                     <xsl:call-template name="JobRecursion">
@@ -215,11 +135,12 @@
         </svg>
     </xsl:template>
 
+
     <!--
-    ###################################
-    # Pleeeeeaaaaase don't touch this #
-    ###################################
-    -->
+###################################
+# Pleeeeeaaaaase don't touch this #
+###################################
+-->
 
     <xsl:template name="getXPosFor">
         <xsl:param name="jobId" select="u0"/>
@@ -295,7 +216,6 @@
             <xsl:when test="$choiceCnt = $currentChoice">
                 <xsl:call-template name="JobRecursion">
                     <xsl:with-param name="jobId" select="//n:jobDefinition[@id=$jobId]/n:dependsOn[$currentChoice]/@id"/>
-                    <xsl:with-param name="origId" select="$jobId"/>
                     <xsl:with-param name="recursionDepth" select="$recursionDepth + 1"/>
                 </xsl:call-template>
             </xsl:when>
@@ -303,7 +223,6 @@
                 <xsl:variable name="a">
                     <xsl:call-template name="JobRecursion">
                         <xsl:with-param name="jobId" select="//n:jobDefinition[@id=$jobId]/n:dependsOn[$currentChoice]/@id"/>
-                        <xsl:with-param name="origId" select="$jobId"/>
                         <xsl:with-param name="recursionDepth" select="$recursionDepth + 1"/>
                     </xsl:call-template>
                 </xsl:variable>
@@ -339,15 +258,15 @@
         <xsl:param name="recursionDepth" select="0"/>
 
         <xsl:choose>
-            <xsl:when test="count(//n:jobDefinition[@id=$jobId and @planned='true']/n:dependsOn)&gt;0">
+            <xsl:when test="count(//n:jobDefinition[@id=$jobId]/n:dependsOn)&gt;0">
                 <xsl:call-template name="JobReduce">
                     <xsl:with-param name="jobId" select="$jobId"/>
-                    <xsl:with-param name="choiceCnt" select="count(//n:jobDefinition[@id=$jobId and @planned='true']/n:dependsOn)"/>
+                    <xsl:with-param name="choiceCnt" select="count(//n:jobDefinition[@id=$jobId]/n:dependsOn)"/>
                     <xsl:with-param name="recursionDepth" select="$recursionDepth"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
-                    <xsl:value-of select="$recursionDepth"/>
+                <xsl:value-of select="$recursionDepth"/>
             </xsl:otherwise>
         </xsl:choose>
 

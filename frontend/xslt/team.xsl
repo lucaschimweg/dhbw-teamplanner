@@ -4,16 +4,20 @@
                 xmlns:n="https://planner.schimweg.net/dtd/teamplanner.dtd"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:xsL="http://www.w3.org/1999/XSL/Transform">
+
     <xsl:output method="xml" encoding="UTF-8" indent="yes" />
+    <xsl:include href="/xslt/graph.xsl" />
     <xsl:template match="n:teamOverview">
         <html lang="en">
             <head>
                 <link rel="stylesheet" type="text/css" href="/css/team.css" />
                 <link rel="stylesheet" type="text/css" href="/css/header.css" />
+                <link rel="stylesheet" type="text/css" href="/css/graph.css" />
                 <link rel="icon" href="/img/favicon.png" type="image/png" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300&amp;display=swap" />
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap" />
                 <script src="/js/team.js" type="text/javascript" />
+                <script src="/js/graph.js" type="text/javascript" />
                 <title><xsl:value-of select="//n:team/@name"/> - week overview</title>
             </head>
             <body>
@@ -78,7 +82,21 @@
                             </form>
                         </div>
                     </div>
-                    <div id="teamJobs">
+                    <form id="rightView" >
+                        <input type="radio" class="tabRadio" name="selectedTab" id="rightTabRadio"/>
+                        <input type="radio" class="tabRadio" name="selectedTab" checked="checked" id="leftTabRadio"/>
+
+                        <div id="tabDiv">
+                            <label for="leftTabRadio" class="tabButton" id="leftTabButton">
+                                <span>Jobs</span>
+                            </label>
+
+                            <label for="rightTabRadio" class="tabButton" id="rightTabButton">
+                                <span>Graph</span>
+                            </label>
+                        </div>
+
+                        <div id="teamJobs">
                         <div class="job" id="addJob">
                             <p id="addJobText"> Add Job... </p>
                             <div id="addJobContainer">
@@ -101,7 +119,7 @@
                                 <xsl:variable name="job" select="." />
                                 <xsl:variable name="jobId" select="@id" />
                                 <xsl:attribute name="id">j<xsl:value-of select="$jobId" /></xsl:attribute>
-                                <form action="/api/deleteJob" id="deleteJobForm" method="post">
+                                <form action="/api/deleteJob" class="deleteJobForm" method="post">
                                     <input type="hidden" name="job">
                                         <xsl:attribute name="value"><xsl:value-of select="$jobId" /></xsl:attribute>
                                     </input>
@@ -186,6 +204,12 @@
                             </div>
                         </xsl:for-each>
                     </div>
+                        <div id="graph">
+                            <xsl:call-template name="jobGraph" />
+                        </div>
+                    </form>
+
+
                 </div>
             </body>
         </html>

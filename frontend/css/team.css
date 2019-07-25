@@ -8,7 +8,7 @@
     overflow-y: auto;
     width: 100%;
     height: calc(100% - 49px);
-    background: whitesmoke;
+    background: #eeeeee;
 }
 
 .teamMemberElement {
@@ -105,15 +105,6 @@
     width: calc(20% - 1px);
 }
 
-#teamJobs {
-    height: 100%;
-    margin: 0;
-    float: left;
-    position: relative;
-    width: 80%;
-    overflow-y: auto;
-}
-
 .job {
     width: calc(100% - 24px);
     margin: 8px;
@@ -199,7 +190,7 @@
     height: 1px;
 }
 
-#deleteJobForm > input[type="submit"] {
+.deleteJobForm > input[type="submit"] {
     border-radius: 0;
     background: transparent url("/img/deleteWhite.svg") no-repeat;
     background-size: contain;
@@ -212,6 +203,77 @@
     cursor: pointer;
 }
 
-#deleteJobForm > input[type="submit"]:hover {
+.deleteJobForm > input[type="submit"]:hover {
     background-image: url("/img/deleteRed.svg");
+}
+
+#graph {
+    position: relative;
+    height: calc(100% - 30px);
+    display: none;
+    overflow: auto;
+}
+
+#teamJobs {
+    float: top;
+    overflow-y: auto;
+    height: calc(100% - 30px);
+    width: 100%;
+    display: none;
+}
+
+#rightView {
+    height: 100%;
+    margin: 0;
+    float: left;
+    position: relative;
+    width: 80%;
+}
+
+#leftTabRadio:checked ~ #teamJobs  {
+     display: block;
+ }
+
+#rightTabRadio:checked ~ #graph  {
+    display: block;
+}
+
+.tabRadio {
+    display: none;
+}
+
+#tabDiv {
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    box-shadow: 0 7px 4px -4px gray;
+    -webkit-box-shadow: 0 6px 4px -4px gray;
+    -moz-box-shadow: 0 6px 4px -4px gray;
+    position: relative;
+}
+
+.tabButton {
+    width: 50%;
+    margin: 0;
+    border-bottom: 2px solid white;
+    background-color: white;
+    float: left;
+    cursor: pointer;
+    text-align: center;
+    transition: border-bottom-color .3s;
+    z-index: 15;
+    height: 25px;
+    padding-top: 3px;
+}
+
+.tabButton > span {
+    font-size: 14px;
+}
+
+#leftTabRadio:checked ~ #tabDiv > #leftTabButton  {
+    border-color: rgb(0, 77, 53);
+}
+
+#rightTabRadio:checked ~ #tabDiv > #rightTabButton  {
+    border-color: rgb(0, 77, 53);
 }
