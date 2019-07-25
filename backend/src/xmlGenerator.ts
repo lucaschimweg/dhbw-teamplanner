@@ -135,9 +135,10 @@ export class XmlGenerator {
         return this.injectXmlStylesheet(root.doc().end({pretty: true}), "/xslt/week.xsl");
     }
 
-    public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[], curUserId: number) {
+    public static getXmlTeamOverview(t: Team, users: User[], jobs: Job[], curUserId: number, error: string) {
         let root = this.getXmlForJobDefinitions(jobs);
         root.importDocument(this.getXmlForTeam(t, users, curUserId));
+        root.att("error", error);
 
         root.dec("1.0", "UTF-8");
         root.dtd({sysID: "https://planner.schimweg.net/dtd/teamplanner.dtd"});

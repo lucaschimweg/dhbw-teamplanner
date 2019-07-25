@@ -82,7 +82,7 @@ export class ApiRoute {
 
         if (await Database.getInstance().userExists(mail)) {
             res.writeHead(303, {
-                'Location': '/team?error="User already exists with that mail!"'
+                'Location': '/team?error=User already exists with that mail!'
             }).end();
             return;
         }
@@ -317,7 +317,7 @@ export class ApiRoute {
             // Circular dependency
             await Database.getInstance().deleteJobDependency(parentId, jobId);
             res.writeHead(303, {
-                'Location': '/team?error="Circular dependency detected!"#' + "j" + jobId
+                'Location': '/team?error=Circular dependency detected!#' + "j" + jobId
             });
             res.end();
             return;

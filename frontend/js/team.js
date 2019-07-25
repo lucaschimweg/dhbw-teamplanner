@@ -8,4 +8,9 @@ window.onload = function() {
         //scroll to the anchored element
         scrollToEl.scrollIntoView(true);
     }
+    var atts = document.getElementsByTagName("html")[0].attributes;
+    if ("data-errorMessage" in atts) {
+        var val = atts["data-errorMessage"].value;
+        if (val !== "") alert(val);
+    }
 };

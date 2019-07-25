@@ -9,6 +9,9 @@
     <xsl:include href="/xslt/graph.xsl" />
     <xsl:template match="n:teamOverview">
         <html lang="en">
+            <xsl:if test="@error != ''">
+                <xsl:attribute name="data-errorMessage"><xsl:value-of select="@error" /></xsl:attribute>
+            </xsl:if>
             <head>
                 <link rel="stylesheet" type="text/css" href="/css/team.css" />
                 <link rel="stylesheet" type="text/css" href="/css/header.css" />
