@@ -5,7 +5,10 @@
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns="http://www.w3.org/1999/xhtml" xmlns:xsL="http://www.w3.org/1999/XSL/Transform">
 
-    <xsl:output method="xml" encoding="UTF-8" indent="yes" />
+    <xsl:output method="xml" encoding="UTF-8" indent="yes"
+                doctype-public="-//W3C//DTD XHTML 1.1//EN"
+                doctype-system="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"/>
+
     <xsl:include href="/xslt/graph.xsl" />
     <xsl:template match="n:teamOverview">
         <html lang="en">
@@ -25,11 +28,11 @@
             </head>
             <body>
                 <div id="title">
-                    <img src="/img/logo_white.png" id="logo" />
+                    <img src="/img/logo_white.png" id="logo" alt="teamplanner logo" />
                     <div id="teamName"><xsl:value-of select="//n:team/@name"/></div>
                     <div id="changeViewButton">
                         <a class="navigatorButton" href="/week">
-                            <img src="/img/calendar.svg" />
+                            <img src="/img/calendar.svg" alt="view calendar" />
                         </a>
                     </div>
 
@@ -91,7 +94,7 @@
                             </form>
                         </div>
                     </div>
-                    <form id="rightView" >
+                    <form id="rightView" action="#">
                         <fieldset>
                         <input type="radio" class="tabRadio" name="selectedTab" id="rightTabRadio"/>
                         <input type="radio" class="tabRadio" name="selectedTab" checked="checked" id="leftTabRadio"/>
@@ -118,7 +121,7 @@
                                     <input type="number" name="duration" id="inputDuration" autocomplete="off" value="60"/> min
 
                                     <br />
-                                    <textarea name="description" id="inputDescription" autocomplete="off" placeholder="Description" rows="2"/>
+                                    <textarea name="description" id="inputDescription" autocomplete="off" placeholder="Description" cols="30" rows="2"/>
                                     <br />
                                     <input type="submit" value="Add" />
                                     </fieldset>
