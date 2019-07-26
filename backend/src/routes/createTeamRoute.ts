@@ -6,7 +6,7 @@ export class CreateTeamRoute {
     private router: express.Router = express.Router();
 
     private async createTeam(req: express.Request, res: express.Response) {
-        if (!("mail" in req.body && "password" in req.body && "firstname" in req.body && "lastname" in req.body && "teamname" in req.body)) {
+        if (!("mail" in req.body && "password" in req.body && "firstname" in req.body && "lastname" in req.body && "teamname" in req.body && "start" in req.body)) {
             res.status(400).end("Bad Request");
             return;
         }
@@ -16,13 +16,15 @@ export class CreateTeamRoute {
         let firstname = req.body.firstname;
         let lastname = req.body.lastname;
         let teamname = req.body.teamname;
+        let startdate = req.body.start;
+
 
         if (await Database.getInstance().userExists(mail)) {
             res.redirect("/registerEmailInUse.html");
             return;
         }
 
-        let ldr = await Database.getInstance().createTeam(teamname, "", mail, firstname, lastname, SessionManager.hashPassword(password));
+        let ldr = await Database.getInstance().createTeam(teamname, "", mail, firstname, lastname, SessionManager.hashPassword(password), startdate);
 
         let session = SessionManager.getInstance().ceateUncheckedSession(ldr);
 

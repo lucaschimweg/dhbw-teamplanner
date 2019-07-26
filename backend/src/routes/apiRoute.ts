@@ -312,7 +312,7 @@ export class ApiRoute {
         }
 
         await Database.getInstance().addJobDependency(parentId, jobId);
-
+        console.log("scheduling " + team.id + " starting from " + team.start);
         if (!await new JobScheduler(req.user.teamId).scheduleJobs(team.start)) {
             // Circular dependency
             await Database.getInstance().deleteJobDependency(parentId, jobId);
@@ -407,6 +407,8 @@ export class ApiRoute {
         }
 
         let job = await Database.getInstance().createJob(team.id, name, descr, duration);
+
+        await new JobScheduler(team.id).scheduleJobs(team.start);
 
         res.writeHead(303, {
             'Location': "/team#j" + job.id

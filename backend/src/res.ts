@@ -85,7 +85,7 @@ export class DbRes {
 
     public static SELECT_TEAM_BY_ID: string = "SELECT * FROM teamplanner_teams JOIN teamplanner_users ON `user_id` = `leader` WHERE `team_id` = ?";
 
-    public static INSERT_TEAM: string = "INSERT INTO teamplanner_teams (`name`, `description`, `leader`) VALUES (?, ?, ?);" +
+    public static INSERT_TEAM: string = "INSERT INTO teamplanner_teams (`name`, `description`, `leader`, `start`) VALUES (?, ?, ?, ?);" +
         "SELECT LAST_INSERT_ID() as id";
 
     public static SELECT_JOB_BY_ID: string = "SELECT * FROM teamplanner_jobs WHERE `job_id` = ?";

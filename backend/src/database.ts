@@ -177,9 +177,10 @@ export class Database {
         return Database.createTeamFromObject(obj[0], usr);
     }
 
-    public async createTeam(name: string, description: string, leaderMail: string, leaderFName: string, leaderLName: string, leaderPwHash: string): Promise<User> {
+    public async createTeam(name: string, description: string, leaderMail: string, leaderFName: string, leaderLName: string, leaderPwHash: string, startDate: string): Promise<User> {
         let ldr = (await this.createUser(leaderMail, leaderFName, leaderLName, 0, leaderPwHash));
-        let id: number = (await this.query(DbRes.INSERT_TEAM, [name, description, ldr.id]))[1][0].id;
+
+        let id: number = (await this.query(DbRes.INSERT_TEAM, [name, description, ldr.id, Database.parseDate(startDate)]))[1][0].id;
         await this.query(DbRes.UPDATE_USER_TEAM, [id, ldr.id]);
         return new User(ldr.id, ldr.email, ldr.firstName, ldr.lastName, id, ldr.startTime, ldr.endTime);
     }
