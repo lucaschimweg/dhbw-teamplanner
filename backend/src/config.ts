@@ -78,8 +78,4 @@ export class Config {
             this.config.webserver.port
         );
     }
-
-    getWebServerHostname(): string {
-        return this.config.webserver.url;
-    }
 }
