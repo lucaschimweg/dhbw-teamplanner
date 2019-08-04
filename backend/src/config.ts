@@ -37,8 +37,7 @@ export class Config {
             "dbname": ""
         },
         "webserver": {
-            "port": 80,
-            "url": "https://planner.schimweg.net"
+            "port": 80
         }
     };
 
