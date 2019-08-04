@@ -1,5 +1,4 @@
 import * as express from "express";
-import * as xmlbuilder from "xmlbuilder"
 import {Database} from "../database";
 import {XmlGenerator} from "../xmlGenerator";
 

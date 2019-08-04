@@ -1,6 +1,6 @@
 import * as xmlbuilder from "xmlbuilder"
 import {CachedJob, Job, Team, User} from "./dbObjects";
-import {XMLElement, XMLWriter} from "xmlbuilder";
+import {XMLElement} from "xmlbuilder";
 import {Database} from "./database";
 
 export class XmlGenerator {
